@@ -4,7 +4,7 @@ import GameLib as gl
 
 
 # Colours
-BACKGROUND = (0, 0, 0)
+BACKGROUND = (123, 123, 5)
 
 # Game settings
 FPS = 60
@@ -18,7 +18,20 @@ pygame.display.set_caption('Moonlander 🚀')
 uiLayer = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 
-a = gl.ui.Button((uiLayer, "Center", 450, 250, 100, 50, "blue"), 5, "hello")
+config = {
+    "coordSpace": "Center",
+    "posX": 450,
+    "posY": 250,
+    "sizeX": 100,
+    "sizeY": 50,
+    "Colour": pygame.Color("blue"),
+    "fontSize": 5,
+    "text": "hello",
+    "style": "default",
+    "font": "default",
+}
+
+a = gl.ui.Button(uiLayer, config)
 
 def main():
     events()
@@ -28,8 +41,11 @@ def main():
 def draw():
     WINDOW.fill(BACKGROUND)
 
+    uiLayer.fill((255, 255, 255))  # Fill the UI layer with white
     a.update()
+    WINDOW.blit(uiLayer, (0, 0))
 
+    pygame.display.flip()
     pygame.display.update()
 
 
