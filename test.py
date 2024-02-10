@@ -31,7 +31,7 @@ config = {
     "font": "default",
 }
 
-a = gl.ui.Button(uiLayer, config)
+button1 = gl.ui.Button(uiLayer, config)
 
 def main():
     events()
@@ -42,7 +42,7 @@ def draw():
     WINDOW.fill(BACKGROUND)
 
     uiLayer.fill((255, 255, 255))  # Fill the UI layer with white
-    a.update()
+    button1.update()
     WINDOW.blit(uiLayer, (0, 0))
 
     pygame.display.flip()

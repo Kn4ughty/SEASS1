@@ -31,6 +31,7 @@ class Button(Rectangle):
 		self.text = config.get("text", "")
 		self.style = config.get("style", "default")
 		self.font = config.get("font", "default")
+		
 	#self.surface = Surface
 	
 	def isMouseOver(self):
