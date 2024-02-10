@@ -1,4 +1,4 @@
-import lib
+import Lib.lib as lib
 
 title = "\
  _____             _           _         \n\
