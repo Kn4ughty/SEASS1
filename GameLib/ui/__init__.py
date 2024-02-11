@@ -21,6 +21,8 @@ class Rectangle(Element):
 
 
 		## Coordinate spaces caused problems with percentage anchours so depreicated for now
+		## Would end with pos as a small number
+		## Could be set up to take into account percentage but idrc
 		#match config["coordSpace"]:
 		#	case "Center":
 		#		config["posX"] -= config["sizeX"] / 2
@@ -80,11 +82,6 @@ class Rectangle(Element):
 		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
 		surface.blit(shape_surf, rect)
 
-	def rect(self, screen, x1, y1, x2, y2, alpha = 255):
-		#pygame.draw.rect(screen, (0,0,0), (x1,y1,x2,y2))
-		self.draw_rect_alpha(screen, (0, 0, 0, alpha), (x1, y1, x2, y2))
-
-
 
 class Button(Rectangle):
 	"""A button UI element
@@ -106,7 +103,7 @@ class Button(Rectangle):
 		self.isBold = config.get("isBold", True)
 		self.isItalic = config.get("isItalic", False)
 
-		self.highlightThickness = config.get("highlightThickness", 0.12)
+		self.highlightThickness = config.get("highlightThickness", 0.2)
 
 		self.clickEventHandler = config.get("clickEventHandler", None)
 
@@ -125,7 +122,7 @@ class Button(Rectangle):
 	def highlight(self):
 		#match self.style:
 		#	case "default":
-		outlineColour = pygame.Color(self.colour - pygame.Color(10, 10, 10))
+		outlineColour = pygame.Color(self.colour + pygame.Color(100, 100, 100))
 		outlineColour.a = 50
 		outlineSurf = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32)
 		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em))
