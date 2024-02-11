@@ -54,11 +54,20 @@ class Button(Rectangle):
 		self.style = config.get("style", "default")
 		self.font = config.get("font", "Hack")
 		self.fontColour = config.get("fontColour", "Black")
+		self.isBold = config.get("isBold", True)
+		self.isItalic = config.get("isItalic", False)
+		
 		
 	#self.surface = Surface
 	
 	def isMouseOver(self):
-		# TODO isMouseOver
+		x, y = pygame.mouse.get_pos()
+		if x >= self.posX and x <= self.posX + self.sizeX:
+			if y >= self.posY and y <= self.posY + self.sizeY:
+				#print("mouse over!")
+				#print(pygame.mouse.get_pos())
+				return True
+		#print(pygame.mouse.get_pos())
 		return False
 
 	def isPressed(self):
@@ -66,28 +75,36 @@ class Button(Rectangle):
 		return False
 
 	def highlight(self):
-		match self.style:
-			case "default":
-				pass
-		pass
-	
+		#match self.style:
+		#	case "default":
+		outlineColour = pygame.Color(self.colour - pygame.Color(10, 10, 10))
+		outlineColour.a = 50
+
+		outlineSurf = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32)
+		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), 5)
+		print("highlight")
+		self.WINDOW.blit(outlineSurf, self.rect)
+
+		
 
 	def draw_button_alpha(self, surface, color, rect):
-		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA)
+		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA, 32)
 		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
 		surface.blit(shape_surf, rect)
 
 	def draw(self):
 		self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
 
-		font = pygame.font.SysFont(self.font, self.fontSize)
+		font = pygame.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
 		img = font.render(self.text, True, self.fontColour)
 
-		# this is a very long line of code :/s
+		# this is a very long line of code :/
 		self.WINDOW.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
 
 	def update(self):
 		self.draw()
+		if self.isMouseOver():
+			self.highlight()
 		#self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
 		#pygame.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
 		#if isMouseOver():

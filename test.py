@@ -8,7 +8,7 @@ pygame.init()
 BACKGROUND = (0, 0, 0)
 
 # Game settings
-FPS = 60
+FPS = 240
 clock = pygame.time.Clock()
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 450
