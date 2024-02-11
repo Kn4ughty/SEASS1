@@ -19,7 +19,8 @@ pygame.display.set_caption('Moonlander 🚀')
 uiLayer = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
 
-
+def on_button_click():
+    print("whoa event!!")
 
 button1 = gl.ui.Button({
     "surface": uiLayer,
@@ -30,7 +31,8 @@ button1 = gl.ui.Button({
     "sizeY": 50,
     "Colour": pygame.Color(0, 0, 255, 50),
     "fontSize": 25,
-    "text": "hello"
+    "text": "hello",
+    "clickEventHandler": on_button_click
 })
 
 def main():

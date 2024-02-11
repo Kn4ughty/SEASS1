@@ -56,6 +56,10 @@ class Button(Rectangle):
 		self.fontColour = config.get("fontColour", "Black")
 		self.isBold = config.get("isBold", True)
 		self.isItalic = config.get("isItalic", False)
+
+		self.clickEventHandler = config.get("clickEventHandler", None)
+
+		self.prevMouseState = False
 		
 		
 	#self.surface = Surface
@@ -70,9 +74,6 @@ class Button(Rectangle):
 		#print(pygame.mouse.get_pos())
 		return False
 
-	def isPressed(self):
-		# TODO isPressed button
-		return False
 
 	def highlight(self):
 		#match self.style:
@@ -104,6 +105,12 @@ class Button(Rectangle):
 		self.draw()
 		if self.isMouseOver():
 			self.highlight()
+			if pygame.mouse.get_pressed()[0] == 1 and not self.prevMouseState:
+				print("clicked")
+				if self.clickEventHandler:
+					self.clickEventHandler()
+			self.prevMouseState = pygame.mouse.get_pressed()[0] == 1
+
 		#self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
 		#pygame.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
 		#if isMouseOver():
