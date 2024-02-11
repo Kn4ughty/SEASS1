@@ -49,7 +49,7 @@ class Button(Rectangle):
 
 	def __init__(self, config):
 		Rectangle.__init__(self, config)
-		self.fontSize = config.get("fontSize", 12)
+		self.fontSize = config.get("fontSize", 50)
 		self.text = config.get("text", "")
 		self.style = config.get("style", "default")
 		self.font = config.get("font", "Hack")
@@ -71,8 +71,8 @@ class Button(Rectangle):
 				pass
 		pass
 	
-	@staticmethod
-	def draw_button_alpha(surface, color, rect):
+
+	def draw_button_alpha(self, surface, color, rect):
 		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA)
 		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
 		surface.blit(shape_surf, rect)
@@ -82,7 +82,9 @@ class Button(Rectangle):
 
 		font = pygame.font.SysFont(self.font, self.fontSize)
 		img = font.render(self.text, True, self.fontColour)
-		self.WINDOW.blit(img, ((self.posX),(self.posY)))
+
+		# this is a very long line of code :/s
+		self.WINDOW.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
 
 	def update(self):
 		self.draw()
