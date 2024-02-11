@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Element():
 	def __init__(self, config):
@@ -44,18 +45,20 @@ class Rectangle(Element):
 
 
 
-
 class Button(Rectangle):
 
 	def __init__(self, config):
 		Rectangle.__init__(self, config)
 		self.fontSize = config.get("fontSize", 50)
+		self.em = self.fontSize
 		self.text = config.get("text", "")
 		self.style = config.get("style", "default")
 		self.font = config.get("font", "Hack")
 		self.fontColour = config.get("fontColour", "Black")
 		self.isBold = config.get("isBold", True)
 		self.isItalic = config.get("isItalic", False)
+
+		self.highlightThickness = config.get("highlightThickness", 0.12)
 
 		self.clickEventHandler = config.get("clickEventHandler", None)
 
@@ -80,9 +83,9 @@ class Button(Rectangle):
 		#	case "default":
 		outlineColour = pygame.Color(self.colour - pygame.Color(10, 10, 10))
 		outlineColour.a = 50
-
+		#print(math.ceil(self.highlightThickness * self.em))
 		outlineSurf = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32)
-		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), 5)
+		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em))
 		self.WINDOW.blit(outlineSurf, self.rect)
 
 		
@@ -99,6 +102,7 @@ class Button(Rectangle):
 		img = font.render(self.text, True, self.fontColour)
 
 		# this is a very long line of code :/
+		# its for centering text btw
 		self.WINDOW.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
 
 	def update(self):

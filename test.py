@@ -1,5 +1,6 @@
 import sys
 import pygame
+import math
 import GameLib as gl
 
 pygame.init()
@@ -7,11 +8,19 @@ pygame.init()
 # Colours
 BACKGROUND = (0, 0, 0)
 
+
 # Game settings
 FPS = 240
 clock = pygame.time.Clock()
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 450
+
+# UI settings
+fontSize = 25
+
+rem = fontSize
+
+# Setup
 
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Moonlander 🚀')
@@ -30,7 +39,7 @@ button1 = gl.ui.Button({
     "sizeX": 100,
     "sizeY": 50,
     "Colour": pygame.Color(0, 0, 255, 50),
-    "fontSize": 25,
+    "fontSize": rem,
     "text": "hello",
     "clickEventHandler": on_button_click
 })
@@ -53,9 +62,9 @@ def draw():
 
 def events():
     for event in pygame.event.get() :
-      if event.type == pygame.QUIT :
-        pygame.quit()
-        sys.exit()
+        if event.type == pygame.QUIT :
+            pygame.quit()
+            sys.exit()
 
 running = True
 while running:
