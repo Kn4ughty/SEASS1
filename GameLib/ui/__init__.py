@@ -82,7 +82,6 @@ class Button(Rectangle):
 
 		outlineSurf = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32)
 		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), 5)
-		print("highlight")
 		self.WINDOW.blit(outlineSurf, self.rect)
 
 		
