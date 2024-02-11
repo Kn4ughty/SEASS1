@@ -2,18 +2,63 @@ import pygame
 import math
 
 class Element():
+	"""Generic ui element. Only has a surface"""
 	def __init__(self, config):
-		self.WINDOW = config.get("surface", None)
+		self.WINDOW = config["surface"]
+
 
 class Rectangle(Element):
+	"""A rectangle UI element
+
+		draws a rectangle, can have transparency and its position
+		can be a percentage of its parent surface.
+		Every config value with default values:
+
+	"""
+
 	def __init__(self, config):
 		Element.__init__(self, config)
 
-		match config["coordSpace"]:
-			case "Center":
-				config["posX"] -= config["sizeX"] / 2
-				config["posY"] -= config["sizeY"] / 2
-		# left, top, width, height
+
+		## Coordinate spaces caused problems with percentage anchours so depreicated for now
+		#match config["coordSpace"]:
+		#	case "Center":
+		#		config["posX"] -= config["sizeX"] / 2
+		#		config["posY"] -= config["sizeY"] / 2
+		#	case "TopLeft":
+		#		#do nothing
+		#		pass
+
+
+		self.anchorSpace = config.get("anchorSpace", "px")
+
+		match self.anchorSpace:
+			case "px":
+				#do nothing
+				pass
+			case "%":
+				print(str(self.WINDOW.get_height()))
+				if self.WINDOW.get_width() == 0 or self.WINDOW.get_height() == 0:
+					print("test")
+					raise Exception("surface dimension equals 0 while in percent anchour space" + str(self.WINDOW) + str(config))
+				config["posX"] = self.WINDOW.get_width() * (config["posX"] / 100)
+				config["posY"] = self.WINDOW.get_height() * (config["posY"] / 100)
+
+		self.scaleSpace = config.get("scaleSpace", "px")
+
+		match self.scaleSpace:
+			case "px":
+				# do noting
+				pass
+			case "%":
+				# interestingly the scaling is 1px off in this example
+				#posX": 10,
+    			#"sizeX": 90,
+				config["sizeX"] = self.WINDOW.get_width() * (config["sizeX"] / 100)
+				config["sizeY"] = self.WINDOW.get_height() * (config["sizeY"] / 100)
+				pass
+
+
 
 		self.posX = config.get("posX", 0)
 		self.posY = config.get("posY", 0)
@@ -23,29 +68,32 @@ class Rectangle(Element):
 
 		self.rect = pygame.Rect(config["posX"], config["posY"], config["sizeX"], config["sizeY"])
 		self.colour = config["Colour"]
-	
-	def update():
+
+	def update(self):
 		#pygame.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
-		draw_rect_alpha(self.WINDOW, self.colour, self.rect)
+		self.draw_rect_alpha(self.WINDOW, self.colour, self.rect)
 		pass
-	
-	#def draw():
-	#	s = pygame.Surface((self.sizeX, self.sizeY), pygame.SRCALPHA, 32)
-	#	s.fill(self.colour)
-	#	return s
+
 
 	def draw_rect_alpha(surface, color, rect):
 		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA)
 		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
 		surface.blit(shape_surf, rect)
 
-	def rect(screen, x1, y1, x2, y2, alpha = 255):
+	def rect(self, screen, x1, y1, x2, y2, alpha = 255):
 		#pygame.draw.rect(screen, (0,0,0), (x1,y1,x2,y2))
-		draw_rect_alpha(screen, (0, 0, 0, alpha), (x1, y1, x2, y2))
+		self.draw_rect_alpha(screen, (0, 0, 0, alpha), (x1, y1, x2, y2))
 
 
 
 class Button(Rectangle):
+	"""A button UI element
+
+	Inherits from rectangle
+	At its most basic, highlights when mouse is over and runs a function when clicked
+	Can have text of varying styles, highlight thickness etc.
+
+	"""
 
 	def __init__(self, config):
 		Rectangle.__init__(self, config)
@@ -64,17 +112,13 @@ class Button(Rectangle):
 
 		self.prevMouseState = False
 		
-		
-	#self.surface = Surface
-	
+
+
 	def isMouseOver(self):
 		x, y = pygame.mouse.get_pos()
 		if x >= self.posX and x <= self.posX + self.sizeX:
 			if y >= self.posY and y <= self.posY + self.sizeY:
-				#print("mouse over!")
-				#print(pygame.mouse.get_pos())
 				return True
-		#print(pygame.mouse.get_pos())
 		return False
 
 
@@ -83,7 +127,6 @@ class Button(Rectangle):
 		#	case "default":
 		outlineColour = pygame.Color(self.colour - pygame.Color(10, 10, 10))
 		outlineColour.a = 50
-		#print(math.ceil(self.highlightThickness * self.em))
 		outlineSurf = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32)
 		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em))
 		self.WINDOW.blit(outlineSurf, self.rect)

@@ -25,19 +25,26 @@ rem = fontSize
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Moonlander 🚀')
 
-uiLayer = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA, 32)
+uiLayer = pygame.Surface((15 * rem, 10 * rem), pygame.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
 
+x = 0
+
+
 def on_button_click():
+    global x
+    x = x + 1
+    print(x)
     print("whoa event!!")
 
 button1 = gl.ui.Button({
     "surface": uiLayer,
-    "coordSpace": "Center",
-    "posX": 450,
-    "posY": 250,
-    "sizeX": 100,
+    "posX": 10,
+    "posY": 10,
+    "sizeX": 90,
     "sizeY": 50,
+    "anchorSpace": "%",
+    "scaleSpace": "%",
     "Colour": pygame.Color(0, 0, 255, 50),
     "fontSize": rem,
     "text": "hello",

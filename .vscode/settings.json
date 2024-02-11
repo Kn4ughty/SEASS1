@@ -3,5 +3,6 @@
         "blit",
         "Moonlander",
         "SRCALPHA"
-    ]
+    ],
+    "cmake.configureOnOpen": true
 }
