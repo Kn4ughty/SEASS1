@@ -14,6 +14,9 @@ class Rectangle(Element):
 				config["posY"] -= config["sizeY"] / 2
 		# left, top, width, height
 
+		self.posX = config.get("posX", 0)
+		self.posY = config.get("posY", 0)
+
 		self.sizeX = config.get("sizeX", 50)
 		self.sizeY = config.get("sizeY", 20)
 
@@ -49,7 +52,8 @@ class Button(Rectangle):
 		self.fontSize = config.get("fontSize", 12)
 		self.text = config.get("text", "")
 		self.style = config.get("style", "default")
-		self.font = config.get("font", "default")
+		self.font = config.get("font", "Hack")
+		self.fontColour = config.get("fontColour", "Black")
 		
 	#self.surface = Surface
 	
@@ -73,10 +77,16 @@ class Button(Rectangle):
 		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
 		surface.blit(shape_surf, rect)
 
+	def draw(self):
+		self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
+
+		font = pygame.font.SysFont(self.font, self.fontSize)
+		img = font.render(self.text, True, self.fontColour)
+		self.WINDOW.blit(img, ((self.posX),(self.posY)))
 
 	def update(self):
-		
-		self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
+		self.draw()
+		#self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
 		#pygame.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
 		#if isMouseOver():
 			#highlight

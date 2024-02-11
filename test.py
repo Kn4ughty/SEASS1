@@ -2,6 +2,7 @@ import sys
 import pygame
 import GameLib as gl
 
+pygame.init()
 
 # Colours
 BACKGROUND = (0, 0, 0)
@@ -28,10 +29,8 @@ button1 = gl.ui.Button({
     "sizeX": 100,
     "sizeY": 50,
     "Colour": pygame.Color(0, 0, 255, 50),
-    "fontSize": 5,
-    "text": "hello",
-    "style": "default",
-    "font": "default",
+    "fontSize": 25,
+    "text": "hello"
 })
 
 def main():
