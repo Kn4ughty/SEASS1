@@ -7,7 +7,7 @@ import math
 class Element():
 	"""Generic ui element. Only has a surface"""
 	def __init__(self, config):
-		self.WINDOW = config["surface"]
+		self.SURFACE = config["surface"]
 
 
 class Rectangle(Element):
@@ -43,11 +43,11 @@ class Rectangle(Element):
 				pass
 			case "%":
 				#(str(self.WINDOW.get_height()))
-				if self.WINDOW.get_width() == 0 or self.WINDOW.get_height() == 0:
+				if self.SURFACE.get_width() == 0 or self.SURFACE.get_height() == 0:
 					#print("test")
-					raise Exception("surface dimension equals 0 while in percent anchour space" + str(self.WINDOW) + str(config))
-				config["posX"] = self.WINDOW.get_width() * (config["posX"] / 100)
-				config["posY"] = self.WINDOW.get_height() * (config["posY"] / 100)
+					raise Exception("surface dimension equals 0 while in percent anchour space" + str(self.SURFACE) + str(config))
+				config["posX"] = self.SURFACE.get_width() * (config["posX"] / 100)
+				config["posY"] = self.SURFACE.get_height() * (config["posY"] / 100)
 
 		self.scaleSpace = config.get("scaleSpace", "px")
 
@@ -59,8 +59,8 @@ class Rectangle(Element):
 				# interestingly the scaling is 1px off in this example
 				#posX": 10,
     			#"sizeX": 90,
-				config["sizeX"] = self.WINDOW.get_width() * (config["sizeX"] / 100)
-				config["sizeY"] = self.WINDOW.get_height() * (config["sizeY"] / 100)
+				config["sizeX"] = self.SURFACE.get_width() * (config["sizeX"] / 100)
+				config["sizeY"] = self.SURFACE.get_height() * (config["sizeY"] / 100)
 				pass
 
 
@@ -76,7 +76,7 @@ class Rectangle(Element):
 
 	def update(self):
 		#pygame.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
-		self.draw_rect_alpha(self.WINDOW, self.colour, self.rect)
+		self.draw_rect_alpha(self.SURFACE, self.colour, self.rect)
 		pass
 
 
@@ -116,8 +116,8 @@ class Button(Rectangle):
 
 	def isMouseOver(self):
 		x, y = pygame.mouse.get_pos()
-		if x >= self.posX and x <= self.posX + self.sizeX:
-			if y >= self.posY and y <= self.posY + self.sizeY:
+		if x >= self.posX and x <= self.posX + self.sizeX: #between xleft and xright
+			if y >= self.posY and y <= self.posY + self.sizeY: # Between top and bottom
 				return True
 		return False
 
@@ -129,7 +129,7 @@ class Button(Rectangle):
 		outlineColour.a = 50
 		outlineSurf = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32)
 		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em))
-		self.WINDOW.blit(outlineSurf, self.rect)
+		self.SURFACE.blit(outlineSurf, self.rect)
 
 
 
@@ -139,7 +139,7 @@ class Button(Rectangle):
 		surface.blit(shape_surf, rect)
 
 	def draw(self):
-		self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
+		self.draw_button_alpha(self.SURFACE, self.colour, self.rect)
 
 		font = None
 		font = pygame.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
@@ -147,7 +147,7 @@ class Button(Rectangle):
 
 		# this is a very long line of code :/
 		# its for centering text btw
-		self.WINDOW.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
+		self.SURFACE.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
 
 	def update(self):
 		self.draw()

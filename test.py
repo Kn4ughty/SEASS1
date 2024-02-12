@@ -36,6 +36,8 @@ uiElements = []
 uiLayer = pygame.Surface((15 * rem, 10 * rem), pygame.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
 
+#TOP = ygame.Surface((0, 0), pygame.SRCALPHA, 32)
+
 ## Startup Variables
 inMainMenu = True
 hasSetup = False
@@ -98,6 +100,9 @@ def drawUI():
         #element.text = str(x)
         element.em = rem # cope future me hahahah
         element.update()
+
+    if inMainMenu:
+        WINDOW.blit(menuLayer, (0, 0))
 
 
     WINDOW.blit(uiLayer, (0, 0)) #draw final ui to screen
@@ -193,16 +198,18 @@ def mainMenu():
     if hasSetup == False:
         # create buttons,
         # TODO Game logo
+        global menuLayer
+        menuLayer = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA, 32)
+        menuLayer = menuLayer.convert_alpha()
 
-        # TODO Controls guide
-        # TODO Scaling options
-        # TODO Scores
+        print(((WINDOW_WIDTH / 2) - (menuLayer.get_width() / 2)))
+
         global StartGameButton
         StartGameButton = gl.ui.Button({
-            "surface": WINDOW,
+            "surface": menuLayer,
             "posX": 30,
             "posY": 30,
-            "sizeX": 30,
+            "sizeX": 40,
             "sizeY": 10,
             "anchorSpace": "%",
             "scaleSpace": "%",
@@ -215,16 +222,23 @@ def mainMenu():
         })
         uiElements.append(StartGameButton)
 
+        # TODO Controls guide
+        # TODO Scaling options
+        # TODO Scores
+
     hasSetup = True
 
     events()
     draw()
 
 
+
     # Clean up
     if not inMainMenu:
         uiElements.remove(StartGameButton)
         StartGameButton = None
+
+    clock.tick(FPS)
 
 
 
