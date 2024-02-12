@@ -2,16 +2,18 @@ import sys
 import pygame
 import math  # noqa: F401
 import GameLib as gl
+import random
 
 pygame.init()
 
 # Colours
-BACKGROUND = (0, 0, 0)
+BACKGROUND = pygame.Color(0, 0, 0)
 SPACECOLOUR = (75, 21, 98)
 UIColour = (198, 165, 235, 255)
 
-# !!!!!
-DEBUG = True
+# !!!!! FLags
+DEBUG = False
+RAINBOW = False
 
 # Game settings
 FPS = 60
@@ -42,6 +44,10 @@ def on_button_click():
     x = x + 1
     print(x)
     print("whoa event!!")
+    if RAINBOW:
+        BACKGROUND.r = random.randrange(0, 255)
+        BACKGROUND.g = random.randrange(0, 255)
+        BACKGROUND.b = random.randrange(0, 255)
 
 button1 = gl.ui.Button({
     "surface": uiLayer,
