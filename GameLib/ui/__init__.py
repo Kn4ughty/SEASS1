@@ -5,6 +5,7 @@ class Element():
 	"""Generic ui element. Only has a surface"""
 	def __init__(self, config):
 		self.WINDOW = config["surface"]
+		self.Sconfig = config
 
 
 class Rectangle(Element):
@@ -128,7 +129,7 @@ class Button(Rectangle):
 		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em))
 		self.WINDOW.blit(outlineSurf, self.rect)
 
-		
+
 
 	def draw_button_alpha(self, surface, color, rect):
 		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA, 32)
@@ -138,6 +139,7 @@ class Button(Rectangle):
 	def draw(self):
 		self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
 
+		font = None
 		font = pygame.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
 		img = font.render(self.text, True, self.fontColour)
 
@@ -146,7 +148,9 @@ class Button(Rectangle):
 		self.WINDOW.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
 
 	def update(self):
+		#self.fontSize = self.Sconfig["fontSize"]
 		self.draw()
+		self.em = self.fontSize
 		if self.isMouseOver():
 			self.highlight()
 			if pygame.mouse.get_pressed()[0] == 1 and not self.prevMouseState:

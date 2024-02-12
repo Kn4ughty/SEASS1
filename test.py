@@ -1,6 +1,6 @@
 import sys
 import pygame
-import math
+import math  # noqa: F401
 import GameLib as gl
 
 pygame.init()
@@ -10,6 +10,7 @@ BACKGROUND = (0, 0, 0)
 SPACECOLOUR = (75, 21, 98)
 UIColour = (198, 165, 235, 255)
 
+DEBUG = True
 
 # Game settings
 FPS = 240
@@ -59,12 +60,19 @@ uiElements.append(button1)
 def main():
     events()
     draw()
+
+
     clock.tick(FPS)
 
 def draw():
     WINDOW.fill(BACKGROUND)
 
+    drawBackground()
+
     drawUI()
+
+    if DEBUG:
+        Debug.ShowFPS()
 
     pygame.display.flip()
     pygame.display.update()
@@ -74,15 +82,40 @@ def drawUI():
 
     #print(uiElements)
     for element in uiElements:
+        element.text = str(x)
+        element.fontSize = rem
         element.update()
+
 
     WINDOW.blit(uiLayer, (0, 0)) #draw final ui to screen
 
+def drawBackground():
+    pass
+
+class Debug():
+
+    def ShowFPS():
+        fps = str(round(clock.get_fps(), 2))
+        font = pygame.font.SysFont("Hack", 15, True)
+        img = font.render(fps, True, pygame.Color(0, 255, 0))
+        WINDOW.blit(img, ((0, 0)))
+
+
 def events():
+    global rem
     for event in pygame.event.get() :
         if event.type == pygame.QUIT :
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN :
+            if event.key == pygame.K_EQUALS:
+                print("k equals")
+                rem = rem + 5
+                print(rem)
+            if event.key == pygame.K_MINUS:
+                rem = rem - 5
+
+
 
 running = True
 while running:
