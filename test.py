@@ -13,7 +13,7 @@ UIColour = (198, 165, 235, 255)
 DEBUG = True
 
 # Game settings
-FPS = 240
+FPS = 60
 clock = pygame.time.Clock()
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 450
@@ -90,15 +90,40 @@ def drawUI():
     WINDOW.blit(uiLayer, (0, 0)) #draw final ui to screen
 
 def drawBackground():
+    
     pass
 
 class Debug():
+
+    #def __init__():
+    #    global rollingFPSAverage
+    #    rollingFPSAverage = []
+
 
     def ShowFPS():
         fps = str(round(clock.get_fps(), 2))
         font = pygame.font.SysFont("Hack", 15, True)
         img = font.render(fps, True, pygame.Color(0, 255, 0))
         WINDOW.blit(img, ((0, 0)))
+
+    #def ShowAverageFPS():
+    #    pass
+    #    # im not doing this
+
+    #    rX = 50 # Get average for 50 frames
+
+    #    fps = round(clock.get_fps(), 2)
+    #    rLen = len(rollingFPSAverage)
+    #    if rLen < rX:
+    #        rollingFPSAverage.append(fps)
+    #    elif rLen == rX:
+    #        # move every element along,
+    #        # delete last one,
+    #        pass
+
+    #    font = pygame.font.SysFont("Hack", 15, True)
+    #    img = font.render(fps, True, pygame.Color(0, 255, 0))
+    #    WINDOW.blit(img, ((0, 0)))
 
 
 def events():
