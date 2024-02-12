@@ -1,11 +1,13 @@
 import pygame
 import math
 
+# TODO Move these to seperate files
+
+
 class Element():
 	"""Generic ui element. Only has a surface"""
 	def __init__(self, config):
 		self.WINDOW = config["surface"]
-		self.Sconfig = config
 
 
 class Rectangle(Element):
@@ -40,9 +42,9 @@ class Rectangle(Element):
 				#do nothing
 				pass
 			case "%":
-				print(str(self.WINDOW.get_height()))
+				#(str(self.WINDOW.get_height()))
 				if self.WINDOW.get_width() == 0 or self.WINDOW.get_height() == 0:
-					print("test")
+					#print("test")
 					raise Exception("surface dimension equals 0 while in percent anchour space" + str(self.WINDOW) + str(config))
 				config["posX"] = self.WINDOW.get_width() * (config["posX"] / 100)
 				config["posY"] = self.WINDOW.get_height() * (config["posY"] / 100)
@@ -70,7 +72,7 @@ class Rectangle(Element):
 		self.sizeY = config.get("sizeY", 20)
 
 		self.rect = pygame.Rect(config["posX"], config["posY"], config["sizeX"], config["sizeY"])
-		self.colour = config["Colour"]
+		self.colour = config.get("colour", pygame.Color(56, 56, 56))
 
 	def update(self):
 		#pygame.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
@@ -100,11 +102,11 @@ class Button(Rectangle):
 		self.text = config.get("text", "")
 		self.style = config.get("style", "default")
 		self.font = config.get("font", "Hack")
-		self.fontColour = config.get("fontColour", "Black")
+		self.fontColour = config.get("fontColour", "White")
 		self.isBold = config.get("isBold", True)
 		self.isItalic = config.get("isItalic", False)
 
-		self.highlightThickness = config.get("highlightThickness", 0.2)
+		self.highlightThickness = config.get("highlightThickness", 0.3)
 
 		self.clickEventHandler = config.get("clickEventHandler", None)
 
@@ -148,13 +150,11 @@ class Button(Rectangle):
 		self.WINDOW.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
 
 	def update(self):
-		#self.fontSize = self.Sconfig["fontSize"]
 		self.draw()
 		self.em = self.fontSize
 		if self.isMouseOver():
 			self.highlight()
 			if pygame.mouse.get_pressed()[0] == 1 and not self.prevMouseState:
-				print("clicked")
 				if self.clickEventHandler:
 					self.clickEventHandler()
 			self.prevMouseState = pygame.mouse.get_pressed()[0] == 1

@@ -12,7 +12,7 @@ SPACECOLOUR = (75, 21, 98)
 UIColour = (198, 165, 235, 255)
 
 # !!!!! FLags
-DEBUG = False
+DEBUG = True
 RAINBOW = False
 
 # Game settings
@@ -36,33 +36,36 @@ uiElements = []
 uiLayer = pygame.Surface((15 * rem, 10 * rem), pygame.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
 
+## Startup Variables
+inMainMenu = True
+hasSetup = False
+
 x = 0
 
+def toggleDebug():
+    global DEBUG
+    print(DEBUG)
+    if DEBUG:
+        DEBUG = False
+    else:
+        DEBUG = True
 
-def on_button_click():
-    global x
-    x = x + 1
-    print(x)
-    print("whoa event!!")
-    if RAINBOW:
-        BACKGROUND.r = random.randrange(0, 255)
-        BACKGROUND.g = random.randrange(0, 255)
-        BACKGROUND.b = random.randrange(0, 255)
-
-button1 = gl.ui.Button({
-    "surface": uiLayer,
-    "posX": 10,
-    "posY": 10,
-    "sizeX": 90,
-    "sizeY": 50,
+debugToggleButton = gl.ui.Button({
+    "surface": WINDOW,
+    "posX": 90,
+    "posY": 0,
+    "sizeX": 10,
+    "sizeY": 10,
     "anchorSpace": "%",
     "scaleSpace": "%",
-    "Colour": pygame.Color(100, 0, 100, 255),
-    "fontSize": rem,
-    "text": "hello",
-    "clickEventHandler": on_button_click
+    "colour": pygame.Color(56, 56, 56),
+    "fontColour": pygame.Color(255, 255, 255),
+    "fontSize": 15, #doesnt work
+    "isBold": True,
+    "text": "Debug",
+    "clickEventHandler": toggleDebug # works
 })
-uiElements.append(button1)
+uiElements.append(debugToggleButton)
 
 def main():
     events()
@@ -88,12 +91,12 @@ def draw():
     pygame.display.update()
 
 def drawUI():
-    uiLayer.fill(UIColour)  # Fill the UI layer with white
+    #uiLayer.fill(UIColour)  # Fill the UI layer with white
 
     #print(uiElements)
     for element in uiElements:
-        element.text = str(x)
-        element.fontSize = rem
+        #element.text = str(x)
+        element.em = rem # cope future me hahahah
         element.update()
 
 
@@ -115,6 +118,36 @@ class Debug():
         font = pygame.font.SysFont("Hack", 15, True)
         img = font.render(fps, True, pygame.Color(0, 255, 0))
         WINDOW.blit(img, ((0, 0)))
+
+    def debugEnviroment():
+
+        def on_button1_click():
+            global x
+            x = x + 1
+            print(x)
+            print("whoa event!!")
+            if RAINBOW:
+                BACKGROUND.r = random.randrange(0, 255)
+                BACKGROUND.g = random.randrange(0, 255)
+                BACKGROUND.b = random.randrange(0, 255)
+
+        button1 = gl.ui.Button({
+            "surface": uiLayer,
+            "posX": 10,
+            "posY": 10,
+            "sizeX": 90,
+            "sizeY": 50,
+            "anchorSpace": "%",
+            "scaleSpace": "%",
+            "Colour": pygame.Color(100, 0, 100, 255),
+            "fontSize": rem,
+            "text": "hello",
+            "clickEventHandler": on_button1_click
+        })
+        uiElements.append(button1)
+        
+
+
 
     #def ShowAverageFPS():
     #    pass
@@ -150,8 +183,61 @@ def events():
             if event.key == pygame.K_MINUS:
                 rem = rem - 5
 
+def exitMainMenu():
+    global inMainMenu
+    inMainMenu = False
+
+
+def mainMenu():
+    global hasSetup
+    if hasSetup == False:
+        # create buttons,
+        # TODO Game logo
+
+        # TODO Controls guide
+        # TODO Scaling options
+        # TODO Scores
+        global StartGameButton
+        StartGameButton = gl.ui.Button({
+            "surface": WINDOW,
+            "posX": 30,
+            "posY": 30,
+            "sizeX": 30,
+            "sizeY": 10,
+            "anchorSpace": "%",
+            "scaleSpace": "%",
+            "colour": pygame.Color(56, 56, 56),
+            "fontColour": pygame.Color(255, 255, 255),
+            "fontSize": 15,
+            "isBold": True,
+            "text": "Start Game",
+            "clickEventHandler": exitMainMenu
+        })
+        uiElements.append(StartGameButton)
+
+    hasSetup = True
+
+    events()
+    draw()
+
+
+    # Clean up
+    if not inMainMenu:
+        uiElements.remove(StartGameButton)
+        StartGameButton = None
+
+
+
+
+
+
+
+
+
 
 
 running = True
 while running:
+    while inMainMenu:
+        mainMenu()
     main()
