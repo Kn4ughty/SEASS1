@@ -10,6 +10,7 @@ BACKGROUND = (0, 0, 0)
 SPACECOLOUR = (75, 21, 98)
 UIColour = (198, 165, 235, 255)
 
+# !!!!!
 DEBUG = True
 
 # Game settings
@@ -65,7 +66,10 @@ def main():
     clock.tick(FPS)
 
 def draw():
-    WINDOW.fill(BACKGROUND)
+    if DEBUG:
+        WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
+    else:
+        WINDOW.fill(BACKGROUND)
 
     drawBackground()
 
@@ -90,7 +94,7 @@ def drawUI():
     WINDOW.blit(uiLayer, (0, 0)) #draw final ui to screen
 
 def drawBackground():
-    
+
     pass
 
 class Debug():
