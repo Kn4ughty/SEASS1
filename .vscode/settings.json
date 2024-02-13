@@ -4,5 +4,7 @@
         "Moonlander",
         "SRCALPHA"
     ],
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true
 }

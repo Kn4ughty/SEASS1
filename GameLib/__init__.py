@@ -1,4 +1,3 @@
-import pygame
 from GameLib import ui
 
 # I feel like this maybe should not set up game and just provide functions

@@ -80,7 +80,7 @@ class Rectangle(Element):
 		pass
 
 
-	def draw_rect_alpha(surface, color, rect):
+	def draw_rect_alpha(self, surface, color, rect):
 		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA)
 		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
 		surface.blit(shape_surf, rect)

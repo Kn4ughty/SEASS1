@@ -15,6 +15,6 @@ def clear_terminal():
     if OS == 'nt':
         system('cls')
     elif OS == 'posix':
-        system('clear')
+        system("printf '\\033c\'")
     else:
         raise NotImplementedError("ClearTerminal unknown OS")

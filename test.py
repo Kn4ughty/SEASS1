@@ -1,8 +1,9 @@
 import sys
 import pygame
-import math  # noqa: F401
 import GameLib as gl
 import random
+
+from tempbackups.GameLib import WIN
 
 pygame.init()
 
@@ -21,6 +22,8 @@ clock = pygame.time.Clock()
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 450
 
+starChance = 10
+
 # UI settings
 fontSize = 25
 
@@ -35,6 +38,8 @@ pygame.display.set_caption('Moonlander 🚀')
 uiElements = []
 uiLayer = pygame.Surface((15 * rem, 10 * rem), pygame.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
+
+BACKGROUNDSURF = pygame.Surface((0, 0))
 
 #TOP = ygame.Surface((0, 0), pygame.SRCALPHA, 32)
 
@@ -77,11 +82,6 @@ def main():
     clock.tick(FPS)
 
 def draw():
-    if DEBUG:
-        WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
-    else:
-        WINDOW.fill(BACKGROUND)
-
     drawBackground()
 
     drawUI()
@@ -108,6 +108,18 @@ def drawUI():
     WINDOW.blit(uiLayer, (0, 0)) #draw final ui to screen
 
 def drawBackground():
+    if DEBUG:
+        WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
+    else:
+        WINDOW.fill(BACKGROUND)
+
+    for i in range(0, WINDOW_WIDTH):
+        for i in range (0, WINDOW_HEIGHT):
+            a = random.randrange(0, starChance)
+            if a == starChance:
+                # Draw star
+                pass
+                #pygame.draw.line(BACKGROUNDSURF,)
 
     pass
 
@@ -124,7 +136,7 @@ class Debug():
         img = font.render(fps, True, pygame.Color(0, 255, 0))
         WINDOW.blit(img, ((0, 0)))
 
-    def debugEnviroment():
+    def debugEnviroment(self):
 
         def on_button1_click():
             global x
@@ -195,7 +207,7 @@ def exitMainMenu():
 
 def mainMenu():
     global hasSetup
-    if hasSetup == False:
+    if not hasSetup:
         # create buttons,
         # TODO Game logo
         global menuLayer
@@ -239,14 +251,6 @@ def mainMenu():
         StartGameButton = None
 
     clock.tick(FPS)
-
-
-
-
-
-
-
-
 
 
 
