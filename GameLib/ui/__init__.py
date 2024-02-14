@@ -114,7 +114,7 @@ class Button(Rectangle):
 		
 
 
-	def isMouseOver(self):
+	def isMouseOver(self) -> bool:
 		x, y = pygame.mouse.get_pos()
 		if x >= self.posX and x <= self.posX + self.sizeX: #between xleft and xright
 			if y >= self.posY and y <= self.posY + self.sizeY: # Between top and bottom
@@ -122,7 +122,7 @@ class Button(Rectangle):
 		return False
 
 
-	def highlight(self):
+	def highlight(self) -> None:
 		#match self.style:
 		#	case "default":
 		outlineColour = pygame.Color(self.colour + pygame.Color(100, 100, 100))
@@ -133,12 +133,12 @@ class Button(Rectangle):
 
 
 
-	def draw_button_alpha(self, surface, color, rect):
+	def draw_button_alpha(self, surface, color, rect) -> None:
 		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA, 32)
 		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
 		surface.blit(shape_surf, rect)
 
-	def draw(self):
+	def draw(self) -> None:
 		self.draw_button_alpha(self.SURFACE, self.colour, self.rect)
 
 		font = None
@@ -149,7 +149,7 @@ class Button(Rectangle):
 		# its for centering text btw
 		self.SURFACE.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
 
-	def update(self):
+	def update(self) -> None:
 		self.draw()
 		self.em = self.fontSize
 		if self.isMouseOver():

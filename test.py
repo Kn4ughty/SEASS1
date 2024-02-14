@@ -3,7 +3,7 @@ import pygame
 import GameLib as gl
 import random
 
-from tempbackups.GameLib import WIN
+
 
 pygame.init()
 
@@ -22,7 +22,6 @@ clock = pygame.time.Clock()
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 450
 
-starChance = 10
 
 # UI settings
 fontSize = 25
@@ -89,6 +88,11 @@ def draw():
     if DEBUG:
         Debug.ShowFPS()
 
+
+    pygame.draw.line(WINDOW, "White", (50, 50), (75, 75), 4)
+
+    WINDOW.blit(starBackground, (0, 0))
+
     pygame.display.flip()
     pygame.display.update()
 
@@ -113,15 +117,25 @@ def drawBackground():
     else:
         WINDOW.fill(BACKGROUND)
 
-    for i in range(0, WINDOW_WIDTH):
-        for i in range (0, WINDOW_HEIGHT):
+    #if inMainMenu:
+    #    WINDOW.blit(starBackground, (0, 0))
+
+def createStarBackground(size: int, starChance: int) -> pygame.Surface:
+    out = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+    for x in range(0, WINDOW_WIDTH):
+        for y in range (0, WINDOW_HEIGHT):
             a = random.randrange(0, starChance)
-            if a == starChance:
-                # Draw star
-                pass
+            if a == starChance -1:
+                print("should make line")
+                print(x)
+                print(y)
+                pygame.draw.line(out, "White", (x - size, y - size), (x + size, y + size), 4)
+
+
                 #pygame.draw.line(BACKGROUNDSURF,)
 
-    pass
+
+    return out
 
 class Debug():
 
@@ -130,10 +144,10 @@ class Debug():
     #    rollingFPSAverage = []
 
 
-    def ShowFPS():
+    def ShowFPS() -> None:
         fps = str(round(clock.get_fps(), 2))
-        font = pygame.font.SysFont("Hack", 15, True)
-        img = font.render(fps, True, pygame.Color(0, 255, 0))
+        fontObj = pygame.font.SysFont("Hack", 15, True)
+        img = fontObj.render(fps, True, pygame.Color(0, 255, 0))
         WINDOW.blit(img, ((0, 0)))
 
     def debugEnviroment(self):
@@ -208,11 +222,17 @@ def exitMainMenu():
 def mainMenu():
     global hasSetup
     if not hasSetup:
+
+        global fontObj
+        fontObj = pygame.font.SysFont("Hack", 15, True)
         # create buttons,
         # TODO Game logo
         global menuLayer
         menuLayer = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA, 32)
         menuLayer = menuLayer.convert_alpha()
+
+        global starBackground
+        starBackground = createStarBackground(4, 1000)
 
         print(((WINDOW_WIDTH / 2) - (menuLayer.get_width() / 2)))
 
