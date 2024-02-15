@@ -2,7 +2,7 @@ import sys
 import pygame
 import GameLib as gl
 import random
-
+import math
 
 
 pygame.init()
@@ -19,12 +19,12 @@ RAINBOW = False
 # Game settings
 FPS = 60
 clock = pygame.time.Clock()
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 450
+WINDOW_WIDTH = 1600
+WINDOW_HEIGHT = 900
 
 
 # UI settings
-fontSize = 25
+fontSize = int(WINDOW_WIDTH / 35)
 
 rem = fontSize
 
@@ -50,7 +50,6 @@ x = 0
 
 def toggleDebug():
     global DEBUG
-    print(DEBUG)
     if DEBUG:
         DEBUG = False
     else:
@@ -66,7 +65,7 @@ debugToggleButton = gl.ui.Button({
     "scaleSpace": "%",
     "colour": pygame.Color(56, 56, 56),
     "fontColour": pygame.Color(255, 255, 255),
-    "fontSize": 15, #doesnt work
+    "fontSize": fontSize,
     "isBold": True,
     "text": "Debug",
     "clickEventHandler": toggleDebug # works
@@ -88,10 +87,6 @@ def draw():
     if DEBUG:
         Debug.ShowFPS()
 
-
-    pygame.draw.line(WINDOW, "White", (50, 50), (75, 75), 4)
-
-    WINDOW.blit(starBackground, (0, 0))
 
     pygame.display.flip()
     pygame.display.update()
@@ -117,19 +112,37 @@ def drawBackground():
     else:
         WINDOW.fill(BACKGROUND)
 
-    #if inMainMenu:
-    #    WINDOW.blit(starBackground, (0, 0))
+    if inMainMenu:
+        WINDOW.blit(starBackground, (0, 0))
 
 def createStarBackground(size: int, starChance: int) -> pygame.Surface:
     out = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+    lineWidth = 1
+    circle = pygame.image.load("Assets/starBlack.png")
+    minColourDelta = 200
     for x in range(0, WINDOW_WIDTH):
         for y in range (0, WINDOW_HEIGHT):
             a = random.randrange(0, starChance)
             if a == starChance -1:
-                print("should make line")
-                print(x)
-                print(y)
-                pygame.draw.line(out, "White", (x - size, y - size), (x + size, y + size), 4)
+
+                # I should really try to create linse of code that are less long
+                #starColour = pygame.Color((random.randrange(minColourDelta, 255)), (random.randrange(minColourDelta, 255)),(random.randrange(minColourDelta, 255)))
+                starColour = gl.image.convert_K_to_RGB(random.triangular(4000, 10000, 5000))
+                circle = gl.image.tint(circle, starColour)
+
+                pygame.draw.line(out, starColour, (x - size, y), (x + size, y), lineWidth) # IDE sure complains a lot about wrong colour fomat...
+                pygame.draw.line(out, starColour, (x, y - size), (x, y + size), lineWidth) # for something that works completely fine
+                # A circle ends up with an even pixel count, meaning it cannot be centered.
+                #pygame.draw.circle(out, "White", (x, y), size - 3)
+
+                # Arcs dont fill their insides so that doesnt work either
+                #r = pygame.Rect(x, y, size,  -size)
+                #print(f"x{x}, y{y}")
+                #print(r)
+                #print(r.size)
+                #pygame.draw.arc(out, "White", r, math.radians(270), math.radians(0))
+
+                out.blit(circle, (x-4, y-4))
 
 
                 #pygame.draw.line(BACKGROUNDSURF,)
@@ -176,7 +189,7 @@ class Debug():
             "clickEventHandler": on_button1_click
         })
         uiElements.append(button1)
-        
+
 
 
 
@@ -232,7 +245,7 @@ def mainMenu():
         menuLayer = menuLayer.convert_alpha()
 
         global starBackground
-        starBackground = createStarBackground(4, 1000)
+        starBackground = createStarBackground(8, 2000)
 
         print(((WINDOW_WIDTH / 2) - (menuLayer.get_width() / 2)))
 
@@ -247,7 +260,7 @@ def mainMenu():
             "scaleSpace": "%",
             "colour": pygame.Color(56, 56, 56),
             "fontColour": pygame.Color(255, 255, 255),
-            "fontSize": 15,
+            "fontSize": fontSize,
             "isBold": True,
             "text": "Start Game",
             "clickEventHandler": exitMainMenu

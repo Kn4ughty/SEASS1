@@ -1,8 +1,9 @@
 from GameLib import ui
+from GameLib import image
 
 # I feel like this maybe should not set up game and just provide functions
 
-__all__ = ["ui"]
+__all__ = ["ui", "image"]
 
 #running = True
 #clock = pygame.time.Clock()
