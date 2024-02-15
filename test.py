@@ -257,7 +257,7 @@ def mainMenu():
         menuLayer = menuLayer.convert_alpha()
 
         global starBackground
-        starBackground = createStarBackground(8, 2000)
+        starBackground = createStarBackground(8, 5000)
 
         print(((WINDOW_WIDTH / 2) - (menuLayer.get_width() / 2)))
 
