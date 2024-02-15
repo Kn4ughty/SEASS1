@@ -28,6 +28,19 @@ fontSize = int(WINDOW_WIDTH / 35)
 
 rem = fontSize
 
+# LEM stats
+# all in SI units
+LaunchMass = 15200
+
+# Descent stage
+DStageDeltaV = 2500
+DPropellantMass = 8200
+DThrust = 45040
+
+# Dy mass
+Mass = 4280
+
+
 # Setup
 
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -46,7 +59,6 @@ BACKGROUNDSURF = pygame.Surface((0, 0))
 inMainMenu = True
 hasSetup = False
 
-x = 0
 
 def toggleDebug():
     global DEBUG
@@ -74,10 +86,15 @@ uiElements.append(debugToggleButton)
 
 def main():
     events()
+    physicsStep()
     draw()
 
 
     clock.tick(FPS)
+
+def physicsStep():
+    pass
+    #vy += -5 # go down
 
 def draw():
     drawBackground()
@@ -106,14 +123,16 @@ def drawUI():
 
     WINDOW.blit(uiLayer, (0, 0)) #draw final ui to screen
 
+
 def drawBackground():
     if DEBUG:
         WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
     else:
         WINDOW.fill(BACKGROUND)
 
-    if inMainMenu:
-        WINDOW.blit(starBackground, (0, 0))
+    WINDOW.blit(starBackground, (0, 0))
+
+
 
 def createStarBackground(size: int, starChance: int) -> pygame.Surface:
     out = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -134,13 +153,6 @@ def createStarBackground(size: int, starChance: int) -> pygame.Surface:
                 pygame.draw.line(out, starColour, (x, y - size), (x, y + size), lineWidth) # for something that works completely fine
                 # A circle ends up with an even pixel count, meaning it cannot be centered.
                 #pygame.draw.circle(out, "White", (x, y), size - 3)
-
-                # Arcs dont fill their insides so that doesnt work either
-                #r = pygame.Rect(x, y, size,  -size)
-                #print(f"x{x}, y{y}")
-                #print(r)
-                #print(r.size)
-                #pygame.draw.arc(out, "White", r, math.radians(270), math.radians(0))
 
                 out.blit(circle, (x-4, y-4))
 
@@ -164,10 +176,10 @@ class Debug():
         WINDOW.blit(img, ((0, 0)))
 
     def debugEnviroment(self):
+        self.x = 0
 
         def on_button1_click():
-            global x
-            x = x + 1
+            self.x = self.x + 1
             print(x)
             print("whoa event!!")
             if RAINBOW:
@@ -227,7 +239,7 @@ def events():
             if event.key == pygame.K_MINUS:
                 rem = rem - 5
 
-def exitMainMenu():
+def StartGame():
     global inMainMenu
     inMainMenu = False
 
@@ -263,7 +275,7 @@ def mainMenu():
             "fontSize": fontSize,
             "isBold": True,
             "text": "Start Game",
-            "clickEventHandler": exitMainMenu
+            "clickEventHandler": StartGame
         })
         uiElements.append(StartGameButton)
 
@@ -280,7 +292,7 @@ def mainMenu():
 
     # Clean up
     if not inMainMenu:
-        uiElements.remove(StartGameButton)
+        uiElements.remove(StartGameButton) #Ide shut up
         StartGameButton = None
 
     clock.tick(FPS)
