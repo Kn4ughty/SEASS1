@@ -98,6 +98,11 @@ def physicsStep():
     #vy += -5 # go down
 
 def draw():
+    if DEBUG:
+        WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
+    else:
+        WINDOW.fill(BACKGROUND)
+    
     drawBackground()
 
     drawUI()
@@ -126,10 +131,6 @@ def drawUI():
 
 
 def drawBackground():
-    if DEBUG:
-        WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
-    else:
-        WINDOW.fill(BACKGROUND)
 
     WINDOW.blit(starBackground, (0, 0))
 
@@ -274,7 +275,7 @@ def mainMenu():
             "borderRadius": int(rem / 2),
             "anchorSpace": "%",
             "scaleSpace": "%",
-            "colour": pygame.Color(56, 56, 56),
+            "colour": pygame.Color(56, 56, 56, 10),
             "fontColour": pygame.Color(255, 255, 255),
             "fontSize": fontSize,
             "isBold": True,

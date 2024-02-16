@@ -183,4 +183,23 @@ class bar(Rectangle):
 	Display text on top right of element?
 
 	"""
-	pass
+
+	def __init__(self, config):
+		Rectangle.__init__(self, config)
+
+		self.fontSize = config.get("fontSize", 50)
+		self.em = self.fontSize
+		self.text = config.get("text", "")
+		self.style = config.get("style", "default")
+		self.font = config.get("font", "Hack")
+		self.fontColour = config.get("fontColour", "White")
+		self.isBold = config.get("isBold", True)
+		self.isItalic = config.get("isItalic", False)
+
+		# Redone here bc i want a different default
+		self.borderRadius = config.get("borderRadius", int(self.em / 2))
+
+	def drawBackground(self) -> pygame.Surface:
+		pass
+
+
