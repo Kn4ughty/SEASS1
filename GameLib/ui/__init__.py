@@ -23,6 +23,7 @@ class Rectangle(Element):
 		Element.__init__(self, config)
 
 
+
 		## Coordinate spaces caused problems with percentage anchours so depreicated for now
 		## Would end with pos as a small number
 		## Could be set up to take into account percentage but idrc
@@ -45,6 +46,7 @@ class Rectangle(Element):
 				#(str(self.WINDOW.get_height()))
 				if self.SURFACE.get_width() == 0 or self.SURFACE.get_height() == 0:
 					#print("test")
+					# stop cryptic dive by zero
 					raise Exception("surface dimension equals 0 while in percent anchour space" + str(self.SURFACE) + str(config))
 				config["posX"] = self.SURFACE.get_width() * (config["posX"] / 100)
 				config["posY"] = self.SURFACE.get_height() * (config["posY"] / 100)
@@ -63,7 +65,7 @@ class Rectangle(Element):
 				config["sizeY"] = self.SURFACE.get_height() * (config["sizeY"] / 100)
 				pass
 
-
+		
 
 		self.posX = config.get("posX", 0)
 		self.posY = config.get("posY", 0)
@@ -71,19 +73,25 @@ class Rectangle(Element):
 		self.sizeX = config.get("sizeX", 50)
 		self.sizeY = config.get("sizeY", 20)
 
+		self.width = config.get("width", 0) # Dont see a use but its cool
+		self.borderRadius = config.get("borderRadius", 0)
+
 		self.rect = pygame.Rect(config["posX"], config["posY"], config["sizeX"], config["sizeY"])
 		self.colour = config.get("colour", pygame.Color(56, 56, 56))
 
+
 	def update(self):
-		#pygame.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
-		self.draw_rect_alpha(self.SURFACE, self.colour, self.rect)
-		pass
+		self.draw(self)
 
 
-	def draw_rect_alpha(self, surface, color, rect):
-		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA)
-		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
-		surface.blit(shape_surf, rect)
+
+	def draw(self):
+		shape_surf = pygame.Surface(self.rect.size, pygame.SRCALPHA)
+		pygame.draw.rect(shape_surf, self.colour, shape_surf.get_rect(), self.width, self.borderRadius)
+		self.SURFACE.blit(shape_surf, self.rect)
+
+
+
 
 
 class Button(Rectangle):
@@ -105,6 +113,9 @@ class Button(Rectangle):
 		self.fontColour = config.get("fontColour", "White")
 		self.isBold = config.get("isBold", True)
 		self.isItalic = config.get("isItalic", False)
+
+		# Redone here bc i want a different default
+		self.borderRadius = config.get("borderRadius", int(self.em / 2))
 
 		self.highlightThickness = config.get("highlightThickness", 0.3)
 
@@ -128,18 +139,12 @@ class Button(Rectangle):
 		outlineColour = pygame.Color(self.colour + pygame.Color(100, 100, 100))
 		outlineColour.a = 50
 		outlineSurf = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32)
-		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em))
+		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em), self.borderRadius)
 		self.SURFACE.blit(outlineSurf, self.rect)
 
 
-
-	def draw_button_alpha(self, surface, color, rect) -> None:
-		shape_surf = pygame.Surface(rect.size, pygame.SRCALPHA, 32)
-		pygame.draw.rect(shape_surf, color, shape_surf.get_rect())
-		surface.blit(shape_surf, rect)
-
 	def draw(self) -> None:
-		self.draw_button_alpha(self.SURFACE, self.colour, self.rect)
+		Rectangle.draw(self) # poggers no re-written code
 
 		font = None
 		font = pygame.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
@@ -168,3 +173,14 @@ class Button(Rectangle):
 		#		pass
 
 
+class bar(Rectangle):
+	""" A progress bar like element
+	
+	Displays a bar with text over the top,
+	has min and max values, bar position is determined by current amount
+	Displays text over the top with status
+
+	Display text on top right of element?
+
+	"""
+	pass

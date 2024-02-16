@@ -12,6 +12,7 @@ BACKGROUND = pygame.Color(0, 0, 0)
 SPACECOLOUR = (75, 21, 98)
 UIColour = (198, 165, 235, 255)
 
+
 # !!!!! FLags
 DEBUG = True
 RAINBOW = False
@@ -258,6 +259,8 @@ def mainMenu():
 
         global starBackground
         starBackground = createStarBackground(8, 5000)
+        #pygame.image.save(starBackground, "star.png")
+
 
         print(((WINDOW_WIDTH / 2) - (menuLayer.get_width() / 2)))
 
@@ -268,6 +271,7 @@ def mainMenu():
             "posY": 30,
             "sizeX": 40,
             "sizeY": 10,
+            "borderRadius": int(rem / 2),
             "anchorSpace": "%",
             "scaleSpace": "%",
             "colour": pygame.Color(56, 56, 56),
