@@ -41,6 +41,7 @@ DThrust = 45040
 # Dy mass
 Mass = 4280
 
+gravity = 1.625
 
 # Setup
 
@@ -94,6 +95,16 @@ def main():
     clock.tick(FPS)
 
 def physicsStep():
+
+    for event in pygame.event.get() :
+        if event.type == pygame.KEYDOWN :
+            if event.key == pygame.K_a or pygame.K_LEFT:
+                #angularVelocity += 
+                pass
+    #angularVelocity 
+
+    
+    #xvel += xforce
     pass
     #vy += -5 # go down
 
