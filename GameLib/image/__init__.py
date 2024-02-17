@@ -1,4 +1,4 @@
-import pygame
+import pygame as pg
 import math
 
 
@@ -62,10 +62,25 @@ def convert_K_to_RGB(colour_temperature):
     return red, green, blue
 
 
-def tint(surf, tint_color) -> pygame.Surface:
+def tint(surf, tint_color) -> pg.Surface:
     """ adds tint_color onto surf.
     """
     surf = surf.copy()
-    surf.fill((0, 0, 0, 255), None, pygame.BLEND_RGBA_MULT)
-    surf.fill(tint_color[0:3] + (0,), None, pygame.BLEND_RGBA_ADD)
+    surf.fill((0, 0, 0, 255), None, pg.BLEND_RGBA_MULT)
+    surf.fill(tint_color[0:3] + (0,), None, pg.BLEND_RGBA_ADD)
     return surf
+
+def rotate(surface, angle, pivot, offset):
+    """Rotate the surface around the pivot point.
+
+    Args:
+        surface (pygame.Surface): The surface that is to be rotated.
+        angle (float): Rotate by this angle.
+        pivot (tuple, list, pygame.math.Vector2): The pivot point.
+        offset (pygame.math.Vector2): This vector is added to the pivot.
+    """
+    rotated_image = pg.transform.rotozoom(surface, -angle, 1)  # Rotate the image.
+    rotated_offset = offset.rotate(angle)  # Rotate the offset vector.
+    # Add the offset vector to the center/pivot point to shift the rect.
+    rect = rotated_image.get_rect(center=pivot+rotated_offset)
+    return rotated_image#, rect  # Return the rotated image and shifted rect.

@@ -1,14 +1,14 @@
 import sys
-import pygame
+import pygame as pg
 import GameLib as gl
 import random
 import math
 
 
-pygame.init()
+pg.init()
 
 # Colours
-BACKGROUND = pygame.Color(0, 0, 0)
+BACKGROUND = pg.Color(0, 0, 0)
 SPACECOLOUR = (75, 21, 98)
 UIColour = (198, 165, 235, 255)
 
@@ -19,7 +19,7 @@ RAINBOW = False
 
 # Game settings
 FPS = 60
-clock = pygame.time.Clock()
+clock = pg.time.Clock()
 WINDOW_WIDTH = 1600
 WINDOW_HEIGHT = 900
 
@@ -28,6 +28,7 @@ WINDOW_HEIGHT = 900
 fontSize = int(WINDOW_WIDTH / 35)
 
 rem = fontSize
+
 
 # LEM stats
 # all in SI units
@@ -41,24 +42,43 @@ DThrust = 45040
 # Dy mass
 Mass = 4280
 
+## Physics config
 gravity = 1.625
+
+# How many degrees per frame can the LEM rotate MAX ANGULAR VELOCITY
+MAXAV = 10
+rotationStrength = 10
+global LEMAngle
+LEMAngle = 0
+angularVelocity = 0
+# space does not have friction
+# Gameplay comes first
+# RCS is a stretch goal
+angularFriction = 0.5
+
+
+throttle = 0
+maxThrottle = 100
+throttleSensitivity = 0.5
 
 # Setup
 
-WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption('Moonlander 🚀')
+WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pg.display.set_caption('Moonlander 🚀')
 
 
 uiElements = []
-uiLayer = pygame.Surface((15 * rem, 10 * rem), pygame.SRCALPHA, 32)
+uiLayer = pg.Surface((15 * rem, 10 * rem), pg.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
 
-BACKGROUNDSURF = pygame.Surface((0, 0))
+BACKGROUNDSURF = pg.Surface((0, 0))
 
-#TOP = ygame.Surface((0, 0), pygame.SRCALPHA, 32)
+LEMIMG = pg.image.load("Assets/LEM.png")
+
+#TOP = ygame.Surface((0, 0), pg.SRCALPHA, 32)
 
 ## Startup Variables
-inMainMenu = True
+inMainMenu = False
 hasSetup = False
 
 
@@ -77,8 +97,8 @@ debugToggleButton = gl.ui.Button({
     "sizeY": 10,
     "anchorSpace": "%",
     "scaleSpace": "%",
-    "colour": pygame.Color(56, 56, 56),
-    "fontColour": pygame.Color(255, 255, 255),
+    "colour": pg.Color(56, 56, 56),
+    "fontColour": pg.Color(255, 255, 255),
     "fontSize": fontSize,
     "isBold": True,
     "text": "Debug",
@@ -95,17 +115,59 @@ def main():
     clock.tick(FPS)
 
 def physicsStep():
+    global LEMAngle
+    global angularVelocity
+    global throttle
 
-    for event in pygame.event.get() :
-        if event.type == pygame.KEYDOWN :
-            if event.key == pygame.K_a or pygame.K_LEFT:
-                #angularVelocity += 
-                pass
-    #angularVelocity 
+    dt = clock.tick(FPS)/1000
+    
+    
+    keys = pg.key.get_pressed()
+    # There is probably a really cool way to do this where you have list of
+    # keys like keys.left and check that, but this is probably fine
+    if (keys[pg.K_a] or keys[pg.K_LEFT]):
+        print("adding AV")
+        angularVelocity += rotationStrength * dt
+    if (keys[pg.K_d] or keys[pg.K_RIGHT]):
+        print("subbing AV")
+        angularVelocity -= rotationStrength * dt
+    
+    if (pg.K_w or pg.K_UP or pg.K_LSHIFT):
+        newThrottle = throttle + (throttleSensitivity * dt)
+        if newThrottle >= maxThrottle:
+            pass
+        else:
+            throttle = newThrottle
+    if (pg.K_s or pg.K_DOWN or pg.K_LCTRL):
+        newThrottle = throttle - (throttleSensitivity * dt)
+        if newThrottle <= 0:
+            pass
+        else:
+            throttle = newThrottle
+    
+    if abs(angularVelocity) > MAXAV:
+        if angularVelocity < 0:
+            angularVelocity = -MAXAV
+        else:
+            angularVelocity = MAXAV  
+    #angularVelocity *= dt * angleFriction
+    
+    angularVelocity -= angularVelocity * angularFriction * dt
+    
+    LEMAngle += angularVelocity
+
+    
+    #if abs(angularVelocity) < 0.001:
+    #    angularVelocity = 0
+
+    print(f"dt: {dt}")
+    print(LEMAngle)
+    print(f"vel: {angularVelocity}")
+
+
 
     
     #xvel += xforce
-    pass
     #vy += -5 # go down
 
 def draw():
@@ -116,14 +178,17 @@ def draw():
     
     drawBackground()
 
+    drawLEM()
+
     drawUI()
+    
 
     if DEBUG:
         Debug.ShowFPS()
 
 
-    pygame.display.flip()
-    pygame.display.update()
+    pg.display.flip()
+    pg.display.update()
 
 def drawUI():
     #uiLayer.fill(UIColour)  # Fill the UI layer with white
@@ -145,12 +210,16 @@ def drawBackground():
 
     WINDOW.blit(starBackground, (0, 0))
 
+def drawLEM():
+    #newLEM = pg.transform.rotate(LEMIMG, LEMAngle)
+    #newLEM = gl.image.rotate(LEMIMG, LEMAngle, (0,0), pg.math.Vector2(0,0))
+    WINDOW.blit(LEMIMG, (0, 0))
 
 
-def createStarBackground(size: int, starChance: int) -> pygame.Surface:
-    out = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
+def createStarBackground(size: int, starChance: int) -> pg.Surface:
+    out = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
     lineWidth = 1
-    circle = pygame.image.load("Assets/starBlack.png")
+    circle = pg.image.load("Assets/starBlack.png")
     minColourDelta = 200
     for x in range(0, WINDOW_WIDTH):
         for y in range (0, WINDOW_HEIGHT):
@@ -158,19 +227,19 @@ def createStarBackground(size: int, starChance: int) -> pygame.Surface:
             if a == starChance -1:
 
                 # I should really try to create linse of code that are less long
-                #starColour = pygame.Color((random.randrange(minColourDelta, 255)), (random.randrange(minColourDelta, 255)),(random.randrange(minColourDelta, 255)))
+                #starColour = p.Color((random.randrange(minColourDelta, 255)), (random.randrange(minColourDelta, 255)),(random.randrange(minColourDelta, 255)))
                 starColour = gl.image.convert_K_to_RGB(random.triangular(4000, 10000, 5000))
                 circle = gl.image.tint(circle, starColour)
 
-                pygame.draw.line(out, starColour, (x - size, y), (x + size, y), lineWidth) # IDE sure complains a lot about wrong colour fomat...
-                pygame.draw.line(out, starColour, (x, y - size), (x, y + size), lineWidth) # for something that works completely fine
+                pg.draw.line(out, starColour, (x - size, y), (x + size, y), lineWidth) # IDE sure complains a lot about wrong colour fomat...
+                pg.draw.line(out, starColour, (x, y - size), (x, y + size), lineWidth) # for something that works completely fine
                 # A circle ends up with an even pixel count, meaning it cannot be centered.
-                #pygame.draw.circle(out, "White", (x, y), size - 3)
+                #p.draw.circle(out, "White", (x, y), size - 3)
 
                 out.blit(circle, (x-4, y-4))
 
 
-                #pygame.draw.line(BACKGROUNDSURF,)
+                #p.draw.line(BACKGROUNDSURF,)
 
 
     return out
@@ -184,8 +253,8 @@ class Debug():
 
     def ShowFPS() -> None:
         fps = str(round(clock.get_fps(), 2))
-        fontObj = pygame.font.SysFont("Hack", 15, True)
-        img = fontObj.render(fps, True, pygame.Color(0, 255, 0))
+        fontObj = pg.font.SysFont("Hack", 15, True)
+        img = fontObj.render(fps, True, pg.Color(0, 255, 0))
         WINDOW.blit(img, ((0, 0)))
 
     def debugEnviroment(self):
@@ -208,7 +277,7 @@ class Debug():
             "sizeY": 50,
             "anchorSpace": "%",
             "scaleSpace": "%",
-            "Colour": pygame.Color(100, 0, 100, 255),
+            "Colour": pg.Color(100, 0, 100, 255),
             "fontSize": rem,
             "text": "hello",
             "clickEventHandler": on_button1_click
@@ -240,16 +309,16 @@ class Debug():
 
 def events():
     global rem
-    for event in pygame.event.get() :
-        if event.type == pygame.QUIT :
-            pygame.quit()
+    for event in pg.event.get() :
+        if event.type == pg.QUIT :
+            pg.quit()
             sys.exit()
-        if event.type == pygame.KEYDOWN :
-            if event.key == pygame.K_EQUALS:
+        if event.type == pg.KEYDOWN :
+            if event.key == pg.K_EQUALS:
                 print("k equals")
                 rem = rem + 5
                 print(rem)
-            if event.key == pygame.K_MINUS:
+            if event.key == pg.K_MINUS:
                 rem = rem - 5
 
 def StartGame():
@@ -262,16 +331,15 @@ def mainMenu():
     if not hasSetup:
 
         global fontObj
-        fontObj = pygame.font.SysFont("Hack", 15, True)
+        fontObj = pg.font.SysFont("Hack", 15, True)
         # create buttons,
         # TODO Game logo
         global menuLayer
-        menuLayer = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA, 32)
+        menuLayer = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pg.SRCALPHA, 32)
         menuLayer = menuLayer.convert_alpha()
 
-        global starBackground
-        starBackground = createStarBackground(8, 5000)
-        #pygame.image.save(starBackground, "star.png")
+
+        #pg.image.save(starBackground, "star.png")
 
 
         print(((WINDOW_WIDTH / 2) - (menuLayer.get_width() / 2)))
@@ -286,8 +354,8 @@ def mainMenu():
             "borderRadius": int(rem / 2),
             "anchorSpace": "%",
             "scaleSpace": "%",
-            "colour": pygame.Color(56, 56, 56, 10),
-            "fontColour": pygame.Color(255, 255, 255),
+            "colour": pg.Color(56, 56, 56, 10),
+            "fontColour": pg.Color(255, 255, 255),
             "fontSize": fontSize,
             "isBold": True,
             "text": "Start Game",
@@ -313,7 +381,8 @@ def mainMenu():
 
     clock.tick(FPS)
 
-
+global starBackground
+starBackground = createStarBackground(8, 5000)
 
 running = True
 while running:
