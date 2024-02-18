@@ -78,6 +78,9 @@ def rotate(surface, angle, pivot, offset):
         angle (float): Rotate by this angle.
         pivot (tuple, list, pygame.math.Vector2): The pivot point.
         offset (pygame.math.Vector2): This vector is added to the pivot.
+
+    https://stackoverflow.com/questions/15098900/how-to-set-the-pivot-point-center-of-rotation-for-pygame-transform-rotate
+
     """
     rotated_image = pg.transform.rotozoom(surface, -angle, 1)  # Rotate the image.
     rotated_offset = offset.rotate(angle)  # Rotate the offset vector.

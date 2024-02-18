@@ -149,7 +149,7 @@ def physicsStep():
         if angularVelocity < 0:
             angularVelocity = -MAXAV
         else:
-            angularVelocity = MAXAV  
+            angularVelocity = MAXAV
     #angularVelocity *= dt * angleFriction
     
     angularVelocity -= angularVelocity * angularFriction * dt
@@ -170,17 +170,31 @@ def physicsStep():
     #xvel += xforce
     #vy += -5 # go down
 
+global loops
+loops = 1
+
 def draw():
     if DEBUG:
         WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
     else:
         WINDOW.fill(BACKGROUND)
     
+    #pg.image.save(WINDOW, f"start{loops}.png")
+    
     drawBackground()
 
+    #pg.image.save(WINDOW, f"background{loops}.png")
+    
     drawLEM()
+    
+
+    #pg.image.save(WINDOW, f"lem{loops}.png")
+    
 
     drawUI()
+
+    #pg.image.save(WINDOW, f"!UI{loops}.png")
+    
     
 
     if DEBUG:
@@ -212,8 +226,11 @@ def drawBackground():
 
 def drawLEM():
     #newLEM = pg.transform.rotate(LEMIMG, LEMAngle)
-    #newLEM = gl.image.rotate(LEMIMG, LEMAngle, (0,0), pg.math.Vector2(0,0))
-    WINDOW.blit(LEMIMG, (0, 0))
+    #newLEM = gl.image.rotate(LEMIMG, LEMAngle, (LEMIMG.get_width() / 2, LEMIMG.get_height() / 2), pg.math.Vector2(0,0))
+    newLEM = pg.transform.scale(LEMIMG, (960, 700))
+    newLEM = gl.image.rotate(newLEM, LEMAngle, (newLEM.get_width() / 2, newLEM.get_height() / 2), pg.math.Vector2(0,0))
+
+    WINDOW.blit(newLEM, (0, 0))
 
 
 def createStarBackground(size: int, starChance: int) -> pg.Surface:
@@ -262,7 +279,7 @@ class Debug():
 
         def on_button1_click():
             self.x = self.x + 1
-            print(x)
+            print(loops)
             print("whoa event!!")
             if RAINBOW:
                 BACKGROUND.r = random.randrange(0, 255)
@@ -326,8 +343,11 @@ def StartGame():
     inMainMenu = False
 
 
+
+
 def mainMenu():
     global hasSetup
+
     if not hasSetup:
 
         global fontObj
@@ -354,7 +374,7 @@ def mainMenu():
             "borderRadius": int(rem / 2),
             "anchorSpace": "%",
             "scaleSpace": "%",
-            "colour": pg.Color(56, 56, 56, 10),
+            "colour": pg.Color(56, 56, 56, 255),
             "fontColour": pg.Color(255, 255, 255),
             "fontSize": fontSize,
             "isBold": True,
@@ -381,6 +401,12 @@ def mainMenu():
 
     clock.tick(FPS)
 
+
+    if loops == 3:
+        running = False
+
+    
+
 global starBackground
 starBackground = createStarBackground(8, 5000)
 
@@ -388,4 +414,5 @@ running = True
 while running:
     while inMainMenu:
         mainMenu()
+        loops = loops + 1
     main()
