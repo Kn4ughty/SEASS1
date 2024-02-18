@@ -228,9 +228,16 @@ def drawLEM():
     #newLEM = pg.transform.rotate(LEMIMG, LEMAngle)
     #newLEM = gl.image.rotate(LEMIMG, LEMAngle, (LEMIMG.get_width() / 2, LEMIMG.get_height() / 2), pg.math.Vector2(0,0))
     newLEM = pg.transform.scale(LEMIMG, (960, 700))
-    newLEM = gl.image.rotate(newLEM, LEMAngle, (newLEM.get_width() / 2, newLEM.get_height() / 2), pg.math.Vector2(0,0))
+    #newLEM = gl.image.rotate(newLEM, LEMAngle, (newLEM.get_width() / 2, newLEM.get_height() / 2), pg.math.Vector2(0,0))
+    """rotate an image while keeping its center and size"""
+    rotated_image = pg.transform.rotate(newLEM, LEMAngle)
+    topleft = (0, 0)
+    new_rect = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
 
-    WINDOW.blit(newLEM, (0, 0))
+    WINDOW.blit(rotated_image, new_rect)
+    #newLEM = pg.transform.rotate(newLEM, LEMAngle)
+
+    #WINDOW.blit(rot_image, (0, 0))
 
 
 def createStarBackground(size: int, starChance: int) -> pg.Surface:

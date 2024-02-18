@@ -70,20 +70,8 @@ def tint(surf, tint_color) -> pg.Surface:
     surf.fill(tint_color[0:3] + (0,), None, pg.BLEND_RGBA_ADD)
     return surf
 
-def rotate(surface, angle, pivot, offset):
-    """Rotate the surface around the pivot point.
+def rotate(image, angle, x, y):
+    rotated_image = pg.transform.rotate(image, angle)
+    new_rect = rotated_image.get_rect(center = image.get_rect(center = (x, y)).center)
 
-    Args:
-        surface (pygame.Surface): The surface that is to be rotated.
-        angle (float): Rotate by this angle.
-        pivot (tuple, list, pygame.math.Vector2): The pivot point.
-        offset (pygame.math.Vector2): This vector is added to the pivot.
-
-    https://stackoverflow.com/questions/15098900/how-to-set-the-pivot-point-center-of-rotation-for-pygame-transform-rotate
-
-    """
-    rotated_image = pg.transform.rotozoom(surface, -angle, 1)  # Rotate the image.
-    rotated_offset = offset.rotate(angle)  # Rotate the offset vector.
-    # Add the offset vector to the center/pivot point to shift the rect.
-    rect = rotated_image.get_rect(center=pivot+rotated_offset)
-    return rotated_image#, rect  # Return the rotated image and shifted rect.
+    return rotated_image, new_rect
