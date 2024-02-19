@@ -1,9 +1,11 @@
 import sys
 import pygame as pg
-import GameLib as gl
-from lem import *
 import random
-import math
+# My librarys
+import GameLib as gl
+from lem import lem
+
+
 
 
 pg.init()
@@ -69,15 +71,25 @@ LEMvx = 20
 global LEMvy
 LEMvy = 30
 
-lem({
+lem = lem({
     "vx": 20,
     "vy": 30,
     "x": 0,
     "y": 500,
     "angle": 0,
-    "omega": 0
+    "omega": 0,
+    "maxOmega": MAXAV,
+    "rotStrength": rotationStrength,
+    "angularFriction": angularFriction,
+    "throttleSens": throttleSensitivity,
+    "maxThrottle": maxThrottle,
+    "fuel": 150,
+    "mass": 500,
+    "gravity": gravity,
+    "FPS": FPS
 })
 
+print(lem.x)
 # Setup
 
 WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -127,70 +139,12 @@ uiElements.append(debugToggleButton)
 
 def main():
     events()
-    physicsStep()
+    lem.update(clock)
     draw()
 
 
     clock.tick(FPS)
 
-def physicsStep():
-    global LEMAngle
-    global angularVelocity
-    global throttle
-
-    dt = clock.tick(FPS)/1000
-    
-    
-    keys = pg.key.get_pressed()
-    # There is probably a really cool way to do this where you have list of
-    # keys like keys.left and check that, but this is probably fine
-    if (keys[pg.K_a] or keys[pg.K_LEFT]):
-        print("adding AV")
-        angularVelocity += rotationStrength * dt
-    if (keys[pg.K_d] or keys[pg.K_RIGHT]):
-        print("subbing AV")
-        angularVelocity -= rotationStrength * dt
-    
-    if (pg.K_w or pg.K_UP or pg.K_LSHIFT):
-        newThrottle = throttle + (throttleSensitivity * dt)
-        if newThrottle >= maxThrottle:
-            pass
-        else:
-            throttle = newThrottle
-    if (pg.K_s or pg.K_DOWN or pg.K_LCTRL):
-        newThrottle = throttle - (throttleSensitivity * dt)
-        if newThrottle <= 0:
-            pass
-        else:
-            throttle = newThrottle
-    
-    if abs(angularVelocity) > MAXAV:
-        if angularVelocity < 0:
-            angularVelocity = -MAXAV
-        else:
-            angularVelocity = MAXAV
-    #angularVelocity *= dt * angleFriction
-    
-    angularVelocity -= angularVelocity * angularFriction * dt
-
-    LEMAngle += angularVelocity
-
-    #LEMvy -= gravity * dt
-
-
-    #if abs(angularVelocity) < 0.001:
-    #    angularVelocity = 0
-
-    #print(f"dt: {dt}")
-    #print(LEMAngle)
-    #print(f"vel: {angularVelocity}")
-    #print(LEMvy)
-
-
-
-    
-    #xvel += xforce
-    #vy += -5 # go down
 
 global loops
 loops = 1
@@ -217,7 +171,7 @@ def draw():
 
     #pg.image.save(WINDOW, f"!UI{loops}.png")
     
-    
+
 
     if DEBUG:
         Debug.ShowFPS()
@@ -247,12 +201,9 @@ def drawBackground():
     WINDOW.blit(starBackground, (0, 0))
 
 def drawLEM():
-    #newLEM = pg.transform.rotate(LEMIMG, LEMAngle)
-    #newLEM = gl.image.rotate(LEMIMG, LEMAngle, (LEMIMG.get_width() / 2, LEMIMG.get_height() / 2), pg.math.Vector2(0,0))
+
     newLEM = pg.transform.scale(LEMIMG, (960, 700))
-    #newLEM = gl.image.rotate(newLEM, LEMAngle, (newLEM.get_width() / 2, newLEM.get_height() / 2), pg.math.Vector2(0,0))
-    """rotate an image while keeping its center and size"""
-    rotated_image = pg.transform.rotate(newLEM, LEMAngle)
+    rotated_image = pg.transform.rotate(newLEM, lem.angle)
     topleft = (0, 0)
     new_rect = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
 
