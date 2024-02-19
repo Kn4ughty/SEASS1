@@ -1,6 +1,7 @@
 import sys
 import pygame as pg
 import GameLib as gl
+from lem import *
 import random
 import math
 
@@ -54,12 +55,28 @@ angularVelocity = 0
 # space does not have friction
 # Gameplay comes first
 # RCS is a stretch goal
-angularFriction = 0.5
+angularFriction = 2
 
 
 throttle = 0
 maxThrottle = 100
 throttleSensitivity = 0.5
+
+global LEMHeight
+LEMHeight = 500
+global LEMvx
+LEMvx = 20
+global LEMvy
+LEMvy = 30
+
+lem({
+    "vx": 20,
+    "vy": 30,
+    "x": 0,
+    "y": 500,
+    "angle": 0,
+    "omega": 0
+})
 
 # Setup
 
@@ -105,6 +122,8 @@ debugToggleButton = gl.ui.Button({
     "clickEventHandler": toggleDebug # works
 })
 uiElements.append(debugToggleButton)
+
+
 
 def main():
     events()
@@ -153,16 +172,19 @@ def physicsStep():
     #angularVelocity *= dt * angleFriction
     
     angularVelocity -= angularVelocity * angularFriction * dt
-    
+
     LEMAngle += angularVelocity
 
-    
+    #LEMvy -= gravity * dt
+
+
     #if abs(angularVelocity) < 0.001:
     #    angularVelocity = 0
 
-    print(f"dt: {dt}")
-    print(LEMAngle)
-    print(f"vel: {angularVelocity}")
+    #print(f"dt: {dt}")
+    #print(LEMAngle)
+    #print(f"vel: {angularVelocity}")
+    #print(LEMvy)
 
 
 
@@ -202,7 +224,7 @@ def draw():
 
 
     pg.display.flip()
-    pg.display.update()
+    #pg.display.update()
 
 def drawUI():
     #uiLayer.fill(UIColour)  # Fill the UI layer with white
