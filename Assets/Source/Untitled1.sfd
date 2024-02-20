@@ -20,7 +20,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1708418872
-ModificationTime: 1708423734
+ModificationTime: 1708424414
 OS2TypoAscent: 0
 OS2TypoAOffset: 1
 OS2TypoDescent: 0
@@ -50,7 +50,7 @@ Grid
 -159.000015259 1300 m 0
  -159.000015259 -700 l 1024
 EndSplineSet
-BeginChars: 257 12
+BeginChars: 258 13
 
 StartChar: m
 Encoding: 109 109 0
@@ -129,34 +129,34 @@ EndChar
 
 StartChar: O
 Encoding: 79 79 3
-Width: 553
+Width: 487
+InSpiro: 1
 Flags: HW
 LayerCount: 2
 Fore
 SplineSet
-130.6484375 331.359375 m 0
- 130.6484375 248.689453125 203.831054688 180.559570312 268.834960938 180.559570312 c 0
- 333.83984375 180.559570312 390 241.331054688 390 324 c 0
- 390 406.668945312 333.83984375 479.895507812 268.834960938 479.895507812 c 0
- 203.831054688 479.895507812 130.6484375 414.029296875 130.6484375 331.359375 c 0
-14.9638671875 326.2734375 m 0
- 14.9638671875 478.572265625 121.966796875 602 254 602 c 0
- 386.03125 602 493.033203125 478.572265625 493.033203125 326.2734375 c 0
- 493.033203125 173.97265625 386.03125 50.544921875 254 50.544921875 c 0
- 121.966796875 50.544921875 14.9638671875 173.97265625 14.9638671875 326.2734375 c 0
+273 480 m 0
+ 123 314 l 0
+ 225 180 l 0
+ 367 356 l 0
+ 273 480 l 0
   Spiro
-    14.9646 326.273 o
-    47.5338 465.324 o
-    133.453 564.431 o
-    253.999 602 o
-    374.546 564.431 o
-    460.465 465.324 o
-    493.034 326.273 o
-    460.465 187.221 o
-    374.546 88.1137 o
-    253.999 50.545 o
-    133.453 88.1137 o
-    47.5338 187.221 o
+    273 480 v
+    123 314 v
+    225 180 v
+    367 356 v
+    0 0 z
+  EndSpiro
+281.758789062 605.287109375 m 1
+ 465.89453125 356.125976562 l 1
+ 203.3203125 58.283203125 l 1
+ 19.18359375 307.444335938 l 1
+ 281.758789062 605.287109375 l 1
+  Spiro
+    281.759 605.287 v
+    465.895 356.126 v
+    203.32 58.2837 v
+    19.1837 307.444 v
     0 0 z
   EndSpiro
 EndSplineSet
@@ -164,18 +164,18 @@ EndChar
 
 StartChar: N
 Encoding: 78 78 4
-Width: 512
+Width: 449
 Flags: HW
 LayerCount: 2
 Fore
 SplineSet
-89 94 m 1
- 163 740 l 1
- 347 390 l 25
- 467 696 l 1
- 449 96 l 1
- 229 430 l 1
- 89 94 l 1
+26 94 m 1
+ 100 740 l 1
+ 284 390 l 25
+ 404 696 l 1
+ 386 96 l 1
+ 166 430 l 1
+ 26 94 l 1
 EndSplineSet
 EndChar
 
@@ -313,7 +313,7 @@ EndChar
 StartChar: L_A
 Encoding: 256 -1 11
 Width: 1004
-Flags: HWO
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
@@ -344,6 +344,18 @@ SplineSet
 EndSplineSet
 LCarets2: 1 559
 Ligature2: "'liga' Standard Ligatures in Latin lookup 0-1" L A
+EndChar
+
+StartChar: O_O
+Encoding: 257 -1 12
+Width: 911
+Flags: HWO
+LayerCount: 2
+Fore
+Refer: 3 79 S 0.986394 0.164399 -0.164399 0.986394 494.653 -39.6925 2
+Refer: 3 79 N 1 0 0 1 0 0 2
+Ligature2: "'liga' Standard Ligatures in Latin lookup 0-1" O O
+LCarets2: 1 480
 EndChar
 EndChars
 EndSplineFont
