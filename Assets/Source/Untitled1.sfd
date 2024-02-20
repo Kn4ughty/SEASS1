@@ -20,7 +20,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1708418872
-ModificationTime: 1708462806
+ModificationTime: 1708463002
 OS2TypoAscent: 0
 OS2TypoAOffset: 1
 OS2TypoDescent: 0
@@ -43,7 +43,7 @@ NameList: AGL For New Fonts
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
-WinInfo: 0 21 6
+WinInfo: 147 21 6
 Grid
 -1000 844 m 0
  2000 844 l 1024
@@ -75,7 +75,7 @@ EndChar
 
 StartChar: M
 Encoding: 77 77 1
-Width: 789
+Width: 755
 Flags: HW
 LayerCount: 2
 Fore
@@ -129,34 +129,34 @@ EndChar
 
 StartChar: O
 Encoding: 79 79 3
-Width: 487
+Width: 462
 InSpiro: 1
 Flags: HW
 LayerCount: 2
 Fore
 SplineSet
-273 480 m 0
- 123 314 l 0
- 225 180 l 0
- 367 356 l 0
- 273 480 l 0
+263 480 m 0
+ 113 314 l 0
+ 215 180 l 0
+ 357 356 l 0
+ 263 480 l 0
   Spiro
-    273 480 v
-    123 314 v
-    225 180 v
-    367 356 v
+    263 480 v
+    113 314 v
+    215 180 v
+    357 356 v
     0 0 z
   EndSpiro
-281.758789062 605.287109375 m 1
- 465.89453125 356.125976562 l 1
- 203.3203125 58.283203125 l 1
- 19.18359375 307.444335938 l 1
- 281.758789062 605.287109375 l 1
+271.758789062 605.287109375 m 1
+ 455.89453125 356.125976562 l 1
+ 193.3203125 58.283203125 l 1
+ 9.18359375 307.444335938 l 1
+ 271.758789062 605.287109375 l 1
   Spiro
-    281.759 605.287 v
-    465.895 356.126 v
-    203.32 58.2837 v
-    19.1837 307.444 v
+    271.759 605.287 v
+    455.895 356.126 v
+    193.32 58.2837 v
+    9.1837 307.444 v
     0 0 z
   EndSpiro
 EndSplineSet
@@ -348,14 +348,14 @@ EndChar
 
 StartChar: O_O
 Encoding: 257 -1 12
-Width: 911
-Flags: HW
+Width: 886
+Flags: HWO
 LayerCount: 2
 Fore
-Refer: 3 79 N 0.986394 0.164399 -0.164399 0.986394 494.653 -39.6925 2
-Refer: 3 79 N 1 0 0 1 0 0 2
+Refer: 3 79 N 0.986394 0.164399 -0.164399 0.986394 486.653 -39.6925 2
+Refer: 3 79 N 1 0 0 1 -8 0 2
 Ligature2: "'liga' Standard Ligatures in Latin lookup 0-1" O O
-LCarets2: 1 480
+LCarets2: 1 472
 EndChar
 
 StartChar: I
@@ -380,7 +380,7 @@ EndChar
 StartChar: B
 Encoding: 66 66 14
 Width: 402
-Flags: HWO
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
