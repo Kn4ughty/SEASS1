@@ -67,7 +67,7 @@ lem = lem({
     "maxOmega": 10,
     "rotStrength": 10,
     "angularFriction": 2,
-    "throttleSens": 10,
+    "throttleSens": 200,
     "maxThrottle": 100,
     "massFlowRate": 14.768,
     "fuel": 8200,

@@ -46,13 +46,20 @@ class lem(object):
             print("subbing AV")
             self.omega -= self.rotStrength * dt
 
+
         if (keys[pg.K_w] or keys[pg.K_UP] or keys[pg.K_LSHIFT]):
-            print("doing")
-            self.throttle = self.throttle + (self.throttleSensitivity * dt)
-            #if newThrottle >= self.maxThrottle:
-            #    pass
-            #else:
-            #    self.throttle = newThrottle
+            newThrottle = self.throttle + (self.throttleSensitivity * dt)
+            if newThrottle <= self.maxThrottle:
+                self.throttle = newThrottle
+            else:
+                self.throttle = self.maxThrottle
+
+        if (keys[pg.K_s] or keys[pg.K_DOWN] or keys[pg.K_LCTRL]):
+            newThrottle = self.throttle - (self.throttleSensitivity * dt)
+            if newThrottle >= 0:
+                self.throttle = newThrottle
+            else:
+                self.throttle = 0
         #if (pg.K_s or pg.K_DOWN or pg.K_LCTRL):
         #    newThrottle = self.throttle - (self.throttleSensitivity * dt)
         #    if newThrottle <= 0:
