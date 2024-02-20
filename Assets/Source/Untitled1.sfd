@@ -20,7 +20,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1708418872
-ModificationTime: 1708422752
+ModificationTime: 1708423734
 OS2TypoAscent: 0
 OS2TypoAOffset: 1
 OS2TypoDescent: 0
@@ -35,6 +35,7 @@ HheadAOffset: 1
 HheadDescent: 0
 HheadDOffset: 1
 OS2Vendor: 'PfEd'
+Lookup: 4 0 1 "'liga' Standard Ligatures in Latin lookup 0" { "'liga' Standard Ligatures in Latin lookup 0-1"  } ['liga' ('DFLT' <'dflt' > 'latn' <'dflt' > ) ]
 DEI: 91125
 Encoding: ISO8859-1
 UnicodeInterp: none
@@ -42,14 +43,14 @@ NameList: AGL For New Fonts
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
-WinInfo: 64 16 4
+WinInfo: 208 16 4
 Grid
 -1000 844 m 0
  2000 844 l 1024
 -159.000015259 1300 m 0
  -159.000015259 -700 l 1024
 EndSplineSet
-BeginChars: 256 11
+BeginChars: 257 12
 
 StartChar: m
 Encoding: 109 109 0
@@ -129,15 +130,15 @@ EndChar
 StartChar: O
 Encoding: 79 79 3
 Width: 553
-Flags: HWO
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
-130.6484375 331.359375 m 4
+130.6484375 331.359375 m 0
  130.6484375 248.689453125 203.831054688 180.559570312 268.834960938 180.559570312 c 0
  333.83984375 180.559570312 390 241.331054688 390 324 c 0
  390 406.668945312 333.83984375 479.895507812 268.834960938 479.895507812 c 0
- 203.831054688 479.895507812 130.6484375 414.029296875 130.6484375 331.359375 c 4
+ 203.831054688 479.895507812 130.6484375 414.029296875 130.6484375 331.359375 c 0
 14.9638671875 326.2734375 m 0
  14.9638671875 478.572265625 121.966796875 602 254 602 c 0
  386.03125 602 493.033203125 478.572265625 493.033203125 326.2734375 c 0
@@ -307,6 +308,42 @@ SplineSet
     0 0 z
   EndSpiro
 EndSplineSet
+EndChar
+
+StartChar: L_A
+Encoding: 256 -1 11
+Width: 1004
+Flags: HWO
+LayerCount: 2
+Fore
+SplineSet
+76 128 m 0
+ 330 790 l 0
+ 218 210 l 0
+ 508 36 l 0
+ 76 128 l 0
+  Spiro
+    76 128 v
+    330 790 v
+    218 210 v
+    508 36 v
+    0 0 z
+  EndSpiro
+392.596679688 148.323242188 m 25
+ 790 762 l 25
+ 1003.34472656 41.5947265625 l 25
+ 739.254882812 383.126953125 l 25
+ 392.596679688 148.323242188 l 25
+  Spiro
+    392.597 148.323 v
+    790 762 v
+    1003.34 41.5944 v
+    739.254 383.127 v
+    0 0 z
+  EndSpiro
+EndSplineSet
+LCarets2: 1 559
+Ligature2: "'liga' Standard Ligatures in Latin lookup 0-1" L A
 EndChar
 EndChars
 EndSplineFont
