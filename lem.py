@@ -1,4 +1,5 @@
 import pygame as pg
+import math
 
 class lem(object):
     def __init__(self, config: dict) -> None:
@@ -18,7 +19,9 @@ class lem(object):
         self.throttle = 0
         self.maxThrottle = config.get("maxThrottle")
 
+        self.massFlowRate = config.get("massFlowRate")
         self.fuel = config.get("fuel")
+        self.ISP = config.get("ISP")
         self.mass = config.get("mass")
 
         self.gravity = config.get("gravity")
@@ -43,18 +46,19 @@ class lem(object):
             print("subbing AV")
             self.omega -= self.rotStrength * dt
 
-        if (pg.K_w or pg.K_UP or pg.K_LSHIFT):
-            newThrottle = self.throttle + (self.throttleSensitivity * dt)
-            if newThrottle >= self.maxThrottle:
-                pass
-            else:
-                throttle = newThrottle
-        if (pg.K_s or pg.K_DOWN or pg.K_LCTRL):
-            newThrottle = throttle - (self.throttleSensitivity * dt)
-            if newThrottle <= 0:
-                pass
-            else:
-                throttle = newThrottle
+        if (keys[pg.K_w] or keys[pg.K_UP] or keys[pg.K_LSHIFT]):
+            print("doing")
+            self.throttle = self.throttle + (self.throttleSensitivity * dt)
+            #if newThrottle >= self.maxThrottle:
+            #    pass
+            #else:
+            #    self.throttle = newThrottle
+        #if (pg.K_s or pg.K_DOWN or pg.K_LCTRL):
+        #    newThrottle = self.throttle - (self.throttleSensitivity * dt)
+        #    if newThrottle <= 0:
+        #        pass
+        #    else:
+        #        self.throttle = newThrottle
         
         if abs(self.omega) > self.maxOmega:
             if self.omega < 0:
@@ -62,17 +66,33 @@ class lem(object):
             else:
                 self.omega = self.maxOmega
         #angularVelocity *= dt * angleFriction
-    
+
         self.omega -= self.omega * self.angularFriction * dt
 
         self.angle += self.omega
+
+        self.angle = self.angle % 360
+
+        print(self.throttle)
+
+        self.realmass = self.mass + self.fuel
+
+
+
+
+        # thrust in kilograms
+        self.thrust = self.gravity * self.ISP * self.massFlowRate
+
+
+        # x = sin(theta) * F
+        # y = cos(theta) * F
 
         self.vy -= self.gravity * dt
 
         self.x += self.vx
         self.y += self.vy
 
-        print(self.vy)
+
 
 
 

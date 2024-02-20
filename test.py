@@ -48,43 +48,31 @@ Mass = 4280
 ## Physics config
 gravity = 1.625
 
-# How many degrees per frame can the LEM rotate MAX ANGULAR VELOCITY
-MAXAV = 10
-rotationStrength = 10
-global LEMAngle
-LEMAngle = 0
-angularVelocity = 0
-# space does not have friction
-# Gameplay comes first
-# RCS is a stretch goal
-angularFriction = 2
+# Max thrust = 45040 N
+# ISP = 311
+# https://www.omnicalculator.com/physics/specific-impulse
+# 14.768 kg/s
 
-
-throttle = 0
-maxThrottle = 100
-throttleSensitivity = 0.5
-
-global LEMHeight
-LEMHeight = 500
-global LEMvx
-LEMvx = 20
-global LEMvy
-LEMvy = 30
+# Mass including propellant: 10,334 kg
+# prop mass is 8200
+# 10344 - 8200 = 2144
 
 lem = lem({
     "vx": 20,
-    "vy": 30,
+    "vy": 3,
     "x": 0,
     "y": 500,
     "angle": 0,
     "omega": 0,
-    "maxOmega": MAXAV,
-    "rotStrength": rotationStrength,
-    "angularFriction": angularFriction,
-    "throttleSens": throttleSensitivity,
-    "maxThrottle": maxThrottle,
-    "fuel": 150,
-    "mass": 500,
+    "maxOmega": 10,
+    "rotStrength": 10,
+    "angularFriction": 2,
+    "throttleSens": 10,
+    "maxThrottle": 100,
+    "massFlowRate": 14.768,
+    "fuel": 8200,
+    "ISP": 311,
+    "mass": 2144,
     "gravity": gravity,
     "FPS": FPS
 })
@@ -203,7 +191,7 @@ def drawBackground():
 def drawLEM():
 
     newLEM = pg.transform.scale(LEMIMG, (960, 700))
-    rotated_image = pg.transform.rotate(newLEM, lem.angle)
+    rotated_image = pg.transform.rotate(newLEM, -lem.angle)
     topleft = (0, 0)
     new_rect = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
 
