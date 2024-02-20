@@ -40,10 +40,8 @@ class lem(object):
         # There is probably a really cool way to do this where you have list of
         # keys like keys.left and check that, but this is probably fine
         if (keys[pg.K_a] or keys[pg.K_LEFT]):
-            print("adding AV")
             self.omega += self.rotStrength * dt
         if (keys[pg.K_d] or keys[pg.K_RIGHT]):
-            print("subbing AV")
             self.omega -= self.rotStrength * dt
 
 
