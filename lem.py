@@ -1,6 +1,7 @@
 import pygame as pg
 import math
 
+
 class lem(object):
     def __init__(self, config: dict) -> None:
         self.x = config.get("x")
@@ -34,8 +35,7 @@ class lem(object):
     def physicsStep(self, clock):
 
         dt = clock.tick(self.FPS)/1000
-        
-    
+
         keys = pg.key.get_pressed()
         # There is probably a really cool way to do this where you have list of
         # keys like keys.left and check that, but this is probably fine
