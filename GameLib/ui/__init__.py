@@ -1,4 +1,4 @@
-import pygame
+import pygame as pg
 import math
 
 # TODO Move these to seperate files
@@ -76,8 +76,8 @@ class Rectangle(Element):
 		self.width = config.get("width", 0) # Dont see a use but its cool
 		self.borderRadius = config.get("borderRadius", 0)
 
-		self.rect = pygame.Rect(config["posX"], config["posY"], config["sizeX"], config["sizeY"])
-		self.colour = config.get("colour", pygame.Color(56, 56, 56))
+		self.rect = pg.Rect(config["posX"], config["posY"], config["sizeX"], config["sizeY"])
+		self.colour = config.get("colour", pg.Color(56, 56, 56))
 
 
 	def update(self):
@@ -86,8 +86,8 @@ class Rectangle(Element):
 
 
 	def draw(self):
-		shape_surf = pygame.Surface(self.rect.size, pygame.SRCALPHA)
-		pygame.draw.rect(shape_surf, self.colour, shape_surf.get_rect(), self.width, self.borderRadius)
+		shape_surf = pg.Surface(self.rect.size, pg.SRCALPHA)
+		pg.draw.rect(shape_surf, self.colour, shape_surf.get_rect(), self.width, self.borderRadius)
 		self.SURFACE.blit(shape_surf, self.rect)
 
 
@@ -126,7 +126,7 @@ class Button(Rectangle):
 
 
 	def isMouseOver(self) -> bool:
-		x, y = pygame.mouse.get_pos()
+		x, y = pg.mouse.get_pos()
 		if x >= self.posX and x <= self.posX + self.sizeX: #between xleft and xright
 			if y >= self.posY and y <= self.posY + self.sizeY: # Between top and bottom
 				return True
@@ -136,10 +136,10 @@ class Button(Rectangle):
 	def highlight(self) -> None:
 		#match self.style:
 		#	case "default":
-		outlineColour = pygame.Color(self.colour + pygame.Color(100, 100, 100))
+		outlineColour = pg.Color(self.colour + pg.Color(100, 100, 100))
 		outlineColour.a = 50
-		outlineSurf = pygame.Surface(self.rect.size, pygame.SRCALPHA, 32)
-		pygame.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em), self.borderRadius)
+		outlineSurf = pg.Surface(self.rect.size, pg.SRCALPHA, 32)
+		pg.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em), self.borderRadius)
 		self.SURFACE.blit(outlineSurf, self.rect)
 
 
@@ -147,7 +147,7 @@ class Button(Rectangle):
 		Rectangle.draw(self) # poggers no re-written code
 
 		font = None
-		font = pygame.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
+		font = pg.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
 		img = font.render(self.text, True, self.fontColour)
 
 		# this is a very long line of code :/
@@ -159,13 +159,13 @@ class Button(Rectangle):
 		self.em = self.fontSize
 		if self.isMouseOver():
 			self.highlight()
-			if pygame.mouse.get_pressed()[0] == 1 and not self.prevMouseState:
+			if pg.mouse.get_pressed()[0] == 1 and not self.prevMouseState:
 				if self.clickEventHandler:
 					self.clickEventHandler()
-			self.prevMouseState = pygame.mouse.get_pressed()[0] == 1
+			self.prevMouseState = pg.mouse.get_pressed()[0] == 1
 
 		#self.draw_button_alpha(self.WINDOW, self.colour, self.rect)
-		#pygame.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
+		#pg.draw.rect(self.WINDOW, self.colour, self.rect, width=0)
 		#if isMouseOver():
 			#highlight
 		#	if isPressed():
@@ -199,7 +199,7 @@ class bar(Rectangle):
 		# Redone here bc i want a different default
 		self.borderRadius = config.get("borderRadius", int(self.em / 2))
 
-	def drawBackground(self) -> pygame.Surface:
+	def drawBackground(self) -> pg.Surface:
 		pass
 
 

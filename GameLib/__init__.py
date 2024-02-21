@@ -3,7 +3,7 @@ from GameLib import image
 
 # I feel like this maybe should not set up game and just provide functions
 
-__all__ = ["ui", "image"]
+__all__ = ["ui", "image", "camera"]
 
 #running = True
 #clock = pygame.time.Clock()
