@@ -95,7 +95,7 @@ LEMIMG = pg.image.load("Assets/LEM.png")
 #TOP = ygame.Surface((0, 0), pg.SRCALPHA, 32)
 
 ## Startup Variables
-inMainMenu = False
+inMainMenu = True
 hasSetup = False
 
 
@@ -126,6 +126,7 @@ uiElements.append(debugToggleButton)
 
 
 def main():
+    #pg.draw.rect(WINDOW, (138, 12, 123), (10, 10, 100, 100))
     events()
     lem.update(clock)
     draw()
@@ -339,10 +340,9 @@ def mainMenu():
             "posY": 30,
             "sizeX": 40,
             "sizeY": 10,
-            "borderRadius": int(rem / 2),
             "anchorSpace": "%",
             "scaleSpace": "%",
-            "colour": pg.Color(56, 56, 56, 255),
+            "colour": pg.Color(56, 56, 56, 200),
             "fontColour": pg.Color(255, 255, 255),
             "fontSize": fontSize,
             "isBold": True,
@@ -369,9 +369,6 @@ def mainMenu():
 
     clock.tick(FPS)
 
-
-    if loops == 3:
-        running = False
 
     
 

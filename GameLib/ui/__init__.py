@@ -86,9 +86,7 @@ class Rectangle(Element):
 
 
 	def draw(self):
-		shape_surf = pg.Surface(self.rect.size, pg.SRCALPHA)
-		pg.draw.rect(shape_surf, self.colour, shape_surf.get_rect(), self.width, self.borderRadius)
-		self.SURFACE.blit(shape_surf, self.rect)
+		pg.draw.rect(self.SURFACE, self.colour, self.rect, self.width, self.borderRadius)
 
 
 
@@ -117,7 +115,7 @@ class Button(Rectangle):
 		# Redone here bc i want a different default
 		self.borderRadius = config.get("borderRadius", int(self.em / 2))
 
-		self.highlightThickness = config.get("highlightThickness", 0.3)
+		self.highlightThickness = config.get("highlightThickness", 0.2)
 
 		self.clickEventHandler = config.get("clickEventHandler", None)
 
@@ -127,17 +125,18 @@ class Button(Rectangle):
 
 	def isMouseOver(self) -> bool:
 		x, y = pg.mouse.get_pos()
-		if x >= self.posX and x <= self.posX + self.sizeX: #between xleft and xright
-			if y >= self.posY and y <= self.posY + self.sizeY: # Between top and bottom
-				return True
-		return False
+
+		if self.rect.collidepoint(x, y):
+			return True
+		else:
+			return False
 
 
 	def highlight(self) -> None:
 		#match self.style:
 		#	case "default":
-		outlineColour = pg.Color(self.colour + pg.Color(100, 100, 100))
-		outlineColour.a = 50
+		outlineColour = pg.Color(self.colour + pg.Color(100, 100, 100, 255))
+		outlineColour.a = self.colour.a
 		outlineSurf = pg.Surface(self.rect.size, pg.SRCALPHA, 32)
 		pg.draw.rect(outlineSurf, outlineColour, outlineSurf.get_rect(), math.ceil(self.highlightThickness * self.em), self.borderRadius)
 		self.SURFACE.blit(outlineSurf, self.rect)
