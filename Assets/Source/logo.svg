@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#505050"
      inkscape:document-units="mm"
-     inkscape:zoom="1.0129245"
-     inkscape:cx="414.14735"
-     inkscape:cy="514.35225"
+     inkscape:zoom="1.9956993"
+     inkscape:cx="153.58025"
+     inkscape:cy="573.23266"
      inkscape:window-width="1680"
      inkscape:window-height="997"
      inkscape:window-x="0"
@@ -106,5 +106,31 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Moonlander;-inkscape-font-specification:Moonlander;stroke-width:0.146353"
          x="3.5862637"
          y="153.02492">MOON LANDER</tspan></text>
+    <ellipse
+       style="fill:#194cd6;fill-opacity:1;stroke-width:0.0514577"
+       id="path2"
+       cx="41.160767"
+       cy="141.80145"
+       rx="10.209638"
+       ry="9.5855274" />
+    <path
+       style="fill:#19d65e;fill-opacity:1;stroke-width:0.0514577"
+       d="m 37.595576,147.32454 -1.549727,8.56524 c 0,0 -0.44413,0.92889 0.590819,1.09395 1.034956,0.16506 0.910625,-0.89151 0.910625,-0.89151 l 0.989585,-5.46938 c 0,0 0.153513,-0.62159 0.66691,-0.55671 0.513416,0.0649 0.198852,1.10283 0.198852,1.10283 l -0.412605,2.28045 c 0,0 -0.0077,0.54283 0.837173,0.67758 0.844844,0.13474 0.842251,-0.85178 0.842251,-0.85178 l 0.424566,-2.34655 0.409618,-2.26393 c 0,0 2.084973,-1.21464 -0.849415,-1.41061 -2.934388,-0.19597 -3.058652,0.0704 -3.058652,0.0704 z"
+       id="path13" />
+    <ellipse
+       style="fill:#e3f8c3;fill-opacity:1;stroke-width:0.0424725"
+       id="path14"
+       cx="36.71022"
+       cy="141.52571"
+       rx="1.9429647"
+       ry="1.8435984" />
+    <ellipse
+       style="fill:#e3f8c3;fill-opacity:1;stroke-width:0.0292488"
+       id="path14-9"
+       cx="44.770538"
+       cy="-141.01881"
+       rx="1.5915774"
+       ry="1.0673465"
+       transform="scale(1,-1)" />
   </g>
 </svg>

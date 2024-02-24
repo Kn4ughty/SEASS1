@@ -84,7 +84,6 @@ class lem(object):
 
 
 
-
         # thrust in kilograms
         self.thrust = self.gravity * self.ISP * self.massFlowRate
 
@@ -93,6 +92,8 @@ class lem(object):
         # y = cos(theta) * F
 
         self.vy -= self.gravity * dt
+
+        print(self.vy)
 
         self.x += self.vx
         self.y += self.vy

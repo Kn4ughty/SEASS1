@@ -6,7 +6,10 @@ import GameLib as gl
 from lem import lem
 
 
+good = True
 
+if good:
+    print("yay")
 
 pg.init()
 
@@ -46,7 +49,7 @@ DThrust = 45040
 Mass = 4280
 
 ## Physics config
-gravity = 1.625
+gravity = -1.625
 
 # Max thrust = 45040 N
 # ISP = 311
@@ -58,8 +61,8 @@ gravity = 1.625
 # 10344 - 8200 = 2144
 
 lem = lem({
-    "vx": 20,
-    "vy": 3,
+    "vx": 0,
+    "vy": -10,
     "x": 0,
     "y": 500,
     "angle": 0,
@@ -193,7 +196,7 @@ def drawLEM():
 
     newLEM = pg.transform.scale(LEMIMG, (960, 700))
     rotated_image = pg.transform.rotate(newLEM, -lem.angle)
-    topleft = (0, 0)
+    topleft = (lem.x, lem.y)
     new_rect = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
 
     WINDOW.blit(rotated_image, new_rect)

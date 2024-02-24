@@ -22,7 +22,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1708418872
-ModificationTime: 1708463566
+ModificationTime: 1708654670
 OS2TypoAscent: 0
 OS2TypoAOffset: 1
 OS2TypoDescent: 0
@@ -36,6 +36,7 @@ HheadAscent: 0
 HheadAOffset: 1
 HheadDescent: 0
 HheadDOffset: 1
+OS2Vendor: 'PfEd'
 Lookup: 4 0 1 "'liga' Standard Ligatures in Latin lookup 0" { "'liga' Standard Ligatures in Latin lookup 0-1"  } ['liga' ('DFLT' <'dflt' > 'latn' <'dflt' > ) ]
 MarkAttachClasses: 1
 DEI: 91125
@@ -80,13 +81,13 @@ SplineSet
  269.095692318 79.7539653589 230.110015173 85.3161892189 202.982778269 85.3161892189 c 0
  195.947969672 85.3161892189 189.710643317 84.9421286633 185 84 c 1
 EndSplineSet
-Validated: 524289
+Validated: 1
 EndChar
 
 StartChar: M
 Encoding: 77 77 1
 Width: 755
-Flags: HWO
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
@@ -100,7 +101,7 @@ SplineSet
  361.620117188 57.1796875 186.139648438 500.939453125 186.139648438 500.939453125 c 1
  6 98 l 1
 EndSplineSet
-Validated: 524321
+Validated: 33
 EndChar
 
 StartChar: o
@@ -138,61 +139,59 @@ SplineSet
     0 0 z
   EndSpiro
 EndSplineSet
-Validated: 524289
+Validated: 1
 EndChar
 
 StartChar: O
 Encoding: 79 79 3
 Width: 462
 InSpiro: 1
-Flags: WO
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
-263 480 m 0
- 357 356 l 0
- 215 180 l 0
- 113 314 l 0
- 263 480 l 0
+263 518 m 0
+ 357 394 l 0
+ 215 218 l 0
+ 113 352 l 0
+ 263 518 l 0
   Spiro
-    357 356 v
-    215 180 v
-    113 314 v
-    263 480 v
+    357 394 v
+    215 218 v
+    113 352 v
+    263 518 v
     0 0 z
   EndSpiro
-271.758789062 605.287109375 m 1
- 455.89453125 356.125976562 l 1
- 193.3203125 58.283203125 l 1
- 9.18359375 307.444335938 l 1
- 271.758789062 605.287109375 l 1
+271.758789062 643.287109375 m 1
+ 455.89453125 394.125976562 l 1
+ 193.3203125 96.283203125 l 1
+ 9.18359375 345.444335938 l 1
+ 271.758789062 643.287109375 l 1
   Spiro
-    271.759 605.287 v
-    455.895 356.126 v
-    193.32 58.2837 v
-    9.1837 307.444 v
+    271.759 643.287 v
+    455.895 394.126 v
+    193.32 96.2837 v
+    9.1837 345.444 v
     0 0 z
   EndSpiro
 EndSplineSet
-Validated: 524297
 EndChar
 
 StartChar: N
 Encoding: 78 78 4
 Width: 449
-Flags: W
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
-26 94 m 1
- 100 740 l 1
- 284 390 l 25
- 404 696 l 1
- 386 96 l 1
- 166 430 l 1
- 26 94 l 1
+30 38 m 5
+ 104 684 l 5
+ 288 334 l 29
+ 408 640 l 5
+ 390 40 l 5
+ 170 374 l 5
+ 30 38 l 5
 EndSplineSet
-Validated: 1
 EndChar
 
 StartChar: L
@@ -256,81 +255,78 @@ StartChar: D
 Encoding: 68 68 8
 Width: 542
 InSpiro: 1
-Flags: W
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
-72 86 m 25
- 106 764 l 9
- 496 402 l 25
- 72 86 l 25
+70 30 m 25
+ 104 708 l 9
+ 494 346 l 25
+ 70 30 l 25
   Spiro
-    72 86 v
-    106 764 v
-    496 402 v
+    70 30 v
+    104 708 v
+    494 346 v
     0 0 z
   EndSpiro
 EndSplineSet
-Validated: 1
 EndChar
 
 StartChar: E
 Encoding: 69 69 9
 Width: 510
-Flags: W
+Flags: HWO
 LayerCount: 2
 Fore
 SplineSet
-82 56 m 1
- 76 770 l 1
- 406 694 l 9
- 146 662 l 1
- 176 540 l 1
- 412 522 l 1
- 214 416 l 1
- 242 280 l 1
- 476 326 l 1
- 82 56 l 1
+50 -14 m 1
+ 44 700 l 1
+ 374 624 l 9
+ 114 592 l 1
+ 144 470 l 1
+ 380 452 l 1
+ 182 346 l 1
+ 210 210 l 1
+ 444 256 l 1
+ 50 -14 l 1
 EndSplineSet
-Validated: 1
 EndChar
 
 StartChar: R
 Encoding: 82 82 10
 Width: 400
 InSpiro: 1
-Flags: W
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
-144 400 m 0
- 134 588 l 0
- 244 506 l 0
- 144 400 l 0
+134 352 m 0
+ 124 540 l 0
+ 234 458 l 0
+ 134 352 l 0
   Spiro
-    134 588 v
-    244 506 v
-    144 400 v
+    124 540 v
+    234 458 v
+    134 352 v
     0 0 z
   EndSpiro
-42 38 m 0
- 46 756 l 0
- 356 534 l 0
- 256 316 l 0
- 410 42 l 0
- 148 298 l 0
- 42 38 l 0
+32 -10 m 0
+ 36 708 l 0
+ 346 486 l 0
+ 246 268 l 0
+ 400 -6 l 0
+ 138 250 l 0
+ 32 -10 l 0
   Spiro
-    42 38 v
-    46 756 v
-    356 534 v
-    256 316 v
-    410 42 v
-    148 298 v
+    32 -10 v
+    36 708 v
+    346 486 v
+    246 268 v
+    400 -6 v
+    138 250 v
     0 0 z
   EndSpiro
 EndSplineSet
-Validated: 9
 EndChar
 
 StartChar: L_A
@@ -365,7 +361,7 @@ SplineSet
     0 0 z
   EndSpiro
 EndSplineSet
-Validated: 524289
+Validated: 1
 LCarets2: 1 559
 Ligature2: "'liga' Standard Ligatures in Latin lookup 0-1" L A
 EndChar
@@ -373,12 +369,11 @@ EndChar
 StartChar: O_O
 Encoding: 257 -1 12
 Width: 886
-Flags: W
+Flags: HW
 LayerCount: 2
 Fore
 Refer: 3 79 N 0.986394 0.164399 -0.164399 0.986394 486.653 -39.6925 2
 Refer: 3 79 N 1 0 0 1 -8 0 2
-Validated: 9
 Ligature2: "'liga' Standard Ligatures in Latin lookup 0-1" O O
 LCarets2: 1 472
 EndChar
