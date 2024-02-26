@@ -10,6 +10,9 @@ class lem(object):
         self.vx = config.get("vx")
         self.vy = config.get("vy")
 
+        self.width = config.get("width")
+        self.height = config.get("height")
+
         self.angle = config.get("angle")
         self.omega = config.get("omega")
         self.maxOmega = config.get("maxOmega")

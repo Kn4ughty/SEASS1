@@ -60,11 +60,20 @@ gravity = -1.625
 # prop mass is 8200
 # 10344 - 8200 = 2144
 
+
+
+# 112 N on moon
+# 686 N on earth
+
+
+
 lem = lem({
     "vx": 0,
     "vy": -10,
     "x": 0,
     "y": 500,
+    "width": 9.4,
+    "height": 3.231,
     "angle": 0,
     "omega": 0,
     "maxOmega": 10,
@@ -146,7 +155,7 @@ def draw():
         WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
     else:
         WINDOW.fill(BACKGROUND)
-    
+
     #pg.image.save(WINDOW, f"start{loops}.png")
     
     drawBackground()
@@ -193,7 +202,6 @@ def drawBackground():
     WINDOW.blit(starBackground, (0, 0))
 
 def drawLEM():
-
     newLEM = pg.transform.scale(LEMIMG, (960, 700))
     rotated_image = pg.transform.rotate(newLEM, -lem.angle)
     topleft = (lem.x, lem.y)
@@ -361,9 +369,15 @@ def mainMenu():
     hasSetup = True
 
     events()
-    draw()
+    drawBackground()
+    drawUI()
 
+    keys = pg.key.get_just_released()
+    if keys[pg.K_ESCAPE]:
+        pg.quit()
+        sys.exit()
 
+    pg.display.flip()
 
     # Clean up
     if not inMainMenu:
