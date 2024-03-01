@@ -4,9 +4,12 @@ import pygame as pg
 
 class camera:
     def __init__(self, config: dict) -> None:
-        self.pos = config.get("pos")
+        self.x = config.get("x")
+        self.y = config.get("y")
 
-        self.vel = config.get("vel")
+        self.vx = config.get("vx")
+        self.vy = config.get("vy")
+
 
         self.tweenStrength = config.get("tweenStrength", 0)
 
@@ -15,3 +18,13 @@ class camera:
 
     def update():
         pass
+
+    def drawSurf(self, surface: pg.Surface, destSurf: pg.Surface, worldRect: pg.Rect) -> None:
+        newrect = pg.Rect()
+
+        # SDL_Rect dstrect = {this->world_pos_tl.x - tiles_to_render[i].x, this->world_pos_tl.y - tiles_to_render[i].y, TILE_WIDTH, TILE_HEIGHT};
+        newrect = (self.x - worldRect.x, self.y - worldRect.y, worldRect.size)
+
+        destSurf.blit(surface, newrect)
+        pass
+

@@ -18,3 +18,6 @@ def clear_terminal():
         system("printf '\\033c\'")
     else:
         raise NotImplementedError("ClearTerminal unknown OS")
+
+def stringToBool(string: bool):
+    return string.lower() in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']

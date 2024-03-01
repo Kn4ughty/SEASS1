@@ -1,10 +1,23 @@
 import sys
 import pygame as pg
 import random
+import configparser
 # My librarys
 import GameLib as gl
+import Lib.lib as lib
 from lem import lem
 
+#Read config.ini file
+config_object = configparser.ConfigParser()
+config_object.read("config.ini")
+
+STARTUP = config_object["STARTUP"]
+
+## Startup Variables
+inMainMenu = lib.stringToBool(STARTUP["startinmainmenu"])
+
+
+hasSetup = False
 
 good = True
 
@@ -34,7 +47,6 @@ WINDOW_HEIGHT = 900
 fontSize = int(WINDOW_WIDTH / 35)
 
 rem = fontSize
-
 
 # LEM stats
 # all in SI units
@@ -106,9 +118,7 @@ LEMIMG = pg.image.load("Assets/LEM.png")
 
 #TOP = ygame.Surface((0, 0), pg.SRCALPHA, 32)
 
-## Startup Variables
-inMainMenu = True
-hasSetup = False
+
 
 
 def toggleDebug():
@@ -140,7 +150,7 @@ uiElements.append(debugToggleButton)
 def main():
     #pg.draw.rect(WINDOW, (138, 12, 123), (10, 10, 100, 100))
     events()
-    lem.update(clock)
+    #lem.update(clock)
     draw()
 
 
