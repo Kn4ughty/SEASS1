@@ -20,4 +20,4 @@ def clear_terminal():
         raise NotImplementedError("ClearTerminal unknown OS")
 
 def stringToBool(string: bool):
-    return string.lower() in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
+    return string.lower() in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh', 'yuppers']

@@ -221,7 +221,7 @@ def drawBackground():
 
 def drawLEM():
     # SMooth scale seems to work at good fps hmmm
-    newLEM = pg.transform.smoothscale(LEMIMG, (96, 70))
+    newLEM = pg.transform.smoothscale(LEMIMG, (480, 350))
     rotated_image = pg.transform.rotate(newLEM, -lem.angle)
     topleft = (lem.x, lem.y)
     new_rect = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
