@@ -94,7 +94,7 @@ class lem(object):
         # x = sin(theta) * F
         # y = cos(theta) * F
 
-        self.vy -= self.gravity * dt
+        #self.vy -= self.gravity * dt
 
         print(self.vy)
 

@@ -81,9 +81,9 @@ gravity = -1.625
 
 lem = lem({
     "vx": 0,
-    "vy": -10,
+    "vy": 0,
     "x": 0,
-    "y": 500,
+    "y": 0,
     "width": 9.4,
     "height": 3.231,
     "angle": 0,
@@ -98,6 +98,14 @@ lem = lem({
     "ISP": 311,
     "mass": 2144,
     "gravity": gravity,
+    "FPS": FPS
+})
+
+camera = gl.camera.camera({
+    "x": 0,
+    "y": 0,
+    "vx": 0,
+    "vy": 0,
     "FPS": FPS
 })
 
@@ -150,7 +158,7 @@ uiElements.append(debugToggleButton)
 def main():
     #pg.draw.rect(WINDOW, (138, 12, 123), (10, 10, 100, 100))
     events()
-    #lem.update(clock)
+    lem.update(clock)
     draw()
 
 
@@ -212,12 +220,14 @@ def drawBackground():
     WINDOW.blit(starBackground, (0, 0))
 
 def drawLEM():
-    newLEM = pg.transform.scale(LEMIMG, (960, 700))
+    # SMooth scale seems to work at good fps hmmm
+    newLEM = pg.transform.smoothscale(LEMIMG, (96, 70))
     rotated_image = pg.transform.rotate(newLEM, -lem.angle)
     topleft = (lem.x, lem.y)
     new_rect = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
 
     WINDOW.blit(rotated_image, new_rect)
+    # camera.drawSurf(rotated_image, WINDOW, pg.Rect(lem.x, lem.y, lem.width, lem.height))
     #newLEM = pg.transform.rotate(newLEM, LEMAngle)
 
     #WINDOW.blit(rot_image, (0, 0))

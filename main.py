@@ -46,15 +46,11 @@ while fuel >= 1 and height > 0:
 
     if burnAmount < 0:
         burnAmount = 0
-        print("1")
     elif burnAmount > 30:
         burnAmount = 30
-        print("2")
     elif burnAmount > fuel: #140
         burnAmount = fuel
-        print("3")
-    else:
-        print("aa")
+
 
     v1 = velocity - burnAmount + 5
 
