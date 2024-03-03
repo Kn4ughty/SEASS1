@@ -231,11 +231,15 @@ def drawLEM():
     rotated_image = pg.transform.rotate(newLEM, -lem.angle)
     topleft = (lem.x, lem.y)
     nr = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
-    print(nr)
 
-    #WINDOW.blit(rotated_image, new_rect)
-    camera.drawSurf(rotated_image, WINDOW, pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width +lem.width, nr.height + lem.height))
-    #camera.drawSurf(rotated_image, WINDOW, nr)
+
+    #print(pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width, nr.height))
+    #print(pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width +lem.width, nr.height + lem.height))
+
+
+    #WINDOW.blit(rotated_image, nr)
+    #camera.drawSurf(rotated_image, WINDOW, pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width +lem.width, nr.height + lem.height))
+    camera.drawSurf(rotated_image, WINDOW, nr)
     #newLEM = pg.transform.rotate(newLEM, LEMAngle)
 
     #WINDOW.blit(rot_image, (0, 0))

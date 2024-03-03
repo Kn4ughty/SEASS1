@@ -52,16 +52,16 @@ class camera(object):
 
 
     def drawSurf(self, surface: pg.Surface, destSurf: pg.Surface, worldRect: pg.Rect) -> None:
-        #newrect = pg.Rect()
-
-        # SDL_Rect dstrect = {this->world_pos_tl.x - tiles_to_render[i].x, this->world_pos_tl.y - tiles_to_render[i].y, TILE_WIDTH, TILE_HEIGHT};
-
         # Fun fact size of the rect does not matter it just draws the surface sooo
         # No camera scaling
 
-        newrect = (((self.x - worldRect.x), (self.y - worldRect.y)), (1, 1))
-        #print(newrect)
+        print(worldRect)
+
+        #newrect = ((self.x - worldRect.x), (self.y - worldRect.y)), worldRect.size
+
+        newrect = ((worldRect.x - self.x), (worldRect.y - self.y)), worldRect.size
+
+        print(newrect)
 
         destSurf.blit(surface, newrect)
-        pass
 

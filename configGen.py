@@ -14,7 +14,7 @@ config_object["UI"] = {
 }
 
 config_object["CONTROLS"] = {
-    "camspeed": 250,
+    "camspeed": -250,
     "camfriction": 10,
 }
 #Write the above sections to config.ini file
