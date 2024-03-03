@@ -55,13 +55,13 @@ class camera(object):
         # Fun fact size of the rect does not matter it just draws the surface sooo
         # No camera scaling
 
-        print(worldRect)
+        #print(worldRect)
 
         #newrect = ((self.x - worldRect.x), (self.y - worldRect.y)), worldRect.size
 
         newrect = ((worldRect.x - self.x), (worldRect.y - self.y)), worldRect.size
 
-        print(newrect)
+        #print(newrect)
 
         destSurf.blit(surface, newrect)
 
