@@ -12,10 +12,14 @@ config_object = configparser.ConfigParser()
 config_object.read("config.ini")
 
 STARTUP = config_object["STARTUP"]
+CONTROLS = config_object["CONTROLS"]
 
 ## Startup Variables
 inMainMenu = lib.stringToBool(STARTUP["startinmainmenu"])
 
+## Controls
+camSpeed = int(CONTROLS["camspeed"])
+camFriction = int(CONTROLS["camfriction"])
 
 hasSetup = False
 
@@ -105,8 +109,8 @@ camera = gl.camera.camera({
     "y": 0,
     "vx": 0,
     "vy": 0,
-    "friction": 10,
-    "moveStrength": 50,
+    "friction": camFriction,
+    "moveStrength": camSpeed,
     "FPS": FPS
 })
 
@@ -226,10 +230,12 @@ def drawLEM():
     newLEM = pg.transform.smoothscale(LEMIMG, (480, 350))
     rotated_image = pg.transform.rotate(newLEM, -lem.angle)
     topleft = (lem.x, lem.y)
-    new_rect = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
+    nr = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
+    print(nr)
 
     #WINDOW.blit(rotated_image, new_rect)
-    camera.drawSurf(rotated_image, WINDOW, pg.Rect(lem.x, lem.y, lem.width, lem.height))
+    camera.drawSurf(rotated_image, WINDOW, pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width +lem.width, nr.height + lem.height))
+    #camera.drawSurf(rotated_image, WINDOW, nr)
     #newLEM = pg.transform.rotate(newLEM, LEMAngle)
 
     #WINDOW.blit(rot_image, (0, 0))

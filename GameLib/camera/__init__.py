@@ -60,7 +60,7 @@ class camera(object):
         # No camera scaling
 
         newrect = (((self.x - worldRect.x), (self.y - worldRect.y)), (1, 1))
-        print(newrect)
+        #print(newrect)
 
         destSurf.blit(surface, newrect)
         pass
