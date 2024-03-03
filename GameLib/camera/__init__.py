@@ -10,14 +10,39 @@ class camera(object):
         self.vx = config.get("vx")
         self.vy = config.get("vy")
 
+        self.friction = config.get("friction")
+        self.moveStrength = config.get("moveStrength")
+
 
         self.tweenStrength = config.get("tweenStrength", 0)
 
 
         self.FPS = config.get("FPS")
 
-    def update():
-        pass
+    def update(self, clock):
+        dt = clock.tick(self.FPS)/1000
+
+        keys = pg.key.get_pressed()
+
+        if (keys[pg.K_j]):
+            self.vx += self.moveStrength * dt
+        if (keys[pg.K_l] ):
+            self.vx -= self.moveStrength * dt
+        if (keys[pg.K_i]):
+            self.vy += self.moveStrength * dt
+        if (keys[pg.K_k] ):
+            self.vy -= self.moveStrength * dt
+
+
+        self.vx -= self.vx * self.friction * dt
+        self.vy -= self.vy * self.friction * dt
+
+        self.x += self.vx
+        self.y += self.vy
+
+        print(self.x)
+        print(self.y)
+
 
     def drawSurf(self, surface: pg.Surface, destSurf: pg.Surface, worldRect: pg.Rect) -> None:
         #newrect = pg.Rect()

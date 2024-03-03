@@ -78,7 +78,6 @@ gravity = -1.625
 # 686 N on earth
 
 
-
 lem = lem({
     "vx": 0,
     "vy": 0,
@@ -106,6 +105,8 @@ camera = gl.camera.camera({
     "y": 0,
     "vx": 0,
     "vy": 0,
+    "friction": 5,
+    "moveStrength": 5,
     "FPS": FPS
 })
 
@@ -158,6 +159,7 @@ uiElements.append(debugToggleButton)
 def main():
     #pg.draw.rect(WINDOW, (138, 12, 123), (10, 10, 100, 100))
     events()
+    camera.update(clock)
     lem.update(clock)
     draw()
 

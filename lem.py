@@ -81,7 +81,7 @@ class lem(object):
 
         self.angle = self.angle % 360
 
-        print(self.throttle)
+        #print(self.throttle)
 
         self.realmass = self.mass + self.fuel
 
@@ -96,7 +96,7 @@ class lem(object):
 
         #self.vy -= self.gravity * dt
 
-        print(self.vy)
+        #print(self.vy)
 
         self.x += self.vx
         self.y += self.vy
