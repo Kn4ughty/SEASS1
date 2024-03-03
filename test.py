@@ -33,7 +33,8 @@ pg.init()
 # Colours
 BACKGROUND = pg.Color(0, 0, 0)
 SPACECOLOUR = (75, 21, 98)
-UIColour = (198, 165, 235, 255)
+UIColour = pg.color.Color(77, 84, 123, 255 * 0.7)
+fontColour = pg.color.Color(255, 255, 255)
 
 
 # !!!!! FLags
@@ -122,8 +123,14 @@ pg.display.set_caption('Moonlander 🚀')
 
 
 uiElements = []
-uiLayer = pg.Surface((15 * rem, 10 * rem), pg.SRCALPHA, 32)
+#uiLayer = pg.Surface((15 * rem, 10 * rem), pg.SRCALPHA, 32)
+#uiLayer = uiLayer.convert_alpha()
+
+global uiLayer
+uiLayer = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pg.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
+
+
 
 BACKGROUNDSURF = pg.Surface((0, 0))
 
@@ -158,6 +165,25 @@ debugToggleButton = gl.ui.Button({
 })
 uiElements.append(debugToggleButton)
 
+
+
+
+LEMFuelBar = gl.ui.bar({
+    "surface": uiLayer,
+    "posX": 78,
+    "posY": 88,
+    "sizeX": 20,
+    "sizeY": 10,
+    "anchorSpace": "%",
+    "scaleSpace": "%",
+    "colour": UIColour,
+    "fontColour": fontColour,
+    "fontSize": fontSize,
+    "isBold": True,
+    "text": "Debug",
+    "clickEventHandler": toggleDebug # works
+})
+uiElements.append(LEMFuelBar)
 
 
 def main():
@@ -206,7 +232,6 @@ def draw():
     #pg.display.update()
 
 def drawUI():
-    #uiLayer.fill(UIColour)  # Fill the UI layer with white
 
     #print(uiElements)
     for element in uiElements:
@@ -385,8 +410,8 @@ def mainMenu():
             "sizeY": 10,
             "anchorSpace": "%",
             "scaleSpace": "%",
-            "colour": pg.Color(56, 56, 56, 200),
-            "fontColour": pg.Color(255, 255, 255),
+            "colour": UIColour,
+            "fontColour": fontColour,
             "fontSize": fontSize,
             "isBold": True,
             "text": "Start Game",

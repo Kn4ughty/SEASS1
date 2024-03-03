@@ -198,7 +198,12 @@ class bar(Rectangle):
 		# Redone here bc i want a different default
 		self.borderRadius = config.get("borderRadius", int(self.em / 2))
 
-	def drawBackground(self) -> pg.Surface:
-		pass
+	def draw(self):
+		Rectangle.draw(self)
+
+
+	def update(self):
+		self.draw()
+
 
 
