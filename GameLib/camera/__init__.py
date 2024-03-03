@@ -16,6 +16,8 @@ class camera(object):
 
         self.tweenStrength = config.get("tweenStrength", 0)
 
+        #self.scale = config.get("scale")
+        #self.scaleSpeed = config.get("scaleSpeed")
 
         self.FPS = config.get("FPS")
 
@@ -33,6 +35,11 @@ class camera(object):
         if (keys[pg.K_k] ):
             self.vy -= self.moveStrength * dt
 
+        #if (keys[pg.K_t]):
+        #    self.scale += self.scaleSpeed * dt
+        #
+        #print(self.scale)
+
 
         self.vx -= self.vx * self.friction * dt
         self.vy -= self.vy * self.friction * dt
@@ -40,15 +47,19 @@ class camera(object):
         self.x += self.vx
         self.y += self.vy
 
-        print(self.x)
-        print(self.y)
+        #print(self.x)
+        #print(self.y)
 
 
     def drawSurf(self, surface: pg.Surface, destSurf: pg.Surface, worldRect: pg.Rect) -> None:
         #newrect = pg.Rect()
 
         # SDL_Rect dstrect = {this->world_pos_tl.x - tiles_to_render[i].x, this->world_pos_tl.y - tiles_to_render[i].y, TILE_WIDTH, TILE_HEIGHT};
-        newrect = (self.x - worldRect.x, self.y - worldRect.y, worldRect.size)
+
+        # Fun fact size of the rect does not matter it just draws the surface sooo
+        # No camera scaling
+
+        newrect = (((self.x - worldRect.x), (self.y - worldRect.y)), (1, 1))
         print(newrect)
 
         destSurf.blit(surface, newrect)

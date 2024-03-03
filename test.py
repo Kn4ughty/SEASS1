@@ -105,8 +105,8 @@ camera = gl.camera.camera({
     "y": 0,
     "vx": 0,
     "vy": 0,
-    "friction": 5,
-    "moveStrength": 5,
+    "friction": 10,
+    "moveStrength": 50,
     "FPS": FPS
 })
 
@@ -191,7 +191,7 @@ def draw():
     drawUI()
 
     #pg.image.save(WINDOW, f"!UI{loops}.png")
-    
+
 
 
     if DEBUG:
@@ -228,8 +228,8 @@ def drawLEM():
     topleft = (lem.x, lem.y)
     new_rect = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
 
-    WINDOW.blit(rotated_image, new_rect)
-    # camera.drawSurf(rotated_image, WINDOW, pg.Rect(lem.x, lem.y, lem.width, lem.height))
+    #WINDOW.blit(rotated_image, new_rect)
+    camera.drawSurf(rotated_image, WINDOW, pg.Rect(lem.x, lem.y, lem.width, lem.height))
     #newLEM = pg.transform.rotate(newLEM, LEMAngle)
 
     #WINDOW.blit(rot_image, (0, 0))
