@@ -8,6 +8,7 @@ class Element():
 	"""Generic ui element. Only has a surface"""
 	def __init__(self, config):
 		self.SURFACE = config["surface"]
+		self.type = config["type"]
 
 
 class Rectangle(Element):
@@ -174,7 +175,7 @@ class Button(Rectangle):
 
 class bar(Rectangle):
 	""" A progress bar like element
-	
+
 	Displays a bar with text over the top,
 	has min and max values, bar position is determined by current amount
 	Displays text over the top with status
@@ -189,8 +190,10 @@ class bar(Rectangle):
 		self.fontSize = config.get("fontSize", 50)
 		self.em = self.fontSize
 		self.title = config.get("text", "")
-		self.contents = config.get("contents", "")
+		self.contents = config.get("contents", "balls")
 		self.style = config.get("style", "default")
+		self.barColour = config.get("barColour", pg.color.Color(50, 255, 186))
+		self.barOutlineColour = config.get("barOutlineColour", pg.color.Color(255, 185, 252))
 		self.font = config.get("font", "Hack")
 		self.padding = config.get("padding", 5)
 		self.fontColour = config.get("fontColour", "White")
@@ -200,20 +203,57 @@ class bar(Rectangle):
 		# Redone here bc i want a different default
 		self.borderRadius = config.get("borderRadius", int(self.em / 2))
 
+		self.progress = config.get("progress", 0.75)
+
+
 	def draw(self):
 		Rectangle.draw(self)
+
 		# draw title text
 		font = None
 		font = pg.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
 		titleTimg = font.render(self.title, True, self.fontColour)
 
-
-		rect = ((self.posX + self.padding, self.posY + self.padding), (titleTimg.get_size()))
-		print(rect)
-		self.SURFACE.blit(titleTimg, rect)
+		a = titleTimg.get_size()
+		titleRect = pg.Rect(self.posX + self.padding, self.posY + self.padding, a[0], a[1])
+		#print(titleRect)
+		self.SURFACE.blit(titleTimg, titleRect)
 
 		# draw bar insides.
+		## Draw Rect with dynamic scale
+
+
+		barPosX = titleRect.x + self.padding
+		barPosY = titleRect.y + titleRect.height + self.padding
+		barSizeX = (self.sizeX - self.padding * 4) * self.progress
+		barSizeY = self.sizeY - titleRect.height - self.padding * 4
+
+		barRect = pg.Rect(barPosX, barPosY, barSizeX, barSizeY )
+
+		# if rounding messes this up im gonna be angy
+		borderRadius = int(self.sizeY / 2)
+
+		pg.draw.rect(self.SURFACE, self.barColour, barRect, 0, borderRadius)
+
+		# draw outline
+
+		barSizeX = self.sizeX - self.padding * 4
+
+		barOutlineRect = pg.Rect(barPosX, barPosY, barSizeX, barSizeY )
+		pg.draw.rect(self.SURFACE, self.barOutlineColour, barOutlineRect, int(self.em / 15), borderRadius)
+
 		# draw bar contents
+
+		#font = None
+
+
+		font = pg.font.SysFont(self.font, int(self.fontSize / 1.2), self.isBold, self.isItalic)
+		contentTimg = font.render(self.contents, True, (0, 0, 0))
+		contentRect = ((barOutlineRect.x + ((barOutlineRect.width - contentTimg.get_width()) / 2)),(barOutlineRect.y + ((barOutlineRect.height - contentTimg.get_height()) / 2)))
+		print(contentRect)
+		#contentRect = barRect
+		self.SURFACE.blit(contentTimg, contentRect)
+
 
 
 	def update(self):

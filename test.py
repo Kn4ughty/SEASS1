@@ -24,10 +24,12 @@ camFriction = int(CONTROLS["camfriction"])
 hasSetup = False
 
 good = True
+bad = False
 
 if good:
     print("yay")
-
+if bad:
+    x = input('bad :( help um jeeeifeejifjiefjeugfoglrflihj codingn its me im ashley codoing)')
 pg.init()
 
 # Colours
@@ -35,6 +37,9 @@ BACKGROUND = pg.Color(0, 0, 0)
 SPACECOLOUR = (75, 21, 98)
 UIColour = pg.color.Color(77, 84, 123, 255 * 0.7)
 fontColour = pg.color.Color(255, 255, 255)
+
+barColour = pg.color.Color(50, 255, 186)
+barOutlineColour = pg.color.Color(255, 185, 252)
 
 
 # !!!!! FLags
@@ -101,6 +106,7 @@ lem = lem({
     "maxThrottle": 100,
     "massFlowRate": 14.768,
     "fuel": 8200,
+    "maxFuel": 8200,
     "ISP": 311,
     "mass": 2144,
     "gravity": gravity,
@@ -117,7 +123,6 @@ camera = gl.camera.camera({
     "FPS": FPS
 })
 
-print(lem.x)
 # Setup
 
 WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -152,6 +157,7 @@ def toggleDebug():
 
 debugToggleButton = gl.ui.Button({
     "surface": WINDOW,
+    "type": "button",
     "posX": 90,
     "posY": 0,
     "sizeX": 10,
@@ -170,6 +176,7 @@ uiElements.append(debugToggleButton)
 
 LEMFuelBar = gl.ui.bar({
     "surface": uiLayer,
+    "type": "bar",
     "posX": 78,
     "posY": 88,
     "sizeX": 20,
@@ -178,14 +185,20 @@ LEMFuelBar = gl.ui.bar({
     "anchorSpace": "%",
     "scaleSpace": "%",
     "colour": UIColour,
+    "barColour": barColour,
+    "barOutlineColour": barOutlineColour,
     "fontColour": fontColour,
     "fontSize": int(fontSize / 1.5),
     "isBold": False,
     "text": "Fuel:",
-    "clickEventHandler": toggleDebug # works
+    "progress": (lem.fuel / lem.maxFuel)
 })
+# I have learned points in python dont really exist so ill have to
+# update bars in a hard coded way for each bar.
+
 uiElements.append(LEMFuelBar)
 
+print((lem.fuel / lem.maxFuel))
 
 def main():
     #pg.draw.rect(WINDOW, (138, 12, 123), (10, 10, 100, 100))
@@ -236,6 +249,11 @@ def drawUI():
 
     #print(uiElements)
     for element in uiElements:
+        if element.type == "bar":
+            if element.title == "Fuel:":
+                element.progress = lem.fuel / lem.maxFuel
+                element.contents = f"{round(lem.fuel)} / {round(lem.maxFuel, 1)}"
+
         #element.text = str(x)
         element.em = rem # cope future me hahahah
         element.update()
@@ -275,7 +293,6 @@ def createStarBackground(size: int, starChance: int) -> pg.Surface:
     out = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
     lineWidth = 1
     circle = pg.image.load("Assets/starBlack.png")
-    minColourDelta = 200
     for x in range(0, WINDOW_WIDTH):
         for y in range (0, WINDOW_HEIGHT):
             a = random.randrange(0, starChance)
@@ -405,6 +422,7 @@ def mainMenu():
         global StartGameButton
         StartGameButton = gl.ui.Button({
             "surface": menuLayer,
+            "type": "button",
             "posX": 30,
             "posY": 30,
             "sizeX": 40,

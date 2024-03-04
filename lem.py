@@ -1,5 +1,4 @@
 import pygame as pg
-import math
 
 
 class lem(object):
@@ -25,6 +24,7 @@ class lem(object):
 
         self.massFlowRate = config.get("massFlowRate")
         self.fuel = config.get("fuel")
+        self.maxFuel = config.get("maxFuel", self.fuel)
         self.ISP = config.get("ISP")
         self.mass = config.get("mass")
 
@@ -81,7 +81,7 @@ class lem(object):
 
         self.angle = self.angle % 360
 
-        #print(self.throttle)
+        print(self.throttle)
 
         self.realmass = self.mass + self.fuel
 
@@ -89,6 +89,9 @@ class lem(object):
 
         # thrust in kilograms
         self.thrust = self.gravity * self.ISP * self.massFlowRate
+
+        #print(self.fuel)
+        self.fuel -= self.throttle * dt * self.massFlowRate
 
 
         # x = sin(theta) * F
