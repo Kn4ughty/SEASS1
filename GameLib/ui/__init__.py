@@ -188,9 +188,11 @@ class bar(Rectangle):
 
 		self.fontSize = config.get("fontSize", 50)
 		self.em = self.fontSize
-		self.text = config.get("text", "")
+		self.title = config.get("text", "")
+		self.contents = config.get("contents", "")
 		self.style = config.get("style", "default")
 		self.font = config.get("font", "Hack")
+		self.padding = config.get("padding", 5)
 		self.fontColour = config.get("fontColour", "White")
 		self.isBold = config.get("isBold", True)
 		self.isItalic = config.get("isItalic", False)
@@ -200,6 +202,18 @@ class bar(Rectangle):
 
 	def draw(self):
 		Rectangle.draw(self)
+		# draw title text
+		font = None
+		font = pg.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
+		titleTimg = font.render(self.title, True, self.fontColour)
+
+
+		rect = ((self.posX + self.padding, self.posY + self.padding), (titleTimg.get_size()))
+		print(rect)
+		self.SURFACE.blit(titleTimg, rect)
+
+		# draw bar insides.
+		# draw bar contents
 
 
 	def update(self):

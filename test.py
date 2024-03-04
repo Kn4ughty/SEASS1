@@ -53,6 +53,8 @@ fontSize = int(WINDOW_WIDTH / 35)
 
 rem = fontSize
 
+uiPadding = 5
+
 # LEM stats
 # all in SI units
 LaunchMass = 15200
@@ -166,21 +168,20 @@ debugToggleButton = gl.ui.Button({
 uiElements.append(debugToggleButton)
 
 
-
-
 LEMFuelBar = gl.ui.bar({
     "surface": uiLayer,
     "posX": 78,
     "posY": 88,
     "sizeX": 20,
     "sizeY": 10,
+    "padding": uiPadding,
     "anchorSpace": "%",
     "scaleSpace": "%",
     "colour": UIColour,
     "fontColour": fontColour,
-    "fontSize": fontSize,
-    "isBold": True,
-    "text": "Debug",
+    "fontSize": int(fontSize / 1.5),
+    "isBold": False,
+    "text": "Fuel:",
     "clickEventHandler": toggleDebug # works
 })
 uiElements.append(LEMFuelBar)
