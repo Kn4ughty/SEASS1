@@ -40,6 +40,7 @@ fontColour = pg.color.Color(255, 255, 255)
 
 barColour = pg.color.Color(50, 255, 186)
 barOutlineColour = pg.color.Color(255, 185, 252)
+contentFontColour = pg.color.Color(255, 90, 248)
 
 
 # !!!!! FLags
@@ -188,6 +189,7 @@ LEMFuelBar = gl.ui.bar({
     "barColour": barColour,
     "barOutlineColour": barOutlineColour,
     "fontColour": fontColour,
+    "contentFontColour": contentFontColour,
     "fontSize": int(fontSize / 1.5),
     "isBold": False,
     "text": "Fuel:",

@@ -1,5 +1,5 @@
 import pygame as pg
-
+import math
 
 class lem(object):
     def __init__(self, config: dict) -> None:
@@ -81,23 +81,29 @@ class lem(object):
 
         self.angle = self.angle % 360
 
-        print(self.throttle)
+        #print(self.throttle)
 
         self.realmass = self.mass + self.fuel
 
 
 
         # thrust in kilograms
-        self.thrust = self.gravity * self.ISP * self.massFlowRate
+        self.thrust = self.throttle * self.massFlowRate * dt
 
         #print(self.fuel)
         self.fuel -= self.throttle * dt * self.massFlowRate
 
+        print(self.thrust)
+        print(self.angle)
+        self.vx -= math.sin(math.radians(self.angle)) * self.thrust * dt
+        self.vy -= math.cos(math.radians(self.angle)) * self.thrust * dt
 
-        # x = sin(theta) * F
-        # y = cos(theta) * F
+        print(f"vx: {self.vx}")
+        print(f"vy: {self.vy}")
+
 
         #self.vy -= self.gravity * dt
+
 
         #print(self.vy)
 

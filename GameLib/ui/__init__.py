@@ -194,6 +194,7 @@ class bar(Rectangle):
 		self.style = config.get("style", "default")
 		self.barColour = config.get("barColour", pg.color.Color(50, 255, 186))
 		self.barOutlineColour = config.get("barOutlineColour", pg.color.Color(255, 185, 252))
+		self.contentFontColour = config.get("contentFontColour", pg.color.Color(255, 90, 248))
 		self.font = config.get("font", "Hack")
 		self.padding = config.get("padding", 5)
 		self.fontColour = config.get("fontColour", "White")
@@ -248,9 +249,9 @@ class bar(Rectangle):
 
 
 		font = pg.font.SysFont(self.font, int(self.fontSize / 1.2), self.isBold, self.isItalic)
-		contentTimg = font.render(self.contents, True, (0, 0, 0))
+		contentTimg = font.render(self.contents, True, self.contentFontColour)
 		contentRect = ((barOutlineRect.x + ((barOutlineRect.width - contentTimg.get_width()) / 2)),(barOutlineRect.y + ((barOutlineRect.height - contentTimg.get_height()) / 2)))
-		print(contentRect)
+		#print(contentRect)
 		#contentRect = barRect
 		self.SURFACE.blit(contentTimg, contentRect)
 
