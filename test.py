@@ -74,7 +74,8 @@ DThrust = 45040
 Mass = 4280
 
 ## Physics config
-gravity = -1.625
+#gravity = -1.625
+gravity = -5
 
 # Max thrust = 45040 N
 # ISP = 311

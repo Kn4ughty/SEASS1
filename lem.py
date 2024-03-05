@@ -100,7 +100,7 @@ class lem(object):
         #print(f"vy: {self.vy}")
 
 
-        #self.vy -= self.gravity * dt
+        self.vy -= self.gravity * dt
 
 
         #print(self.vy)
