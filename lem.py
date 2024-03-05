@@ -61,13 +61,11 @@ class lem(object):
                 self.throttle = newThrottle
             else:
                 self.throttle = 0
-        #if (pg.K_s or pg.K_DOWN or pg.K_LCTRL):
-        #    newThrottle = self.throttle - (self.throttleSensitivity * dt)
-        #    if newThrottle <= 0:
-        #        pass
-        #    else:
-        #        self.throttle = newThrottle
-        
+        if (keys[pg.K_x]):
+            self.throttle = 0
+        if (keys[pg.K_z]):
+            self.throttle = self.maxThrottle
+
         if abs(self.omega) > self.maxOmega:
             if self.omega < 0:
                 self.omega = -self.maxOmega
@@ -81,7 +79,6 @@ class lem(object):
 
         self.angle = self.angle % 360
 
-        #print(self.throttle)
 
         self.realmass = self.mass + self.fuel
 
@@ -93,13 +90,14 @@ class lem(object):
         #print(self.fuel)
         self.fuel -= self.throttle * dt * self.massFlowRate
 
-        print(self.thrust)
-        print(self.angle)
+        #print(self.thrust)
+        #print(self.angle)
+
         self.vx -= math.sin(math.radians(self.angle)) * self.thrust * dt
         self.vy -= math.cos(math.radians(self.angle)) * self.thrust * dt
 
-        print(f"vx: {self.vx}")
-        print(f"vy: {self.vy}")
+        #print(f"vx: {self.vx}")
+        #print(f"vy: {self.vy}")
 
 
         #self.vy -= self.gravity * dt
