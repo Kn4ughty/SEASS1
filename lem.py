@@ -93,7 +93,7 @@ class lem(object):
         #print(self.thrust)
         #print(self.angle)
 
-        self.vx -= math.sin(math.radians(self.angle)) * self.thrust * dt
+        self.vx += math.sin(math.radians(self.angle)) * self.thrust * dt
         self.vy -= math.cos(math.radians(self.angle)) * self.thrust * dt
 
         #print(f"vx: {self.vx}")
