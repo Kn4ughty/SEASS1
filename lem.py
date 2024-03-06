@@ -99,8 +99,8 @@ class lem(object):
         #print(f"vx: {self.vx}")
         #print(f"vy: {self.vy}")
 
-
-        self.vy -= self.gravity * dt
+        # GRAVITY!!
+        #self.vy -= self.gravity * dt
 
 
         #print(self.vy)

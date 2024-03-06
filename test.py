@@ -2,10 +2,14 @@ import sys
 import pygame as pg
 import random
 import configparser
+import time
+
 # My librarys
 import GameLib as gl
 import Lib.lib as lib
 from lem import lem
+
+startTime = time.time()
 
 #Read config.ini file
 config_object = configparser.ConfigParser()
@@ -33,8 +37,8 @@ if bad:
 pg.init()
 
 # Colours
-BACKGROUND = pg.Color(0, 0, 0)
-SPACECOLOUR = (75, 21, 98)
+
+## UI stuff
 UIColour = pg.color.Color(77, 84, 123, 255 * 0.7)
 fontColour = pg.color.Color(255, 255, 255)
 
@@ -42,6 +46,10 @@ barColour = pg.color.Color(50, 255, 186)
 barOutlineColour = pg.color.Color(255, 185, 252)
 contentFontColour = pg.color.Color(255, 90, 248)
 
+# World stuff
+BACKGROUND = pg.Color(0, 0, 0)
+SPACECOLOUR = (75, 21, 98)
+moonMedColour = pg.Color(127, 127, 127)
 
 # !!!!! FLags
 DEBUG = True
@@ -214,8 +222,6 @@ def main():
     clock.tick(FPS)
 
 
-global loops
-loops = 1
 
 def draw():
     if DEBUG:
@@ -223,22 +229,14 @@ def draw():
     else:
         WINDOW.fill(BACKGROUND)
 
-    #pg.image.save(WINDOW, f"start{loops}.png")
-    
+
     drawBackground()
 
-    #pg.image.save(WINDOW, f"background{loops}.png")
-    
-    drawLEM()
-    
+    drawMoonSurface()
 
-    #pg.image.save(WINDOW, f"lem{loops}.png")
-    
+    drawLEM()
 
     drawUI()
-
-    #pg.image.save(WINDOW, f"!UI{loops}.png")
-
 
 
     if DEBUG:
@@ -272,6 +270,11 @@ def drawBackground():
 
     WINDOW.blit(starBackground, (0, 0))
 
+def drawMoonSurface():
+    # check if on screen (or close probably)
+    # draw moon
+    camera.drawSurf(moonSurf, WINDOW, pg.Rect(0, 0, 0, 0))
+
 def drawLEM():
     # SMooth scale seems to work at good fps hmmm
     newLEM = pg.transform.smoothscale(LEMIMG, (480, 350))
@@ -292,7 +295,7 @@ def drawLEM():
     #WINDOW.blit(rot_image, (0, 0))
 
 
-def createStarBackground(size: int, starChance: int) -> pg.Surface:
+def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
     out = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
     lineWidth = 1
     circle = pg.image.load("Assets/starBlack.png")
@@ -306,8 +309,8 @@ def createStarBackground(size: int, starChance: int) -> pg.Surface:
                 starColour = gl.image.convert_K_to_RGB(random.triangular(4000, 10000, 5000))
                 circle = gl.image.tint(circle, starColour)
 
-                pg.draw.line(out, starColour, (x - size, y), (x + size, y), lineWidth) # IDE sure complains a lot about wrong colour fomat...
-                pg.draw.line(out, starColour, (x, y - size), (x, y + size), lineWidth) # for something that works completely fine
+                pg.draw.line(out, starColour, (x - starSize, y), (x + starSize, y), lineWidth)
+                pg.draw.line(out, starColour, (x, y - starSize), (x, y + starSize), lineWidth)
                 # A circle ends up with an even pixel count, meaning it cannot be centered.
                 #p.draw.circle(out, "White", (x, y), size - 3)
 
@@ -318,6 +321,27 @@ def createStarBackground(size: int, starChance: int) -> pg.Surface:
 
 
     return out
+
+def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, craterChance: int, moonMedColour) -> pg.Surface:
+    print(type(size))
+    print(size)
+    out = pg.Surface((size))
+    pg.draw.rect(out, moonMedColour, ((0, 0), size))
+    for x in range(0, size[0]):
+        for y in range(0, size[1]):
+            #print(f"x: {x}, y: {y}")
+            a = random.randrange(0, craterChance)
+            if a == 1:
+                crSize = random.triangular(craterSizeMin, craterSizeMax)
+                crColourNum = random.triangular(100, 200)
+                crColour = pg.Color(crColourNum, crColourNum, crColourNum)
+
+                pg.draw.circle(out, crColour, (x, y), crSize)
+
+
+
+    return out
+
 
 class Debug():
 
@@ -472,6 +496,14 @@ global starBackground
 starBackground = createStarBackground(8, 5000)
 
 running = True
+t1 = time.time()
+global moonSurf
+moonSurf = createMoonSurface(12, 100, (5000, 500), 10000, moonMedColour)
+print(time.time() - t1)
+
+if DEBUG:
+    print(f"Startup time (s): {time.time()- startTime}")
+
 while running:
     while inMainMenu:
         mainMenu()
