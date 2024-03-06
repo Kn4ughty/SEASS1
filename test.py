@@ -323,20 +323,41 @@ def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
     return out
 
 def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, craterChance: int, moonMedColour) -> pg.Surface:
-    print(type(size))
-    print(size)
+
+    #This method is very expensive.
+    #I could like set it up so it does this once and then like stores the image.
+    #Maybe do it on startup for a new user and store it in like appdata/equivilant
+    #then each user gets a uniqie surface.
+    #it doesnt really matter TBH
+
     out = pg.Surface((size))
     pg.draw.rect(out, moonMedColour, ((0, 0), size))
-    for x in range(0, size[0]):
-        for y in range(0, size[1]):
-            #print(f"x: {x}, y: {y}")
-            a = random.randrange(0, craterChance)
-            if a == 1:
-                crSize = random.triangular(craterSizeMin, craterSizeMax)
-                crColourNum = random.triangular(100, 200)
-                crColour = pg.Color(crColourNum, crColourNum, crColourNum)
 
-                pg.draw.circle(out, crColour, (x, y), crSize)
+    minColour = 50
+    maxColour = 200
+
+
+    for i in range(0, size[0]*size[1]):
+        x = random.randrange(size[0])
+        y = random.randrange(size[1])
+
+        a = random.randrange(0, craterChance)
+        if a == 1:
+            #print("whoq!")
+            crSize = random.triangular(craterSizeMin, craterSizeMax)
+            crColourNum = random.triangular(minColour, maxColour)
+            crColour = pg.Color(crColourNum, crColourNum, crColourNum)
+            # Main circle
+            pg.draw.circle(out, crColour, (x, y), crSize)
+
+            pg.draw.circle(out, pg.Color(crColourNum - 10, crColourNum - 10, crColourNum - 10), (x, y), crSize / 1.25)
+
+            Subcraters = random.randrange(3, 10) # could be proprtional to crater size?
+
+            #for k in range(Subcraters):
+            #    xOffset = random.randrange(2, (crSize / 1.5))
+            #    yOffset = random.randrange(2, (crSize / 1.5))
+
 
 
 
@@ -361,7 +382,6 @@ class Debug():
 
         def on_button1_click():
             self.x = self.x + 1
-            print(loops)
             print("whoa event!!")
             if RAINBOW:
                 BACKGROUND.r = random.randrange(0, 255)
@@ -491,21 +511,24 @@ def mainMenu():
 
 
     
-
+t1 = time.time()
 global starBackground
 starBackground = createStarBackground(8, 5000)
+if DEBUG:
+    print(f"Star Bg Gen time (s): {time.time() - t1}")
 
 running = True
+
 t1 = time.time()
 global moonSurf
-moonSurf = createMoonSurface(12, 100, (5000, 500), 10000, moonMedColour)
-print(time.time() - t1)
+moonSurf = createMoonSurface(12, 100, (4000, 500), 10000, moonMedColour)
+if DEBUG:
+    print(f"MoonSurfGen time (s): {time.time() - t1}")
 
 if DEBUG:
-    print(f"Startup time (s): {time.time()- startTime}")
+    print(f"Total startup time (s): {time.time()- startTime}")
 
 while running:
     while inMainMenu:
         mainMenu()
-        loops = loops + 1
     main()
