@@ -525,7 +525,7 @@ def mainMenu():
     clock.tick(FPS)
 
 
-    
+
 t1 = time.time()
 global starBackground
 starBackground = createStarBackground(8, 5000)
@@ -540,8 +540,11 @@ moonSurf = createMoonSurface(12, 100, (4000, 500), 10000, moonMedColour)
 if DEBUG:
     print(f"MoonSurfGen time (s): {time.time() - t1}")
 
+
 if DEBUG:
     print(f"Total startup time (s): {time.time()- startTime}")
+
+
 
 while running:
     while inMainMenu:
