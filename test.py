@@ -330,6 +330,8 @@ def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, crate
     #then each user gets a uniqie surface.
     #it doesnt really matter TBH
 
+    # cr is abreviation for crater
+
     out = pg.Surface((size))
     pg.draw.rect(out, moonMedColour, ((0, 0), size))
 
@@ -352,11 +354,24 @@ def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, crate
 
             pg.draw.circle(out, pg.Color(crColourNum - 10, crColourNum - 10, crColourNum - 10), (x, y), crSize / 1.25)
 
-            Subcraters = random.randrange(3, 10) # could be proprtional to crater size?
+            subCrMin = int(crSize / 30)
+            subCrMax = int(crSize / 10)
 
-            #for k in range(Subcraters):
-            #    xOffset = random.randrange(2, (crSize / 1.5))
-            #    yOffset = random.randrange(2, (crSize / 1.5))
+            Subcraters = random.randrange(subCrMin, subCrMax) # could be proprtional to crater size?
+            for k in range(Subcraters):
+                subCrColourNum = random.triangular(minColour, maxColour)
+                subCrColour = pg.Color(subCrColourNum, subCrColourNum, subCrColourNum)
+
+                ratio = int(crSize / 1.5)
+
+                xOffset = random.randrange(-ratio, ratio)
+                yOffset = random.randrange(-ratio, ratio)
+
+                subCrSize = random.triangular(4, crSize / 4)
+
+                pg.draw.circle(out, subCrColour, (x + xOffset, y + yOffset), subCrSize)
+
+                #pg.draw.circle()
 
 
 
