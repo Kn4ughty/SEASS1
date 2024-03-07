@@ -3,13 +3,19 @@ import pygame as pg
 import random
 import configparser
 import time
-
 # My librarys
 import GameLib as gl
 import Lib.lib as lib
 from lem import lem
 
+
+# TODO - exhaust images (animated?)
+# TODO - Add ending settings and scoring stuff
+# TODO - Tweak values and make game fune
+
+
 startTime = time.time()
+
 
 #Read config.ini file
 config_object = configparser.ConfigParser()
@@ -39,20 +45,19 @@ pg.init()
 # Colours
 
 ## UI stuff
-UIColour = pg.color.Color(77, 84, 123, 255 * 0.7)
-fontColour = pg.color.Color(255, 255, 255)
+UIColour = pg.Color(77, 84, 123, 255 * 0.7)
+fontColour = pg.Color(255, 255, 255)
 
-barColour = pg.color.Color(50, 255, 186)
-barOutlineColour = pg.color.Color(255, 185, 252)
-contentFontColour = pg.color.Color(255, 90, 248)
+barColour = pg.Color(50, 255, 186)
+barOutlineColour = pg.Color(255, 185, 252)
+contentFontColour = pg.Color(255, 90, 248)
 
 # World stuff
 BACKGROUND = pg.Color(0, 0, 0)
-SPACECOLOUR = (75, 21, 98)
 moonMedColour = pg.Color(127, 127, 127)
 
 # !!!!! FLags
-DEBUG = True
+isDebug = True
 RAINBOW = False
 
 # Game settings
@@ -71,15 +76,15 @@ uiPadding = 5
 
 # LEM stats
 # all in SI units
-LaunchMass = 15200
+#LaunchMass = 15200
 
 # Descent stage
-DStageDeltaV = 2500
-DPropellantMass = 8200
-DThrust = 45040
+#DStageDeltaV = 2500
+#DPropellantMass = 8200
+#DThrust = 45040
 
 # Dy mass
-Mass = 4280
+#Mass = 4280
 
 ## Physics config
 #gravity = -1.625
@@ -135,7 +140,7 @@ camera = gl.camera.camera({
 
 # Setup
 
-WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0, depth=0, display=0, vsync=1)
 pg.display.set_caption('Moonlander 🚀')
 
 
@@ -159,11 +164,11 @@ LEMIMG = pg.image.load("Assets/LEM.png")
 
 
 def toggleDebug():
-    global DEBUG
-    if DEBUG:
-        DEBUG = False
+    global isDebug
+    if isDebug:
+        isDebug = False
     else:
-        DEBUG = True
+        isDebug = True
 
 debugToggleButton = gl.ui.Button({
     "surface": WINDOW,
@@ -224,7 +229,7 @@ def main():
 
 
 def draw():
-    if DEBUG:
+    if isDebug:
         WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
     else:
         WINDOW.fill(BACKGROUND)
@@ -239,7 +244,7 @@ def draw():
     drawUI()
 
 
-    if DEBUG:
+    if isDebug:
         Debug.ShowFPS()
 
 
@@ -340,12 +345,10 @@ def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, crate
 
 
     for i in range(0, size[0]*size[1]):
-        x = random.randrange(size[0])
-        y = random.randrange(size[1])
-
         a = random.randrange(0, craterChance)
         if a == 1:
-            #print("whoq!")
+            x = random.randrange(size[0])
+            y = random.randrange(size[1])
             crSize = random.triangular(craterSizeMin, craterSizeMax)
             crColourNum = random.triangular(minColour, maxColour)
             crColour = pg.Color(crColourNum, crColourNum, crColourNum)
@@ -529,7 +532,7 @@ def mainMenu():
 t1 = time.time()
 global starBackground
 starBackground = createStarBackground(8, 5000)
-if DEBUG:
+if isDebug:
     print(f"Star Bg Gen time (s): {time.time() - t1}")
 
 running = True
@@ -537,16 +540,17 @@ running = True
 t1 = time.time()
 global moonSurf
 moonSurf = createMoonSurface(12, 100, (4000, 500), 10000, moonMedColour)
-if DEBUG:
+if isDebug:
     print(f"MoonSurfGen time (s): {time.time() - t1}")
 
 
-if DEBUG:
+if isDebug:
     print(f"Total startup time (s): {time.time()- startTime}")
 
-
+print(uiElements)
 
 while running:
     while inMainMenu:
         mainMenu()
     main()
+
