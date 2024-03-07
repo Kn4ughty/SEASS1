@@ -61,10 +61,16 @@ isDebug = True
 RAINBOW = False
 
 # Game settings
-FPS = 60
 clock = pg.time.Clock()
 WINDOW_WIDTH = 1600
 WINDOW_HEIGHT = 900
+
+
+WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0, depth=0, display=0, vsync=1)
+pg.display.set_caption('Moonlander 🚀')
+
+# My lord does 240FPS look good on my desktop pc. (can only render at 200 :/)
+FPS = max(pg.display.get_desktop_refresh_rates())
 
 
 # UI settings
@@ -137,11 +143,6 @@ camera = gl.camera.camera({
     "moveStrength": camSpeed,
     "FPS": FPS
 })
-
-# Setup
-
-WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0, depth=0, display=0, vsync=1)
-pg.display.set_caption('Moonlander 🚀')
 
 
 uiElements = []
@@ -412,28 +413,6 @@ class Debug():
         uiElements.append(button1)
 
 
-
-
-    #def ShowAverageFPS():
-    #    pass
-    #    # im not doing this
-
-    #    rX = 50 # Get average for 50 frames
-
-    #    fps = round(clock.get_fps(), 2)
-    #    rLen = len(rollingFPSAverage)
-    #    if rLen < rX:
-    #        rollingFPSAverage.append(fps)
-    #    elif rLen == rX:
-    #        # move every element along,
-    #        # delete last one,
-    #        pass
-
-    #    font = pygame.font.SysFont("Hack", 15, True)
-    #    img = font.render(fps, True, pygame.Color(0, 255, 0))
-    #    WINDOW.blit(img, ((0, 0)))
-
-
 def events():
     global rem
     for event in pg.event.get() :
@@ -447,6 +426,9 @@ def events():
                 print(rem)
             if event.key == pg.K_MINUS:
                 rem = rem - 5
+            if event.key == pg.K_ESCAPE:
+                pg.quit()
+                sys.exit()
 
 def StartGame():
     global inMainMenu
