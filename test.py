@@ -153,14 +153,7 @@ uiLayer = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pg.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
 
 
-
-BACKGROUNDSURF = pg.Surface((0, 0))
-
-LEMIMG = pg.image.load("Assets/LEM.png")
-
-#TOP = ygame.Surface((0, 0), pg.SRCALPHA, 32)
-
-
+LEMImg = pg.image.load("Assets/LEM.png")
 
 
 def toggleDebug():
@@ -282,7 +275,7 @@ def drawMoonSurface():
 
 def drawLEM():
     # SMooth scale seems to work at good fps hmmm
-    newLEM = pg.transform.smoothscale(LEMIMG, (480, 350))
+    newLEM = pg.transform.smoothscale(LEMImg, (480, 350))
     rotated_image = pg.transform.rotate(newLEM, -lem.angle)
     topleft = (lem.x, lem.y)
     nr = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
@@ -320,9 +313,6 @@ def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
                 #p.draw.circle(out, "White", (x, y), size - 3)
 
                 out.blit(circle, (x-4, y-4))
-
-
-                #p.draw.line(BACKGROUNDSURF,)
 
 
     return out
@@ -503,15 +493,30 @@ def mainMenu():
         })
         uiElements.append(StartGameButton)
 
+
         # TODO Controls guide
         # TODO Scaling options
         # TODO Scores
 
+        # title
+        titleFont = pg.font.Font("Assets/Moonlander.otf", fontSize*5)
+        global titleImg
+        titleImg = titleFont.render("MOONLANDER", True, "Grey")
+
+
+
     hasSetup = True
+
+
 
     events()
     drawBackground()
     drawUI()
+
+    titlepos = (((WINDOW_WIDTH - titleImg.get_width()) / 2), 50)
+
+    WINDOW.blit(titleImg, titlepos)
+
 
     keys = pg.key.get_just_released()
     if keys[pg.K_ESCAPE]:
@@ -547,7 +552,7 @@ if isDebug:
 if isDebug:
     print(f"Total startup time (s): {time.time()- startTime}")
 
-print(uiElements)
+
 
 while running:
     while inMainMenu:
