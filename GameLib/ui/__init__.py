@@ -145,7 +145,7 @@ class Button(Rectangle):
 
 	def draw(self) -> None:
 		Rectangle.draw(self) # poggers no re-written code
-		
+
 		# optomiseatio  here to only font if text has changed
 		font = None
 		font = pg.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
@@ -260,6 +260,3 @@ class bar(Rectangle):
 
 	def update(self):
 		self.draw()
-
-
-

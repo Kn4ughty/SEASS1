@@ -178,7 +178,7 @@ debugToggleButton = gl.ui.Button({
     "fontSize": fontSize,
     "isBold": True,
     "text": "Debug",
-    "clickEventHandler": toggleDebug # works
+    "clickEventHandler": toggleDebug
 })
 uiElements.append(debugToggleButton)
 
@@ -203,12 +203,11 @@ LEMFuelBar = gl.ui.bar({
     "text": "Fuel:",
     "progress": (lem.fuel / lem.maxFuel)
 })
-# I have learned points in python dont really exist so ill have to
+# I have learned pointerss in python dont really exist so ill have to
 # update bars in a hard coded way for each bar.
 
 uiElements.append(LEMFuelBar)
 
-print((lem.fuel / lem.maxFuel))
 
 def main():
     #pg.draw.rect(WINDOW, (138, 12, 123), (10, 10, 100, 100))
