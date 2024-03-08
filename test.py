@@ -32,6 +32,7 @@ camSpeed = int(CONTROLS["camspeed"])
 camFriction = int(CONTROLS["camfriction"])
 
 hasSetup = False
+mainHasSetup = False
 
 good = True
 bad = False
@@ -206,10 +207,14 @@ LEMFuelBar = gl.ui.bar({
 # I have learned pointerss in python dont really exist so ill have to
 # update bars in a hard coded way for each bar.
 
-uiElements.append(LEMFuelBar)
+#uiElements.append(LEMFuelBar)
 
 
 def main():
+    global mainHasSetup
+    if not mainHasSetup:
+        uiElements.append(LEMFuelBar)
+        mainHasSetup = True # tee hee performace went weee downwards without this
     #pg.draw.rect(WINDOW, (138, 12, 123), (10, 10, 100, 100))
     events()
     camera.update(clock)
