@@ -9,7 +9,6 @@ import Lib.lib as lib
 from lem import lem
 
 
-# TODO - exhaust images (animated?)
 # TODO - Add ending settings and scoring stuff
 # TODO - Tweak values and make game fune
 
@@ -122,8 +121,8 @@ lem = lem({
     "angle": 0,
     "omega": 0,
     "maxOmega": 10,
-    "rotStrength": 10,
-    "angularFriction": 2,
+    "rotStrength": 15,
+    "angularFriction": 10,
     "throttleSens": 200,
     "maxThrottle": 100,
     "massFlowRate": 14.768,
@@ -156,6 +155,7 @@ uiLayer = uiLayer.convert_alpha()
 
 
 LEMImg = pg.image.load("Assets/LEM.png")
+LEMExhaustImg = pg.image.load("Assets/Exhaust1.png")
 
 
 def toggleDebug():
@@ -270,7 +270,6 @@ def drawUI():
 
 
 def drawBackground():
-
     WINDOW.blit(starBackground, (0, 0))
 
 def drawMoonSurface():
@@ -279,11 +278,23 @@ def drawMoonSurface():
     camera.drawSurf(moonSurf, WINDOW, pg.Rect(0, 0, 0, 0))
 
 def drawLEM():
-    # SMooth scale seems to work at good fps hmmm
-    newLEM = pg.transform.smoothscale(LEMImg, (480, 350))
-    rotated_image = pg.transform.rotate(newLEM, -lem.angle)
+    scaleFactor = 4
+
+    # I really really should make rotation a function :)
+    newExhaust = pg.transform.smoothscale(LEMExhaustImg, (LEMExhaustImg.get_width() / scaleFactor, LEMExhaustImg.get_height() / scaleFactor))
+    newExhaust.set_alpha(255 * (lem.throttle / lem.maxThrottle))
     topleft = (lem.x, lem.y)
-    nr = rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
+    Exhaust_rotated_image = pg.transform.rotate(newExhaust, -lem.angle)
+    Exhaustnr = Exhaust_rotated_image.get_rect(center = newExhaust.get_rect(topleft = topleft).center)
+    camera.drawSurf(Exhaust_rotated_image, WINDOW, Exhaustnr)
+
+
+    newLEM = pg.transform.smoothscale(LEMImg, (LEMImg.get_width() / scaleFactor, LEMImg.get_height() / scaleFactor))
+    lem_rotated_image = pg.transform.rotate(newLEM, -lem.angle)
+    LEMnr = lem_rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
+    camera.drawSurf(lem_rotated_image, WINDOW, LEMnr)
+
+
 
 
     #print(pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width, nr.height))
@@ -292,7 +303,7 @@ def drawLEM():
 
     #WINDOW.blit(rotated_image, nr)
     #camera.drawSurf(rotated_image, WINDOW, pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width +lem.width, nr.height + lem.height))
-    camera.drawSurf(rotated_image, WINDOW, nr)
+
     #newLEM = pg.transform.rotate(newLEM, LEMAngle)
 
     #WINDOW.blit(rot_image, (0, 0))
