@@ -22,7 +22,7 @@ class camera(object):
         self.FPS = config.get("FPS")
 
     def update(self, clock):
-        dt = clock.tick(self.FPS)/1000
+        dt = clock.get_time()/1000
 
         keys = pg.key.get_pressed()
 

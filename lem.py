@@ -37,7 +37,8 @@ class lem(object):
 
     def physicsStep(self, clock):
 
-        dt = clock.tick(self.FPS)/1000
+        #dt = clock.tick(self.FPS)/1000
+        dt = clock.get_time()/1000
 
         keys = pg.key.get_pressed()
         # There is probably a really cool way to do this where you have list of
@@ -107,9 +108,6 @@ class lem(object):
 
         self.x += self.vx
         self.y += self.vy
-
-
-
 
 
 

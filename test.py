@@ -9,6 +9,7 @@ import Lib.lib as lib
 from lem import lem
 
 
+# TODO - Fix delta time
 # TODO - Add ending settings and scoring stuff
 # TODO - Tweak values and make game fune
 
@@ -69,8 +70,9 @@ WINDOW_HEIGHT = 900
 WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0, depth=0, display=0, vsync=1)
 pg.display.set_caption('Moonlander 🚀')
 
-# My lord does 240FPS look good on my desktop pc. (can only render at 200 :/)
-FPS = max(pg.display.get_desktop_refresh_rates())
+
+#FPS = max(pg.display.get_desktop_refresh_rates())
+FPS = 15
 
 
 # UI settings
@@ -146,8 +148,6 @@ camera = gl.camera.camera({
 
 
 uiElements = []
-#uiLayer = pg.Surface((15 * rem, 10 * rem), pg.SRCALPHA, 32)
-#uiLayer = uiLayer.convert_alpha()
 
 global uiLayer
 uiLayer = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pg.SRCALPHA, 32)
@@ -246,8 +246,8 @@ def draw():
         Debug.ShowFPS()
 
 
-    pg.display.flip()
-    #pg.display.update()
+    #pg.display.flip()
+    pg.display.update()
 
 def drawUI():
 
@@ -296,19 +296,6 @@ def drawLEM():
 
 
 
-
-    #print(pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width, nr.height))
-    #print(pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width +lem.width, nr.height + lem.height))
-
-
-    #WINDOW.blit(rotated_image, nr)
-    #camera.drawSurf(rotated_image, WINDOW, pg.Rect(nr.x + lem.x, nr.y + lem.y, nr.width +lem.width, nr.height + lem.height))
-
-    #newLEM = pg.transform.rotate(newLEM, LEMAngle)
-
-    #WINDOW.blit(rot_image, (0, 0))
-
-
 def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
     out = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
     lineWidth = 1
@@ -334,7 +321,6 @@ def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
     return out
 
 def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, craterChance: int, moonMedColour) -> pg.Surface:
-
     #This method is very expensive.
     #I could like set it up so it does this once and then like stores the image.
     #Maybe do it on startup for a new user and store it in like appdata/equivilant
@@ -454,6 +440,8 @@ def StartGame():
 
 def mainMenu():
     global hasSetup
+    #print("in main meu")
+    #print(time.time())
 
     if not hasSetup:
 
