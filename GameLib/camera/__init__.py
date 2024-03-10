@@ -23,6 +23,7 @@ class camera(object):
 
     def update(self, clock):
         dt = clock.get_time()/1000
+        #print(dt)
 
         keys = pg.key.get_pressed()
 

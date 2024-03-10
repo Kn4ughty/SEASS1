@@ -70,8 +70,14 @@ def tint(surf, tint_color) -> pg.Surface:
     surf.fill(tint_color[0:3] + (0,), None, pg.BLEND_RGBA_ADD)
     return surf
 
-def rotate(image, angle, x, y):
+def oldrotate(image, angle, x, y):
     rotated_image = pg.transform.rotate(image, angle)
     new_rect = rotated_image.get_rect(center = image.get_rect(center = (x, y)).center)
 
     return rotated_image, new_rect
+
+def rotate(img: pg.Surface, angle: float, centerCords: tuple) -> pg.Surface:
+    topleft = centerCords #might renmae topleft var
+    rotatedImg = pg.transform.rotate(img, -angle)
+    newRect = rotatedImg.get_rect(center = img.get_rect(topleft = topleft).center)
+    return rotatedImg, newRect

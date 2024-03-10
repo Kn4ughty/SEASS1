@@ -3,13 +3,14 @@ import pygame as pg
 import random
 import configparser
 import time
+
 # My librarys
 import GameLib as gl
 import Lib.lib as lib
 from lem import lem
 
 
-# TODO - Fix delta time
+# TODO - Fix physics to be constant regarless of FPS
 # TODO - Add ending settings and scoring stuff
 # TODO - Tweak values and make game fune
 
@@ -71,8 +72,11 @@ WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0, depth=0, di
 pg.display.set_caption('Moonlander 🚀')
 
 
+# I cannot work out why the physics speed is wrong so
+# For now you need to run at 60fps
+# Sorry people with slow computers
 #FPS = max(pg.display.get_desktop_refresh_rates())
-FPS = 15
+FPS = 60
 
 
 # UI settings
@@ -280,19 +284,16 @@ def drawMoonSurface():
 def drawLEM():
     scaleFactor = 4
 
-    # I really really should make rotation a function :)
     newExhaust = pg.transform.smoothscale(LEMExhaustImg, (LEMExhaustImg.get_width() / scaleFactor, LEMExhaustImg.get_height() / scaleFactor))
     newExhaust.set_alpha(255 * (lem.throttle / lem.maxThrottle))
-    topleft = (lem.x, lem.y)
-    Exhaust_rotated_image = pg.transform.rotate(newExhaust, -lem.angle)
-    Exhaustnr = Exhaust_rotated_image.get_rect(center = newExhaust.get_rect(topleft = topleft).center)
-    camera.drawSurf(Exhaust_rotated_image, WINDOW, Exhaustnr)
+    lemExhaust, exhaustRect = gl.image.rotate(newExhaust, lem.angle, (lem.x, lem.y))
+    camera.drawSurf(lemExhaust, WINDOW, exhaustRect)
 
 
     newLEM = pg.transform.smoothscale(LEMImg, (LEMImg.get_width() / scaleFactor, LEMImg.get_height() / scaleFactor))
-    lem_rotated_image = pg.transform.rotate(newLEM, -lem.angle)
-    LEMnr = lem_rotated_image.get_rect(center = newLEM.get_rect(topleft = topleft).center)
-    camera.drawSurf(lem_rotated_image, WINDOW, LEMnr)
+    lem_rotated_image, lemRect = gl.image.rotate(newLEM, lem.angle, (lem.x, lem.y))
+
+    camera.drawSurf(lem_rotated_image, WINDOW, lemRect)
 
 
 

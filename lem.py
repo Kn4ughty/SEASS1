@@ -37,7 +37,6 @@ class lem(object):
 
     def physicsStep(self, clock):
 
-        #dt = clock.tick(self.FPS)/1000
         dt = clock.get_time()/1000
 
         keys = pg.key.get_pressed()
@@ -51,17 +50,12 @@ class lem(object):
 
         if (keys[pg.K_w] or keys[pg.K_UP] or keys[pg.K_LSHIFT]):
             newThrottle = self.throttle + (self.throttleSensitivity * dt)
-            if newThrottle <= self.maxThrottle:
-                self.throttle = newThrottle
-            else:
-                self.throttle = self.maxThrottle
+            self.throttle = min(newThrottle, self.maxThrottle)
 
         if (keys[pg.K_s] or keys[pg.K_DOWN] or keys[pg.K_LCTRL]):
             newThrottle = self.throttle - (self.throttleSensitivity * dt)
-            if newThrottle >= 0:
-                self.throttle = newThrottle
-            else:
-                self.throttle = 0
+            self.throttle = max(newThrottle, 0)
+
         if (keys[pg.K_x]):
             self.throttle = 0
         if (keys[pg.K_z]):
@@ -72,9 +66,10 @@ class lem(object):
                 self.omega = -self.maxOmega
             else:
                 self.omega = self.maxOmega
-        #angularVelocity *= dt * angleFriction
 
-        self.omega -= self.omega * self.angularFriction * dt
+
+        # Apply angular friction
+        self.omega -= self.angularFriction * self.omega * dt
 
         self.angle += self.omega
 
