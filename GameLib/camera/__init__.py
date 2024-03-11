@@ -11,13 +11,16 @@ class camera(object):
         self.vy = config.get("vy")
 
         self.friction = config.get("friction")
-        self.moveStrength = config.get("moveStrength")
+        self.moveStrengthConf = config.get("moveStrength")
+
+        self.scale = config.get("scale", 1)
+        self.scaleSpeed = config.get("scaleSpeed")
 
 
         self.tweenStrength = config.get("tweenStrength", 0)
 
         #self.scale = config.get("scale")
-        #self.scaleSpeed = config.get("scaleSpeed")
+
 
         self.FPS = config.get("FPS")
 
@@ -26,6 +29,8 @@ class camera(object):
         #print(dt)
 
         keys = pg.key.get_pressed()
+
+        self.moveStrength = self.moveStrengthConf * self.scale
 
         if (keys[pg.K_j]):
             self.vx += self.moveStrength * dt
@@ -56,11 +61,14 @@ class camera(object):
         # Fun fact size of the rect does not matter it just draws the surface sooo
         # No camera scaling
 
+        #Unless we do pg.transform.scale
+        surface = pg.transform.smoothscale(surface, (surface.get_width() / self.scale, surface.get_height() / self.scale))
+
         #print(worldRect)
 
         #newrect = ((self.x - worldRect.x), (self.y - worldRect.y)), worldRect.size
 
-        newrect = ((worldRect.x - self.x), (worldRect.y - self.y)), worldRect.size
+        newrect = ((worldRect.x - self.x) / self.scale, (worldRect.y - self.y) / self.scale), worldRect.size
 
         #print(newrect)
 

@@ -11,6 +11,9 @@ from lem import lem
 
 
 # TODO - Fix physics to be constant regarless of FPS
+## This one is a doozy
+
+
 # TODO - Add ending settings and scoring stuff
 # TODO - Tweak values and make game fune
 
@@ -86,35 +89,10 @@ rem = fontSize
 
 uiPadding = 5
 
-# LEM stats
-# all in SI units
-#LaunchMass = 15200
-
-# Descent stage
-#DStageDeltaV = 2500
-#DPropellantMass = 8200
-#DThrust = 45040
-
-# Dy mass
-#Mass = 4280
-
-## Physics config
-#gravity = -1.625
 gravity = -5
 
-# Max thrust = 45040 N
-# ISP = 311
-# https://www.omnicalculator.com/physics/specific-impulse
-# 14.768 kg/s
 
-# Mass including propellant: 10,334 kg
-# prop mass is 8200
-# 10344 - 8200 = 2144
-
-
-
-# 112 N on moon
-# 686 N on earth
+landHeight = 500
 
 
 lem = lem({
@@ -147,6 +125,8 @@ camera = gl.camera.camera({
     "vy": 0,
     "friction": camFriction,
     "moveStrength": camSpeed,
+    "scale": 2,
+    "scaleSpeed": 0.01,
     "FPS": FPS
 })
 
@@ -219,10 +199,32 @@ def main():
     if not mainHasSetup:
         uiElements.append(LEMFuelBar)
         mainHasSetup = True # tee hee performace went weee downwards without this
-    #pg.draw.rect(WINDOW, (138, 12, 123), (10, 10, 100, 100))
     events()
     camera.update(clock)
+
     lem.update(clock)
+    if lem.y + LEMImg.get_height() > 10:
+        #lem.land()
+        if lem.angle > 180:
+            angFromCenter = 360 - lem.angle
+        else:
+            angFromCenter = lem.angle
+
+        angScore = -pow((angFromCenter * 0.2), 2) + 40
+        if angScore < 0:
+            angScore = 0
+
+        yVelScore = (-pow((lem.vy * 0.32), 2) + 10) * 2
+
+        xVelScore = -pow((lem.vy * 0.75), 2) + 10
+
+        total = angScore + yVelScore + xVelScore
+
+        #print(f"Score: {total}")
+
+
+
+
     draw()
 
 
@@ -431,6 +433,9 @@ def events():
             if event.key == pg.K_ESCAPE:
                 pg.quit()
                 sys.exit()
+        if event.type == pg.MOUSEWHEEL:
+            #print(event.x, event.y)
+            camera.scale += camera.scaleSpeed * event.y * camera.scale
 
 def StartGame():
     global inMainMenu

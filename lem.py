@@ -99,10 +99,16 @@ class lem(object):
         #self.vy -= self.gravity * dt
 
 
-        #print(self.vy)
+        #print(self.y)
 
         self.x += self.vx
         self.y += self.vy
+
+
+
+
+    def land(self):
+        pass
 
 
 
