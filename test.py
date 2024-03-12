@@ -37,6 +37,8 @@ camFriction = int(CONTROLS["camfriction"])
 
 hasSetup = False
 mainHasSetup = False
+inEndScreen = False
+endScreenSetup = False
 
 good = True
 bad = False
@@ -96,10 +98,10 @@ landHeight = 500
 
 
 lem = lem({
-    "vx": 0,
+    "vx": 10,
     "vy": 0,
-    "x": 0,
-    "y": 0,
+    "x": -200,
+    "y": -3000,
     "width": 9.4,
     "height": 3.231,
     "angle": 0,
@@ -120,12 +122,12 @@ lem = lem({
 
 camera = gl.camera.camera({
     "x": 0,
-    "y": 0,
+    "y": -3000,
     "vx": 0,
     "vy": 0,
     "friction": camFriction,
     "moveStrength": camSpeed,
-    "scale": 2,
+    "scale": 4,
     "scaleSpeed": 0.01,
     "FPS": FPS
 })
@@ -200,30 +202,23 @@ def main():
         uiElements.append(LEMFuelBar)
         mainHasSetup = True # tee hee performace went weee downwards without this
     events()
+
+    if lem.y > -340:
+        global landed
+        landed = True
+
+        calcScore()
+        global inEndScreen
+        inEndScreen = True
+
+
+    if inEndScreen:
+        endScreen()
+    else:
+        lem.update(clock)
+
+
     camera.update(clock)
-
-    lem.update(clock)
-    if lem.y + LEMImg.get_height() > 10:
-        #lem.land()
-        if lem.angle > 180:
-            angFromCenter = 360 - lem.angle
-        else:
-            angFromCenter = lem.angle
-
-        angScore = -pow((angFromCenter * 0.2), 2) + 40
-        if angScore < 0:
-            angScore = 0
-
-        yVelScore = (-pow((lem.vy * 0.32), 2) + 10) * 2
-
-        xVelScore = -pow((lem.vy * 0.75), 2) + 10
-
-        total = angScore + yVelScore + xVelScore
-
-        #print(f"Score: {total}")
-
-
-
 
     draw()
 
@@ -442,8 +437,6 @@ def StartGame():
     inMainMenu = False
 
 
-
-
 def mainMenu():
     global hasSetup
     #print("in main meu")
@@ -524,6 +517,52 @@ def mainMenu():
     clock.tick(FPS)
 
 
+def calcScore():
+     #lem.land()
+    if lem.angle > 180:
+        angFromCenter = 360 - lem.angle
+    else:
+        angFromCenter = lem.angle
+
+    angScore = -pow((angFromCenter * 0.2), 2) + 40
+    if angScore < 0:
+        angScore = 0
+
+    yVelScore = (-pow((lem.vy * 0.32), 2) + 10) * 2
+
+    xVelScore = -pow((lem.vy * 0.75), 2) + 10
+
+    global totalScore
+    totalScore = angScore + yVelScore + xVelScore
+
+    print(f"Score: {totalScore}")
+
+def endScreen():
+    global endScreenSetup
+    if endScreenSetup == False:
+        calcScore()
+        ScoreDisplayText = gl.ui.Button({
+            "surface": uiLayer,
+            "type": "button",
+            "posX": 30,
+            "posY": 30,
+            "sizeX": 40,
+            "sizeY": 10,
+            "anchorSpace": "%",
+            "scaleSpace": "%",
+            "colour": UIColour,
+            "fontColour": fontColour,
+            "fontSize": fontSize,
+            "isBold": True,
+            "text": str(round(totalScore * 5, 5)),
+            "doesHighlighting": True
+        })
+        uiElements.append(ScoreDisplayText)
+
+        endScreenSetup = True
+    pass
+
+
 
 t1 = time.time()
 global starBackground
@@ -549,4 +588,6 @@ while running:
     while inMainMenu:
         mainMenu()
     main()
+
+
 

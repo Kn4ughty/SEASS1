@@ -120,6 +120,8 @@ class Button(Rectangle):
 
 		self.clickEventHandler = config.get("clickEventHandler", None)
 
+		self.doesHighlighting = config.get("doesHighlighting", False)
+
 		self.prevMouseState = False
 		
 
