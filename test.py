@@ -15,6 +15,9 @@ from lem import lem
 
 
 # TODO - Add ending settings and scoring stuff
+## TODO- Turn off score button highlight
+## Add proper display
+
 # TODO - Tweak values and make game fune
 
 
