@@ -210,7 +210,7 @@ def main():
         global landed
         landed = True
 
-        calcScore()
+        #calcScore()
         global inEndScreen
         inEndScreen = True
 
@@ -450,7 +450,6 @@ def mainMenu():
         global fontObj
         fontObj = pg.font.SysFont("Hack", 15, True)
         # create buttons,
-        # TODO Game logo
         global menuLayer
         menuLayer = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pg.SRCALPHA, 32)
         menuLayer = menuLayer.convert_alpha()
@@ -548,7 +547,25 @@ def endScreen():
             "surface": uiLayer,
             "type": "button",
             "posX": 30,
-            "posY": 30,
+            "posY": 40,
+            "sizeX": 40,
+            "sizeY": 20,
+            "anchorSpace": "%",
+            "scaleSpace": "%",
+            "colour": UIColour,
+            "fontColour": fontColour,
+            "fontSize": fontSize * 2,
+            "isBold": True,
+            "text": str(round(totalScore * 5, 5)),
+            "doesHighlighting": False
+        })
+        uiElements.append(ScoreDisplayText)
+
+        ScoreText = gl.ui.Button({
+            "surface": uiLayer,
+            "type": "button",
+            "posX": 30,
+            "posY": 15,
             "sizeX": 40,
             "sizeY": 10,
             "anchorSpace": "%",
@@ -557,10 +574,30 @@ def endScreen():
             "fontColour": fontColour,
             "fontSize": fontSize,
             "isBold": True,
-            "text": str(round(totalScore * 5, 5)),
-            "doesHighlighting": True
+            "text": "Your score is!...",
+            "doesHighlighting": False
         })
-        uiElements.append(ScoreDisplayText)
+        uiElements.append(ScoreText)
+
+        humancrytext = ""
+
+        if totalScore < 0:
+            humancrytext = "Woah thats really bad :("
+        if totalScore < 50:
+            humancrytext = "No strawberry jam on the walls this time!"
+        if totalScore < 100:
+            humancrytext = "Only a few broken bones"
+        if totalScore < 200:
+            humancrytext = "You might actually make it home!"
+        if totalScore < 300:
+            humancrytext = "Good job!"
+        if totalScore < 350:
+            humancrytext = "Very good job!!"
+        if totalScore > 350:
+            humancrytext = "Woah you win!"
+
+        print(humancrytext)
+            
 
         endScreenSetup = True
     pass

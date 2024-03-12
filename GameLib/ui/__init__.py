@@ -120,7 +120,7 @@ class Button(Rectangle):
 
 		self.clickEventHandler = config.get("clickEventHandler", None)
 
-		self.doesHighlighting = config.get("doesHighlighting", False)
+		self.doesHighlighting = config.get("doesHighlighting", True)
 
 		self.prevMouseState = False
 		
@@ -161,7 +161,8 @@ class Button(Rectangle):
 		self.draw()
 		self.em = self.fontSize
 		if self.isMouseOver():
-			self.highlight()
+			if self.doesHighlighting:
+				self.highlight()
 			if pg.mouse.get_pressed()[0] == 1 and not self.prevMouseState:
 				if self.clickEventHandler:
 					self.clickEventHandler()

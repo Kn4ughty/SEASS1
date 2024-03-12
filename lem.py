@@ -99,7 +99,7 @@ class lem(object):
         self.vy -= self.gravity * dt
 
 
-        print(self.y)
+        #print(self.y)
 
         self.x += self.vx
         self.y += self.vy
