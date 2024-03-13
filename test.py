@@ -3,8 +3,9 @@ import pygame as pg
 import random
 import configparser
 import time
+# Server stuff
 import requests
-
+import uuid
 # My librarys
 import GameLib as gl
 import Lib.lib as lib
@@ -25,6 +26,7 @@ from lem import lem
 
 serverURL = "http://127.0.0.1:5000"
 scoreGetURL = serverURL + "/scores"
+scorePosURL = scoreGetURL + "Get"
 
 startTime = time.time()
 
@@ -639,14 +641,15 @@ def parse_leaderboard(data):
 
     return outStr
 
+def submit_score():
+    json = {"name": "jimbo", "socre": "125.1234", "UUID": "woa"}
+    requests.post(scorePosURL, json = json)
 
 x = get_leaderboard() # would do this Async if i knew how
 
-print(x)
-print(type(x))
-
 print(parse_leaderboard(x))
 
+submit_score()
 
 t1 = time.time()
 global starBackground
