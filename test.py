@@ -128,6 +128,8 @@ camera = gl.camera.camera({
     "y": -3000,
     "vx": 0,
     "vy": 0,
+    "WinHeight": WINDOW_HEIGHT,
+    "WinWidth": WINDOW_WIDTH,
     "friction": camFriction,
     "moveStrength": camSpeed,
     "scale": 3.5,
@@ -220,8 +222,8 @@ def main():
     else:
         lem.update(clock)
 
-    #camera.x = lem.x
-    #camera.y = lem.y
+    camera.x = lem.x
+    camera.y = lem.y
     camera.update(clock)
 
 
@@ -293,7 +295,12 @@ def drawLEM():
 
 
     newLEM = pg.transform.smoothscale(LEMImg, (LEMImg.get_width() / scaleFactor, LEMImg.get_height() / scaleFactor))
+    
     lem_rotated_image, lemRect = gl.image.rotate(newLEM, lem.angle, (lem.x, lem.y))
+    
+    #lemRect.x -= lem_rotated_image.get_width() / 2
+    #lemRect.y -= lem_rotated_image.get_height() / 2
+    # The lem is gonna be off center and your gonna like it
 
     camera.drawSurf(lem_rotated_image, WINDOW, lemRect)
 

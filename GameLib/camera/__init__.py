@@ -10,6 +10,9 @@ class camera(object):
         self.vx = config.get("vx")
         self.vy = config.get("vy")
 
+        self.WinHeight = config.get("WinHeight")
+        self.WinWidth = config.get("WinWidth")
+
         self.friction = config.get("friction")
         self.moveStrengthConf = config.get("moveStrength")
 
@@ -23,6 +26,9 @@ class camera(object):
 
 
         self.FPS = config.get("FPS")
+
+        self.centerX = self.WinWidth / 2
+        self.centerY = self.WinHeight / 2 
 
     def update(self, clock):
         dt = clock.get_time()/1000
@@ -53,6 +59,8 @@ class camera(object):
         self.x += self.vx
         self.y += self.vy
 
+
+
         #print(self.x)
         #print(self.y)
 
@@ -67,8 +75,9 @@ class camera(object):
         #print(worldRect)
 
         #newrect = ((self.x - worldRect.x), (self.y - worldRect.y)), worldRect.size
+        
 
-        newrect = ((worldRect.x - self.x) / self.scale, (worldRect.y - self.y) / self.scale), worldRect.size
+        newrect = (((worldRect.x - self.x) / self.scale) + self.centerX, ((worldRect.y - self.y) / self.scale) + self.centerY), worldRect.size
 
         #print(newrect)
 
