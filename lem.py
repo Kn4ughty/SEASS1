@@ -79,12 +79,18 @@ class lem(object):
         self.realmass = self.mass + self.fuel
 
 
+        if self.fuel > 0:
+            self.thrust = self.throttle * self.massFlowRate * dt
+            self.fuel -= self.throttle * dt * self.massFlowRate
+        else:
+            self.fuel = 0
 
         # thrust in kilograms
-        self.thrust = self.throttle * self.massFlowRate * dt
+
 
         #print(self.fuel)
-        self.fuel -= self.throttle * dt * self.massFlowRate
+
+
 
         #print(self.thrust)
         #print(self.angle)

@@ -3,11 +3,13 @@ import pygame as pg
 import random
 import configparser
 import time
+import requests
 
 # My librarys
 import GameLib as gl
 import Lib.lib as lib
 from lem import lem
+
 
 
 # TODO - Fix physics to be constant regarless of FPS
@@ -21,7 +23,11 @@ from lem import lem
 # TODO - Tweak values and make game fune
 
 
+serverURL = "http://127.0.0.1:5000"
+scoreGetURL = serverURL + "/scores"
+
 startTime = time.time()
+
 
 
 #Read config.ini file
@@ -145,8 +151,11 @@ uiLayer = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pg.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
 
 
+scaleFactor = 4
 LEMImg = pg.image.load("Assets/LEM.png")
+LEMImg = pg.transform.smoothscale(LEMImg, (LEMImg.get_width() / scaleFactor, LEMImg.get_height() / scaleFactor))
 LEMExhaustImg = pg.image.load("Assets/Exhaust1.png")
+LEMexhaustImg = pg.transform.smoothscale(LEMExhaustImg, (LEMExhaustImg.get_width() / scaleFactor, LEMExhaustImg.get_height() / scaleFactor))
 
 
 def toggleDebug():
@@ -224,6 +233,10 @@ def main():
 
     camera.x = lem.x
     camera.y = lem.y
+
+    camera.x += (LEMImg.get_width() / 2) / camera.scale
+    camera.y += (LEMImg.get_height() / 2) / camera.scale
+
     camera.update(clock)
 
 
@@ -286,17 +299,16 @@ def drawMoonSurface():
     camera.drawSurf(moonSurf, WINDOW, pg.Rect(0, 0, 0, 0))
 
 def drawLEM():
-    scaleFactor = 4
 
-    newExhaust = pg.transform.smoothscale(LEMExhaustImg, (LEMExhaustImg.get_width() / scaleFactor, LEMExhaustImg.get_height() / scaleFactor))
-    newExhaust.set_alpha(255 * (lem.throttle / lem.maxThrottle))
-    lemExhaust, exhaustRect = gl.image.rotate(newExhaust, lem.angle, (lem.x, lem.y))
+
+    if lem.fuel > 0:
+        LEMexhaustImg.set_alpha(255 * (lem.throttle / lem.maxThrottle))
+    lemExhaust, exhaustRect = gl.image.rotate(LEMexhaustImg, lem.angle, (lem.x, lem.y))
+
     camera.drawSurf(lemExhaust, WINDOW, exhaustRect)
 
 
-    newLEM = pg.transform.smoothscale(LEMImg, (LEMImg.get_width() / scaleFactor, LEMImg.get_height() / scaleFactor))
-    
-    lem_rotated_image, lemRect = gl.image.rotate(newLEM, lem.angle, (lem.x, lem.y))
+    lem_rotated_image, lemRect = gl.image.rotate(LEMImg, lem.angle, (lem.x, lem.y))
     
     #lemRect.x -= lem_rotated_image.get_width() / 2
     #lemRect.y -= lem_rotated_image.get_height() / 2
@@ -612,6 +624,28 @@ def endScreen():
         endScreenSetup = True
     pass
 
+def get_leaderboard():
+    scores = requests.get(scoreGetURL)
+    return scores.json()
+
+def parse_leaderboard(data):
+    outStr = ""
+
+    for i in range(0, len(data)):
+        name = data[i].get("name")
+        score = data[i].get("score")
+        row = f"{(i+1):}. {name+",":<15} {score:>20}"
+        outStr += row + "\n"
+
+    return outStr
+
+
+x = get_leaderboard() # would do this Async if i knew how
+
+print(x)
+print(type(x))
+
+print(parse_leaderboard(x))
 
 
 t1 = time.time()
