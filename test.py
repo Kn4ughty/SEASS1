@@ -130,7 +130,7 @@ camera = gl.camera.camera({
     "vy": 0,
     "friction": camFriction,
     "moveStrength": camSpeed,
-    "scale": 4,
+    "scale": 3.5,
     "scaleSpeed": 0.01,
     "FPS": FPS
 })
@@ -220,8 +220,10 @@ def main():
     else:
         lem.update(clock)
 
-
+    #camera.x = lem.x
+    #camera.y = lem.y
     camera.update(clock)
+
 
     draw()
 
@@ -535,13 +537,13 @@ def calcScore():
     xVelScore = -pow((lem.vy * 0.75), 2) + 10
 
     global totalScore
-    totalScore = angScore + yVelScore + xVelScore
+    totalScore = (angScore + yVelScore + xVelScore) * 5
 
     print(f"Score: {totalScore}")
 
 def endScreen():
     global endScreenSetup
-    if endScreenSetup == False:
+    if not endScreenSetup:
         calcScore()
         ScoreDisplayText = gl.ui.Button({
             "surface": uiLayer,
@@ -556,7 +558,7 @@ def endScreen():
             "fontColour": fontColour,
             "fontSize": fontSize * 2,
             "isBold": True,
-            "text": str(round(totalScore * 5, 5)),
+            "text": str(round(totalScore, 5)),
             "doesHighlighting": False
         })
         uiElements.append(ScoreDisplayText)
@@ -581,20 +583,21 @@ def endScreen():
 
         humancrytext = ""
 
+        print(totalScore)
+
         if totalScore < 0:
             humancrytext = "Woah thats really bad :("
-        if totalScore < 50:
+        if totalScore > 50:
             humancrytext = "No strawberry jam on the walls this time!"
-        if totalScore < 100:
+        if totalScore > 100:
             humancrytext = "Only a few broken bones"
-        if totalScore < 200:
+        if totalScore > 200:
             humancrytext = "You might actually make it home!"
-        if totalScore < 300:
-            humancrytext = "Good job!"
-        if totalScore < 350:
-            humancrytext = "Very good job!!"
+        if totalScore > 300:
+            humancrytext = "Very good job!"
         if totalScore > 350:
-            humancrytext = "Woah you win!"
+            humancrytext = "I didnt even think this was possible"
+
 
         print(humancrytext)
             
