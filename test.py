@@ -256,6 +256,7 @@ def resetGame():
     luna = lem_copy
     camera = camera_copy
     inEndScreen = False
+    
 
 
 def main():
@@ -274,9 +275,9 @@ def main():
         inEndScreen = True
 
 
-    if inEndScreen:
-        endScreen()
-    else:
+    endScreen()
+
+    if not inEndScreen:
         luna.update(clock)
 
     camera.x = luna.x
@@ -300,6 +301,8 @@ def draw():
         WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
     else:
         WINDOW.fill(BACKGROUND)
+    
+    uiLayer.fill((0, 0, 0, 0))
 
 
     drawBackground()
@@ -325,7 +328,13 @@ def drawUI():
         if element.type == "bar":
             if element.title == "Fuel:":
                 element.progress = luna.fuel / luna.maxFuel
-                element.contents = f"{round(luna.fuel)} / {round(luna.maxFuel, 1)}"
+                element.contents = f"{round(luna.fuel)} / {round(luna.maxFuel, 1)}" # I love stupid hard coded things
+                if inEndScreen:
+                    continue
+        if element.type == "button":
+            if element.text == "Your score is!...":
+                #print("weeping rn")
+                pass
 
         #element.text = str(x)
         element.em = rem # cope future me hahahah
@@ -504,6 +513,10 @@ def events():
             if event.key == pg.K_ESCAPE:
                 pg.quit()
                 sys.exit()
+            if event.key == pg.K_r:
+                print("wagh!!")
+                inEndScreen = False
+                resetGame()
         if event.type == pg.MOUSEWHEEL:
             #print(event.x, event.y)
             camera.scale += camera.scaleSpeed * event.y * camera.scale
@@ -586,7 +599,7 @@ def mainMenu():
 
     # Clean up
     if not inMainMenu:
-        uiElements.remove(StartGameButton) #Ide shut up
+        uiElements.remove(StartGameButton)
         StartGameButton = None
 
     clock.tick(FPS)
@@ -614,7 +627,7 @@ def calcScore():
 
 def endScreen():
     global endScreenSetup
-    if not endScreenSetup:
+    if not endScreenSetup and inEndScreen:
         calcScore()
 
         humancrytext = ""
@@ -634,6 +647,7 @@ def endScreen():
         if totalScore > 350:
             humancrytext = "I didnt even think this was possible"
 
+        global ScoreText # i am not a fan of this
         ScoreText = gl.ui.Button({
             "surface": uiLayer,
             "type": "button",
@@ -653,6 +667,7 @@ def endScreen():
         uiElements.append(ScoreText)
 
         # - {int(len(str(round(totalScore, 5))) / 2)}
+        global ScoreDisplayText
         ScoreDisplayText = gl.ui.Button({
             "surface": uiLayer,
             "type": "button",
@@ -664,36 +679,45 @@ def endScreen():
             "scaleSpace": "%",
             "colour": UIColour,
             "fontColour": fontColour,
-            "fontSize": int(fontSize * 0.8),
+            "fontSize": int(fontSize * 0.7),
             "isBold": True,
-            "text": f"{round(totalScore, 5):^} \n {humancrytext:^}", #formatting strings is hard okay
+            "text": f"{round(totalScore, 5):^30}" +  f"\n {humancrytext:^30}", #formatting strings is hard okay
             "doesHighlighting": False
         })
         uiElements.append(ScoreDisplayText)
 
         submit_score(name, totalScore)
 
+        global leaderBoardDisplay
         leaderBoardDisplay = gl.ui.Button({
             "surface": uiLayer,
             "type": "button",
             "posX": 5,
             "posY": 45,
             "sizeX": 90,
-            "sizeY": 40,
+            "sizeY": 50,
             "anchorSpace": "%",
             "scaleSpace": "%",
             "colour": UIColour,
             "fontColour": fontColour,
             "fontSize": int(fontSize * 0.8),
-            "isBold": True,
+            "isBold": False,
             "text":parse_leaderboard(get_leaderboard()), #formatting strings is hard okay
             "doesHighlighting": False
         })
         uiElements.append(leaderBoardDisplay)
-
-
         endScreenSetup = True
-    pass
+    
+    if not inEndScreen and endScreenSetup:
+        print("wowah about to delete things!")
+        print(f"{inEndScreen} {endScreenSetup}")
+
+        uiElements.remove(ScoreText)
+        uiElements.remove(ScoreDisplayText)
+        uiElements.remove(leaderBoardDisplay)
+
+        endScreenSetup = False
+
 
 def get_leaderboard():
     scores = requests.get(scoreGetURL)
@@ -702,7 +726,7 @@ def get_leaderboard():
 def parse_leaderboard(data) -> str:
     outStr = ""
 
-    for i in range(0, len(data)):
+    for i in range(0, min(len(data), 10)):
         name = data[i].get("name")
         score = data[i].get("score")
         row = f"{(i+1)}. {name:<10} {score:>20}"
