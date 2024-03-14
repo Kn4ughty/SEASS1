@@ -1,5 +1,6 @@
 import pygame as pg
 import math
+import time # for text entry
 
 # TODO Move these to seperate files
 
@@ -145,17 +146,21 @@ class Button(Rectangle):
 		self.SURFACE.blit(outlineSurf, self.rect)
 
 
-	def draw(self) -> None:
+	def draw(self) -> pg.Surface:
 		Rectangle.draw(self) # poggers no re-written code
 
 		# optomiseatio  here to only font if text has changed
 		font = None
 		font = pg.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
 		img = font.render(self.text, True, self.fontColour)
+		#self.fontImg = img
 
 		# this is a very long line of code :/
 		# its for centering text btw
 		self.SURFACE.blit(img, ((self.posX + ((self.sizeX - img.get_width()) / 2)),(self.posY + ((self.sizeY - img.get_height()) / 2))))
+		#print(img)
+		return img
+
 
 	def update(self) -> None:
 		self.draw()
@@ -264,12 +269,50 @@ class bar(Rectangle):
 	def update(self):
 		self.draw()
 
-class TextBox(Button):
+class TextEntryBox(Button):
+	""" # **Dont use this**
+
+	Dont ise this this, doesnt dwork
+
+	"""
 	def __init__(self, config) -> None:
 		Button.__init__(self, config)
 
+		self.selected = False
+		self.fontImg = pg.Surface((0, 0))
+
+		self.clickEventHandler = self.toggleSelected
+
 	def update(self) -> None:
-		pass
+		Button.update(self)
+		self.fontImg = Button.draw(self)
+		print(type(self.fontImg))
+		self.draw()
 
 	def draw(self) -> None:
-		Button.draw()
+		rect = self.fontImg.get_rect()
+		rect.topleft = (20, 20)
+		cursor = pg.Rect(rect.topright, (3, rect.height))
+
+		for event in pg.event.get():
+			if event.type == pg.KEYDOWN:
+				if event.key == pg.K_BACKSPACE:
+					if len(self.text)>0:
+						self.text = self.text[:-1]
+				else:
+					self.text += event.unicode
+
+		rect.size = self.fontImg.get_size()
+		cursor.topleft = rect.topright
+		#cursor.topleft += self.posX
+
+
+		if time.time() % 1 > 0.5:
+			pg.draw.rect(self.SURFACE, "red", cursor)
+
+
+	def toggleSelected(self):
+		if self.selected:
+			self.selected = False
+		else:
+			self.selected = True

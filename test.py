@@ -11,6 +11,7 @@ import uuid
 import GameLib as gl
 import Lib.lib as lib
 from lem import lem
+import configGen
 
 
 
@@ -33,6 +34,22 @@ startTime = time.time()
 prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
 
 #Read config.ini file
+if not os.path.isfile(prefPath + "config.ini"):
+    configGen.gen(prefPath)
+
+global name
+
+if not os.path.isfile(prefPath + "name"):
+    print("WARNINGG!!!!!!!!!!\n"*5)
+    print("Name not found in config path")
+    name = input("Please enter your name here: ")
+    nameFile = open(prefPath + "name", "w")
+    nameFile.write(name)
+    nameFile.close()
+else:
+    nameFile = open(prefPath + "name", "r")
+    name = nameFile.read()
+
 config_object = configparser.ConfigParser()
 config_object.read(prefPath+"config.ini")
 
@@ -634,6 +651,7 @@ def endScreen():
             "doesHighlighting": False
         })
         uiElements.append(ScoreDisplayText)
+
 
         endScreenSetup = True
     pass

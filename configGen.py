@@ -1,7 +1,4 @@
 from configparser import ConfigParser
-import pygame as pg
-
-prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
 
 #Get the configparser object
 config_object = ConfigParser()
@@ -21,5 +18,6 @@ config_object["CONTROLS"] = {
     "camfriction": 7,
 }
 #Write the above sections to config.ini file
-with open(prefPath + "config.ini", 'w') as conf:
-    config_object.write(conf)
+def gen(prefPath):
+    with open(prefPath + "config.ini", 'w') as conf:
+        config_object.write(conf)
