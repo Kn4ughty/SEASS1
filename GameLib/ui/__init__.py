@@ -263,3 +263,13 @@ class bar(Rectangle):
 
 	def update(self):
 		self.draw()
+
+class TextBox(Button):
+	def __init__(self, config) -> None:
+		Button.__init__(self, config)
+
+	def update(self) -> None:
+		pass
+
+	def draw(self) -> None:
+		Button.draw()

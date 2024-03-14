@@ -17,13 +17,12 @@ from lem import lem
 # TODO - Fix physics to be constant regarless of FPS
 ## This one is a doozy
 
+# TODO - Name entering
 
-# TODO - Add ending settings and scoring stuff
-## TODO- Turn off score button highlight
-## Add proper display
 
 # TODO - Tweak values and make game fune
 
+# TODO - run config gen if file not found
 
 serverURL = "http://127.0.0.1:5000"
 scoreGetURL = serverURL + "/scores"
@@ -581,41 +580,6 @@ def endScreen():
     global endScreenSetup
     if not endScreenSetup:
         calcScore()
-        ScoreDisplayText = gl.ui.Button({
-            "surface": uiLayer,
-            "type": "button",
-            "posX": 30,
-            "posY": 40,
-            "sizeX": 40,
-            "sizeY": 20,
-            "anchorSpace": "%",
-            "scaleSpace": "%",
-            "colour": UIColour,
-            "fontColour": fontColour,
-            "fontSize": fontSize * 2,
-            "isBold": True,
-            "text": str(round(totalScore, 5)),
-            "doesHighlighting": False
-        })
-        uiElements.append(ScoreDisplayText)
-
-        ScoreText = gl.ui.Button({
-            "surface": uiLayer,
-            "type": "button",
-            "posX": 30,
-            "posY": 15,
-            "sizeX": 40,
-            "sizeY": 10,
-            "anchorSpace": "%",
-            "scaleSpace": "%",
-            "colour": UIColour,
-            "fontColour": fontColour,
-            "fontSize": fontSize,
-            "isBold": True,
-            "text": "Your score is!...",
-            "doesHighlighting": False
-        })
-        uiElements.append(ScoreText)
 
         humancrytext = ""
 
@@ -634,9 +598,42 @@ def endScreen():
         if totalScore > 350:
             humancrytext = "I didnt even think this was possible"
 
+        ScoreText = gl.ui.Button({
+            "surface": uiLayer,
+            "type": "button",
+            "posX": 30,
+            "posY": 5,
+            "sizeX": 40,
+            "sizeY": 10,
+            "anchorSpace": "%",
+            "scaleSpace": "%",
+            "colour": UIColour,
+            "fontColour": fontColour,
+            "fontSize": fontSize,
+            "isBold": True,
+            "text": "Your score is!...",
+            "doesHighlighting": False
+        })
+        uiElements.append(ScoreText)
 
-        print(humancrytext)
-            
+        # - {int(len(str(round(totalScore, 5))) / 2)}
+        ScoreDisplayText = gl.ui.Button({
+            "surface": uiLayer,
+            "type": "button",
+            "posX": 30,
+            "posY": 20,
+            "sizeX": 40,
+            "sizeY": 20,
+            "anchorSpace": "%",
+            "scaleSpace": "%",
+            "colour": UIColour,
+            "fontColour": fontColour,
+            "fontSize": int(fontSize * 0.8),
+            "isBold": True,
+            "text": f"{round(totalScore, 5):^} \n {humancrytext:^}", #formatting strings is hard okay
+            "doesHighlighting": False
+        })
+        uiElements.append(ScoreDisplayText)
 
         endScreenSetup = True
     pass
@@ -656,7 +653,7 @@ def parse_leaderboard(data):
 
     return outStr
 
-def submit_score():
+def submit_score(name: str, score: float):
     json = {"name": "jimbo", "score": "300.1234", "UUID": UU}
     requests.post(scorePosURL, json = json)
 
