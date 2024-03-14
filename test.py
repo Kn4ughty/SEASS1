@@ -735,7 +735,7 @@ def get_leaderboard():
         print("Request timeout:", e)
     
     else:
-        return scores.json()
+        return response.json()
 
 def parse_leaderboard(data) -> str:
     if data == None:
@@ -761,7 +761,7 @@ def submit_score(name: str, score: float):
         print(f"Error submitting score kapow: {e}")
         if hasattr(e, 'response') and e.response is not None:  # Fixing the typo here
             print(f"Server response: \n{e.response.text}")
-        
+
     except requests.exceptions.ConnectionError as e:
         print("Connection error:", e)
 

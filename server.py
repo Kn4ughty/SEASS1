@@ -55,15 +55,22 @@ def post_scores():
     score = str(round(float(request_data['score']), 4))[:75]  # Convert score to string and truncate if longer than 75 characters
     uuid = request_data['UUID']
 
-    for entry in scores:
-        if entry['UUID'] == uuid:
-            return json.dumps({"error": "An entry with this UUID already exists in the database."}), 409
+    formatedNew = {"name": name, "score": score, "UUID": uuid}
 
-    print(scores)
-    print(scores[-1])
+    dupli = False
+
+    for i in range(len(scores)):
+        if scores[i]['UUID'] == uuid:
+            if scores[i]['score'] > score:
+                return json.dumps({"error": "An entry with this UUID already exists in the database and it was lower than previous score."}), 409
+            else:
+                # the score is better than existing one of saeme UUID
+                scores[i] = formatedNew
+                dupli = True
 
     if len(scores) < 1000 or float(score) > float(scores[-1]['score']):
-        scores.append({"name": name, "score": score, "UUID": uuid})
+        if not dupli:
+            scores.append(formatedNew)
         # Sort the scores
         sortedDB = sorted(scores, key=lambda x: float(x['score']), reverse=True)
         # Truncate to keep only the top 1000 scores
