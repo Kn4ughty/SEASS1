@@ -39,7 +39,11 @@ def post_scores():
     name = request_data['name']
     name = (name[:75] + '..') if len(name) > 75 else name
     score = request_data['score']
-    score = (score[:75] + '..') if len(score) > 75 else score
+
+    score = str(round(float(score), 4))
+    score = (score[:75]) if len(score) > 75 else score
+
+
     uuid = request_data['UUID']
     score = (score[:75] + '..') if len(score) > 75 else score
 

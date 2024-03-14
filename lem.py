@@ -84,6 +84,8 @@ class lem(object):
             self.fuel -= self.throttle * dt * self.massFlowRate
         else:
             self.fuel = 0
+            self.throttle = 0
+            self.thrust = 0
 
         # thrust in kilograms
 

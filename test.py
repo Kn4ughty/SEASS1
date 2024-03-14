@@ -4,6 +4,7 @@ import pygame as pg
 import random
 import configparser
 import time
+import copy # for backup vars for restart
 # Server stuff
 import requests
 import uuid
@@ -138,8 +139,8 @@ gravity = -5
 
 landHeight = 500
 
-
-lem = lem({
+global luna
+luna = lem({
     "vx": 10,
     "vy": 0,
     "x": -200,
@@ -162,6 +163,8 @@ lem = lem({
     "FPS": FPS
 })
 
+lem_copy = copy.copy(luna)
+
 camera = gl.camera.camera({
     "x": 0,
     "y": -3000,
@@ -175,7 +178,7 @@ camera = gl.camera.camera({
     "scaleSpeed": 0.01,
     "FPS": FPS
 })
-
+camera_copy = copy.copy(camera)
 
 uiElements = []
 
@@ -235,12 +238,24 @@ LEMFuelBar = gl.ui.bar({
     "fontSize": int(fontSize / 1.5),
     "isBold": False,
     "text": "Fuel:",
-    "progress": (lem.fuel / lem.maxFuel)
+    "progress": (luna.fuel / luna.maxFuel)
 })
 # I have learned pointerss in python dont really exist so ill have to
 # update bars in a hard coded way for each bar.
 
 #uiElements.append(LEMFuelBar)
+
+
+def resetGame():
+    global luna
+    global lem_copy
+    global camera_copy
+    global camera
+    global inEndScreen
+
+    luna = lem_copy
+    camera = camera_copy
+    inEndScreen = False
 
 
 def main():
@@ -250,7 +265,7 @@ def main():
         mainHasSetup = True # tee hee performace went weee downwards without this
     events()
 
-    if lem.y > -340:
+    if luna.y > -340:
         global landed
         landed = True
 
@@ -262,10 +277,10 @@ def main():
     if inEndScreen:
         endScreen()
     else:
-        lem.update(clock)
+        luna.update(clock)
 
-    camera.x = lem.x
-    camera.y = lem.y
+    camera.x = luna.x
+    camera.y = luna.y
 
     camera.x += (LEMImg.get_width() / 2) / camera.scale
     camera.y += (LEMImg.get_height() / 2) / camera.scale
@@ -309,8 +324,8 @@ def drawUI():
     for element in uiElements:
         if element.type == "bar":
             if element.title == "Fuel:":
-                element.progress = lem.fuel / lem.maxFuel
-                element.contents = f"{round(lem.fuel)} / {round(lem.maxFuel, 1)}"
+                element.progress = luna.fuel / luna.maxFuel
+                element.contents = f"{round(luna.fuel)} / {round(luna.maxFuel, 1)}"
 
         #element.text = str(x)
         element.em = rem # cope future me hahahah
@@ -334,14 +349,18 @@ def drawMoonSurface():
 def drawLEM():
 
 
-    if lem.fuel > 0:
-        LEMexhaustImg.set_alpha(255 * (lem.throttle / lem.maxThrottle))
-    lemExhaust, exhaustRect = gl.image.rotate(LEMexhaustImg, lem.angle, (lem.x, lem.y))
+    if luna.fuel > 0:
+        LEMexhaustImg.set_alpha(255 * (luna.throttle / luna.maxThrottle))
+    else:
+        LEMexhaustImg.set_alpha(0)
+
+    lemExhaust, exhaustRect = gl.image.rotate(LEMexhaustImg, luna.angle, (luna.x, luna.y))
+
 
     camera.drawSurf(lemExhaust, WINDOW, exhaustRect)
 
 
-    lem_rotated_image, lemRect = gl.image.rotate(LEMImg, lem.angle, (lem.x, lem.y))
+    lem_rotated_image, lemRect = gl.image.rotate(LEMImg, luna.angle, (luna.x, luna.y))
     
     #lemRect.x -= lem_rotated_image.get_width() / 2
     #lemRect.y -= lem_rotated_image.get_height() / 2
@@ -575,18 +594,18 @@ def mainMenu():
 
 def calcScore():
      #lem.land()
-    if lem.angle > 180:
-        angFromCenter = 360 - lem.angle
+    if luna.angle > 180:
+        angFromCenter = 360 - luna.angle
     else:
-        angFromCenter = lem.angle
+        angFromCenter = luna.angle
 
     angScore = -pow((angFromCenter * 0.2), 2) + 40
     if angScore < 0:
         angScore = 0
 
-    yVelScore = (-pow((lem.vy * 0.32), 2) + 10) * 2
+    yVelScore = (-pow((luna.vy * 0.32), 2) + 10) * 2
 
-    xVelScore = -pow((lem.vy * 0.75), 2) + 10
+    xVelScore = -pow((luna.vy * 0.75), 2) + 10
 
     global totalScore
     totalScore = (angScore + yVelScore + xVelScore) * 5
@@ -652,6 +671,26 @@ def endScreen():
         })
         uiElements.append(ScoreDisplayText)
 
+        submit_score(name, totalScore)
+
+        leaderBoardDisplay = gl.ui.Button({
+            "surface": uiLayer,
+            "type": "button",
+            "posX": 5,
+            "posY": 45,
+            "sizeX": 90,
+            "sizeY": 40,
+            "anchorSpace": "%",
+            "scaleSpace": "%",
+            "colour": UIColour,
+            "fontColour": fontColour,
+            "fontSize": int(fontSize * 0.8),
+            "isBold": True,
+            "text":parse_leaderboard(get_leaderboard()), #formatting strings is hard okay
+            "doesHighlighting": False
+        })
+        uiElements.append(leaderBoardDisplay)
+
 
         endScreenSetup = True
     pass
@@ -660,7 +699,7 @@ def get_leaderboard():
     scores = requests.get(scoreGetURL)
     return scores.json()
 
-def parse_leaderboard(data):
+def parse_leaderboard(data) -> str:
     outStr = ""
 
     for i in range(0, len(data)):
@@ -672,12 +711,12 @@ def parse_leaderboard(data):
     return outStr
 
 def submit_score(name: str, score: float):
-    json = {"name": "jimbo", "score": "300.1234", "UUID": UU}
+    json = {"name": name, "score": str(score), "UUID": UU}
     requests.post(scorePosURL, json = json)
 
-x = get_leaderboard() # would do this Async if i knew how
+#x = get_leaderboard() # would do this Async if i knew how
 
-print(parse_leaderboard(x))
+#print(parse_leaderboard(x))
 
 #submit_score()
 
