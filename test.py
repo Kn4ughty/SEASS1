@@ -603,7 +603,6 @@ def mainMenu():
 
 
 def calcScore():
-     #lem.land()
     if luna.angle > 180:
         angFromCenter = 360 - luna.angle
     else:
@@ -617,17 +616,22 @@ def calcScore():
 
     xVelScore = -pow((luna.vy * 0.75), 2) + 10
 
-    global totalScore
-    totalScore = (angScore + yVelScore + xVelScore) * 5
+    fuelScore = (luna.fuel / luna.maxFuel) * 100 * 1.5
 
-    print(f"Score: {totalScore}")
+
+    totalScore = ((angScore + yVelScore + xVelScore ) * 5) + fuelScore
+
+
+    return totalScore
 
 def endScreen():
     global endScreenSetup
     if not endScreenSetup and inEndScreen:
-        calcScore()
+        totalScore = calcScore()
 
         humancrytext = ""
+        
+        submit_score(name, totalScore)
 
         print(totalScore)
 
@@ -683,8 +687,6 @@ def endScreen():
         })
         uiElements.append(ScoreDisplayText)
 
-        submit_score(name, totalScore)
-
         global leaderBoardDisplay
         leaderBoardDisplay = gl.ui.Button({
             "surface": uiLayer,
@@ -732,9 +734,14 @@ def parse_leaderboard(data) -> str:
     return outStr
 
 def submit_score(name: str, score: float):
-    json = {"name": name, "score": str(score), "UUID": UU}
-    requests.post(scorePosURL, json = json)
-
+    try:
+        json_data = {"name": name, "score": str(score), "UUID": UU}  # Assuming UU is defined elsewhere
+        response = requests.post(scorePosURL, json=json_data)
+        response.raise_for_status()  # Raise an error for bad response status codes (4xx or 5xx)
+        print("Score submitted successfully!")
+    except requests.RequestException as e:
+        print(f"Error submitting score: {e}")
+        print(f"Server response: \n{response.text}")
 #x = get_leaderboard() # would do this Async if i knew how
 
 #print(parse_leaderboard(x))

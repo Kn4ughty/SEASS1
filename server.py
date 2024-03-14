@@ -51,30 +51,29 @@ def post_scores():
     #if len(scores) >= 1000:
     #    return json.dumps({"error": "Database full. Cannot add more entries."}), 400
 
-    print(request_data)
-    name = request_data['name']
-    name = (name[:75] + '..') if len(name) > 75 else name
-    score = request_data['score']
-
-    score = str(round(float(score), 4))
-    score = (score[:75]) if len(score) > 75 else score
-
-
+    name = request_data['name'][:75]  # Truncate name if it's longer than 75 characters
+    score = str(round(float(request_data['score']), 4))[:75]  # Convert score to string and truncate if longer than 75 characters
     uuid = request_data['UUID']
-    score = (score[:75] + '..') if len(score) > 75 else score
 
-    print(f"{name} {score} {uuid}")
+    for entry in scores:
+        if entry['UUID'] == uuid:
+            return json.dumps({"error": "An entry with this UUID already exists in the database."}), 409
 
+    print(scores)
+    print(scores[-1])
 
-    scores.append({"name": name, "score": score, "UUID": uuid})
-
-    scores = scores[:100]
-
-    # Writing updated scores to database file
-    with open(databasePath, "w") as database_file:
-        json.dump(scores, database_file)
-
-    return json.dumps({"success": True}), 201
+    if len(scores) < 1000 or float(score) > float(scores[-1]['score']):
+        scores.append({"name": name, "score": score, "UUID": uuid})
+        # Sort the scores
+        sortedDB = sorted(scores, key=lambda x: float(x['score']), reverse=True)
+        # Truncate to keep only the top 1000 scores
+        sortedDB = sortedDB[:1000]
+        # Writing updated scores to database file
+        with open(databasePath, "w") as database_file:
+            json.dump(sortedDB, database_file)
+        return json.dumps({"success": True}), 201
+    else:
+        return json.dumps({"error": "Score is not higher than the lowest score in the database."}), 400
 
 if __name__ == '__main__':
     api.run()
