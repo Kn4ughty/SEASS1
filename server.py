@@ -17,6 +17,12 @@ databasePath = prefPath + "server/database.json"
 if not os.path.exists(prefPath + "server/database.json"):
     #os.makedirs(prefPath + "server")
     print("grraaa")
+    os.mkdir(prefPath + "server/")
+    thing = open(databasePath, "x")
+    thing.close()
+
+if os.stat(databasePath).st_size == 0:
+    print("writing stupid data")
     thing = open(databasePath, "w")
     json.dump(stupidtempdata, thing)
     thing.close()
