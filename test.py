@@ -719,10 +719,27 @@ def endScreen():
 
 
 def get_leaderboard():
-    scores = requests.get(scoreGetURL)
-    return scores.json()
+    try:
+        response = requests.get(scoreGetURL)
+        response.raise_for_status()
+    
+    except requests.RequestException as e:
+        print(f"Error getting score kapow: {e}")
+        if hasattr(e, 'response') and e.response is not None:  # Fixing the typo here
+            print(f"Server response: \n{e.response.text}")
+        
+    except requests.exceptions.ConnectionError as e:
+        print("Connection error:", e)
+
+    except requests.exceptions.Timeout as e:
+        print("Request timeout:", e)
+    
+    else:
+        return scores.json()
 
 def parse_leaderboard(data) -> str:
+    if data == None:
+        return "Was unable to connect to server\n Check the console for errors"
     outStr = ""
 
     for i in range(0, min(len(data), 10)):
@@ -736,13 +753,21 @@ def parse_leaderboard(data) -> str:
 def submit_score(name: str, score: float):
     try:
         json_data = {"name": name, "score": str(score), "UUID": UU}  # Assuming UU is defined elsewhere
-        response = requests.post(scorePosURL, json=json_data)
+        response = requests.post(scorePosURL, json=json_data, timeout=5)  # Set timeout to 5 seconds
         response.raise_for_status()  # Raise an error for bad response status codes (4xx or 5xx)
         print("Score submitted successfully!")
+
     except requests.RequestException as e:
-        print(f"Error submitting score: {e}")
-        print(f"Server response: \n{response.text}")
-#x = get_leaderboard() # would do this Async if i knew how
+        print(f"Error submitting score kapow: {e}")
+        if hasattr(e, 'response') and e.response is not None:  # Fixing the typo here
+            print(f"Server response: \n{e.response.text}")
+        
+    except requests.exceptions.ConnectionError as e:
+        print("Connection error:", e)
+
+    except requests.exceptions.Timeout as e:
+        print("Request timeout:", e)
+ 
 
 #print(parse_leaderboard(x))
 
