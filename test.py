@@ -1,4 +1,5 @@
 import sys
+import os
 import pygame as pg
 import random
 import configparser
@@ -26,18 +27,32 @@ from lem import lem
 
 serverURL = "http://127.0.0.1:5000"
 scoreGetURL = serverURL + "/scores"
-scorePosURL = scoreGetURL + "Get"
+scorePosURL = scoreGetURL + "Post"
 
 startTime = time.time()
 
-
+prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
 
 #Read config.ini file
 config_object = configparser.ConfigParser()
-config_object.read("config.ini")
+config_object.read(prefPath+"config.ini")
 
 STARTUP = config_object["STARTUP"]
 CONTROLS = config_object["CONTROLS"]
+
+
+
+if not os.path.isfile(prefPath + "UUID"): #UUID not set
+    print("UUID not found, making one now")
+    UU = str(uuid.uuid1())
+    uuidFile = open(prefPath + "UUID", "w")
+    uuidFile.write(UU)
+    uuidFile.close()
+else:
+    uuidFile = open(prefPath + "UUID", "r")
+    UU = uuidFile.read()
+    uuidFile.close
+
 
 ## Startup Variables
 inMainMenu = lib.stringToBool(STARTUP["startinmainmenu"])
@@ -636,20 +651,20 @@ def parse_leaderboard(data):
     for i in range(0, len(data)):
         name = data[i].get("name")
         score = data[i].get("score")
-        row = f"{(i+1):}. {name+",":<15} {score:>20}"
+        row = f"{(i+1):}. {name+"":<10} {score:>20}"
         outStr += row + "\n"
 
     return outStr
 
 def submit_score():
-    json = {"name": "jimbo", "socre": "125.1234", "UUID": "woa"}
+    json = {"name": "jimbo", "score": "300.1234", "UUID": UU}
     requests.post(scorePosURL, json = json)
 
 x = get_leaderboard() # would do this Async if i knew how
 
 print(parse_leaderboard(x))
 
-submit_score()
+#submit_score()
 
 t1 = time.time()
 global starBackground
