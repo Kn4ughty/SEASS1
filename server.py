@@ -1,23 +1,33 @@
 from flask import Flask
 from flask import request
 import json
+import pygame as pg
+import os
 
 api = Flask(__name__)
 
 
-scores = [{"name": "bob", "score": "312.5000", "UUID": "yadayada"},
+stupidtempdata = [{"name": "bob", "score": "312.5000", "UUID": "yadayada"},
           {"name": "jane", "score": "250.1235", "UUID": "woea"}]
 
 
-with open("database.txt", "w") as database_file:
-    json.dump(scores, database_file)
+prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
+databasePath = prefPath + "server/database.json"
 
+if not os.path.exists(prefPath + "server/database.json"):
+    #os.makedirs(prefPath + "server")
+    print("grraaa")
+    thing = open(databasePath, "w")
+    json.dump(stupidtempdata, thing)
+    thing.close()
 
 
 @api.route('/scores', methods=['GET'])
 def get_scores():
-    with open("database.txt", "r") as database_file:
+    print("gettingscores")
+    with open(databasePath, "r") as database_file:
         scores = json.load(database_file)
+
 
     sorted_scores = sorted(scores, key=lambda x: float(x['score']), reverse=True)
 
@@ -27,7 +37,7 @@ def get_scores():
 @api.route('/scoresPost', methods=['POST'])
 def post_scores():
 
-    with open("database.txt", "r") as database_file:
+    with open(databasePath, "r") as database_file:
         scores = json.load(database_file)
 
     request_data = request.get_json()
@@ -55,7 +65,7 @@ def post_scores():
     scores = scores[:100]
 
     # Writing updated scores to database file
-    with open("database.txt", "w") as database_file:
+    with open(databasePath, "w") as database_file:
         json.dump(scores, database_file)
 
     return json.dumps({"success": True}), 201
