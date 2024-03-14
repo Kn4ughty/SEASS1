@@ -1,0 +1,15 @@
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.handler
+      Runtime: python3.8
+      CodeUri: .
+      MemorySize: 128
+      Timeout: 10
+      Events:
+        HelloWorldApi:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET

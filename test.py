@@ -672,7 +672,6 @@ def endScreen():
         uiElements.append(ScoreDisplayText)
 
         submit_score(name, totalScore)
-        print("WIN")
 
         leaderBoardDisplay = gl.ui.Button({
             "surface": uiLayer,
@@ -687,7 +686,7 @@ def endScreen():
             "fontColour": fontColour,
             "fontSize": int(fontSize * 0.8),
             "isBold": True,
-            "text": parse_leaderboard(get_leaderboard()), #formatting strings is hard okay
+            "text":parse_leaderboard(get_leaderboard()), #formatting strings is hard okay
             "doesHighlighting": False
         })
         uiElements.append(leaderBoardDisplay)
@@ -698,7 +697,6 @@ def endScreen():
 
 def get_leaderboard():
     scores = requests.get(scoreGetURL)
-    print(scores)
     return scores.json()
 
 def parse_leaderboard(data) -> str:
@@ -707,7 +705,7 @@ def parse_leaderboard(data) -> str:
     for i in range(0, len(data)):
         name = data[i].get("name")
         score = data[i].get("score")
-        row = f"{(i+1):}. {name+"":<10} {score:>20}"
+        row = f"{(i+1)}. {name:<10} {score:>20}"
         outStr += row + "\n"
 
     return outStr
