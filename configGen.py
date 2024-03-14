@@ -5,7 +5,7 @@ config_object = ConfigParser()
 
 #Assume we need 2 sections in the config file, let's call them USERINFO and SERVERCONFIG
 config_object["STARTUP"] = {
-    "startinmainmenu": False,
+    "startinmainmenu": True,
     "sillymode": True,
 }
 

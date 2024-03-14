@@ -19,12 +19,8 @@ import configGen
 # TODO - Fix physics to be constant regarless of FPS
 ## This one is a doozy
 
-# TODO - Name entering
-
-
 # TODO - Tweak values and make game fune
 
-# TODO - run config gen if file not found
 
 serverURL = "http://127.0.0.1:5000"
 scoreGetURL = serverURL + "/scores"
@@ -41,8 +37,9 @@ if not os.path.isfile(prefPath + "config.ini"):
 global name
 
 if not os.path.isfile(prefPath + "name"):
-    print("WARNINGG!!!!!!!!!!\n"*5)
+    print("INFO!!!!!!!!!!\n"*5)
     print("Name not found in config path")
+    print("Your name will be used for online leaderboard scores")
     name = input("Please enter your name here: ")
     nameFile = open(prefPath + "name", "w")
     nameFile.write(name)
