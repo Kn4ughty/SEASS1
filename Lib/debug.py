@@ -1,5 +1,6 @@
 import pygame
 
+
 class Debug(object):
     def __init__(self, SURFACE):
         global rollingFPSAverage

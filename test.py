@@ -4,8 +4,8 @@ import pygame as pg
 import random
 import configparser
 import time
-import copy # for backup vars for restart
-import logging # I wish i had known about this module earlier.. 15/03/2024
+import copy  # for backup vars for restart
+import logging  # I wish i had known about this module earlier.. 15/03/2024
 
 # Server stuff
 import requests
@@ -18,7 +18,7 @@ from lem import lem
 import configGen
 import data
 
-logging.basicConfig(encoding='utf-8', level=logging.INFO)
+logging.basicConfig(encoding="utf-8", level=logging.INFO)
 
 
 # TODO - Fix physics to be constant regarless of FPS
@@ -31,8 +31,6 @@ logging.basicConfig(encoding='utf-8', level=logging.INFO)
 ## or make it reallly logn
 
 
-
-
 serverURL = "http://127.0.0.1:5000"
 scoreGetURL = serverURL + "/scores"
 scorePosURL = scoreGetURL + "Post"
@@ -41,10 +39,9 @@ startTime = time.time()
 
 prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
 
-#Read config.ini file
+# Read config.ini file
 if not os.path.isfile(prefPath + "config.ini"):
     configGen.gen(prefPath)
-
 
 
 global name
@@ -61,14 +58,13 @@ else:
     name = nameFile.read()
 
 config_object = configparser.ConfigParser()
-config_object.read(prefPath+"config.ini")
+config_object.read(prefPath + "config.ini")
 
 STARTUP = config_object["STARTUP"]
 CONTROLS = config_object["CONTROLS"]
 
 
-
-if not os.path.isfile(prefPath + "UUID"): #UUID not set
+if not os.path.isfile(prefPath + "UUID"):  # UUID not set
     print("UUID not found, making one now")
     data.createAndWriteUUID(prefPath)
 else:
@@ -95,7 +91,9 @@ bad = False
 if good:
     print("yay")
 if bad:
-    x = input('bad :( help um jeeeifeejifjiefjeugfoglrflihj codingn its me im ashley codoing)')
+    x = input(
+        "bad :( help um jeeeifeejifjiefjeugfoglrflihj codingn its me im ashley codoing)"
+    )
 pg.init()
 
 # Colours
@@ -122,14 +120,16 @@ WINDOW_WIDTH = 1600
 WINDOW_HEIGHT = 900
 
 
-WINDOW = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), flags=0, depth=0, display=0, vsync=1)
-pg.display.set_caption('Moonlander 🚀')
+WINDOW = pg.display.set_mode(
+    (WINDOW_WIDTH, WINDOW_HEIGHT), flags=0, depth=0, display=0, vsync=1
+)
+pg.display.set_caption("Moonlander 🚀")
 
 
 # I cannot work out why the physics speed is wrong so
 # For now you need to run at 60fps
 # Sorry people with slow computers
-#FPS = max(pg.display.get_desktop_refresh_rates())
+# FPS = max(pg.display.get_desktop_refresh_rates())
 FPS = 60
 
 
@@ -146,44 +146,48 @@ gravity = -5
 landHeight = 500
 
 global luna
-luna = lem({
-    "vx": 10,
-    "vy": 0,
-    "x": -200,
-    "y": -3000,
-    "width": 9.4,
-    "height": 3.231,
-    "angle": 0,
-    "omega": 0,
-    "maxOmega": 10,
-    "rotStrength": 15,
-    "angularFriction": 10,
-    "throttleSens": 200,
-    "maxThrottle": 100,
-    "massFlowRate": 14.768,
-    "fuel": 8200,
-    "maxFuel": 8200,
-    "ISP": 311,
-    "mass": 2144,
-    "gravity": gravity,
-    "FPS": FPS
-})
+luna = lem(
+    {
+        "vx": 10,
+        "vy": 0,
+        "x": -200,
+        "y": -3000,
+        "width": 9.4,
+        "height": 3.231,
+        "angle": 0,
+        "omega": 0,
+        "maxOmega": 10,
+        "rotStrength": 15,
+        "angularFriction": 10,
+        "throttleSens": 200,
+        "maxThrottle": 100,
+        "massFlowRate": 14.768,
+        "fuel": 8200,
+        "maxFuel": 8200,
+        "ISP": 311,
+        "mass": 2144,
+        "gravity": gravity,
+        "FPS": FPS,
+    }
+)
 
 lem_copy = copy.copy(luna)
 
-camera = gl.camera.camera({
-    "x": 0,
-    "y": -3000,
-    "vx": 0,
-    "vy": 0,
-    "WinHeight": WINDOW_HEIGHT,
-    "WinWidth": WINDOW_WIDTH,
-    "friction": camFriction,
-    "moveStrength": camSpeed,
-    "scale": 3.5,
-    "scaleSpeed": 0.01,
-    "FPS": FPS
-})
+camera = gl.camera.camera(
+    {
+        "x": 0,
+        "y": -3000,
+        "vx": 0,
+        "vy": 0,
+        "WinHeight": WINDOW_HEIGHT,
+        "WinWidth": WINDOW_WIDTH,
+        "friction": camFriction,
+        "moveStrength": camSpeed,
+        "scale": 3.5,
+        "scaleSpeed": 0.01,
+        "FPS": FPS,
+    }
+)
 camera_copy = copy.copy(camera)
 
 uiElements = []
@@ -195,9 +199,14 @@ uiLayer = uiLayer.convert_alpha()
 
 scaleFactor = 4
 LEMImg = pg.image.load("Assets/LEM.png")
-LEMImg = pg.transform.smoothscale(LEMImg, (LEMImg.get_width() / scaleFactor, LEMImg.get_height() / scaleFactor))
+LEMImg = pg.transform.smoothscale(
+    LEMImg, (LEMImg.get_width() / scaleFactor, LEMImg.get_height() / scaleFactor)
+)
 LEMExhaustImg = pg.image.load("Assets/Exhaust1.png")
-LEMexhaustImg = pg.transform.smoothscale(LEMExhaustImg, (LEMExhaustImg.get_width() / scaleFactor, LEMExhaustImg.get_height() / scaleFactor))
+LEMexhaustImg = pg.transform.smoothscale(
+    LEMExhaustImg,
+    (LEMExhaustImg.get_width() / scaleFactor, LEMExhaustImg.get_height() / scaleFactor),
+)
 
 
 def toggleDebug():
@@ -207,49 +216,54 @@ def toggleDebug():
     else:
         isDebug = True
 
-debugToggleButton = gl.ui.Button({
-    "surface": WINDOW,
-    "type": "button",
-    "posX": 90,
-    "posY": 0,
-    "sizeX": 10,
-    "sizeY": 10,
-    "anchorSpace": "%",
-    "scaleSpace": "%",
-    "colour": pg.Color(56, 56, 56),
-    "fontColour": pg.Color(255, 255, 255),
-    "fontSize": fontSize,
-    "isBold": True,
-    "text": "Debug",
-    "clickEventHandler": toggleDebug
-})
+
+debugToggleButton = gl.ui.Button(
+    {
+        "surface": WINDOW,
+        "type": "button",
+        "posX": 90,
+        "posY": 0,
+        "sizeX": 10,
+        "sizeY": 10,
+        "anchorSpace": "%",
+        "scaleSpace": "%",
+        "colour": pg.Color(56, 56, 56),
+        "fontColour": pg.Color(255, 255, 255),
+        "fontSize": fontSize,
+        "isBold": True,
+        "text": "Debug",
+        "clickEventHandler": toggleDebug,
+    }
+)
 uiElements.append(debugToggleButton)
 
 
-LEMFuelBar = gl.ui.bar({
-    "surface": uiLayer,
-    "type": "bar",
-    "posX": 78,
-    "posY": 88,
-    "sizeX": 20,
-    "sizeY": 10,
-    "padding": uiPadding,
-    "anchorSpace": "%",
-    "scaleSpace": "%",
-    "colour": UIColour,
-    "barColour": barColour,
-    "barOutlineColour": barOutlineColour,
-    "fontColour": fontColour,
-    "contentFontColour": contentFontColour,
-    "fontSize": int(fontSize / 1.5),
-    "isBold": False,
-    "text": "Fuel:",
-    "progress": (luna.fuel / luna.maxFuel)
-})
+LEMFuelBar = gl.ui.bar(
+    {
+        "surface": uiLayer,
+        "type": "bar",
+        "posX": 78,
+        "posY": 88,
+        "sizeX": 20,
+        "sizeY": 10,
+        "padding": uiPadding,
+        "anchorSpace": "%",
+        "scaleSpace": "%",
+        "colour": UIColour,
+        "barColour": barColour,
+        "barOutlineColour": barOutlineColour,
+        "fontColour": fontColour,
+        "contentFontColour": contentFontColour,
+        "fontSize": int(fontSize / 1.5),
+        "isBold": False,
+        "text": "Fuel:",
+        "progress": (luna.fuel / luna.maxFuel),
+    }
+)
 # I have learned pointerss in python dont really exist so ill have to
 # update bars in a hard coded way for each bar.
 
-#uiElements.append(LEMFuelBar)
+# uiElements.append(LEMFuelBar)
 
 
 def resetGame():
@@ -264,24 +278,22 @@ def resetGame():
     camera = camera_copy
     inEndScreen = False
     endScreen()
-    
 
 
 def main():
     global mainHasSetup
     if not mainHasSetup:
         uiElements.append(LEMFuelBar)
-        mainHasSetup = True # tee hee performace went weee downwards without this
+        mainHasSetup = True  # tee hee performace went weee downwards without this
     events()
 
     if luna.y > -340:
         global landed
         landed = True
 
-        #calcScore()
+        # calcScore()
         global inEndScreen
         inEndScreen = True
-
 
     endScreen()
 
@@ -296,22 +308,18 @@ def main():
 
     camera.update(clock)
 
-
     draw()
-
 
     clock.tick(FPS)
 
 
-
 def draw():
     if isDebug:
-        WINDOW.fill((255, 0, 255)) # Obvoius colour to show un rendered area
+        WINDOW.fill((255, 0, 255))  # Obvoius colour to show un rendered area
     else:
         WINDOW.fill(BACKGROUND)
-    
-    uiLayer.fill((0, 0, 0, 0))
 
+    uiLayer.fill((0, 0, 0, 0))
 
     drawBackground()
 
@@ -321,66 +329,63 @@ def draw():
 
     drawUI()
 
-
     if isDebug:
         Debug.ShowFPS()
 
-
-    #pg.display.flip()
+    # pg.display.flip()
     pg.display.update()
 
-def drawUI():
 
-    #print(uiElements)
+def drawUI():
+    # print(uiElements)
     for element in uiElements:
         if element.type == "bar":
             if element.title == "Fuel:":
                 element.progress = luna.fuel / luna.maxFuel
-                element.contents = f"{round(luna.fuel)} / {round(luna.maxFuel, 1)}" # I love stupid hard coded things
+                element.contents = f"{round(luna.fuel)} / {round(luna.maxFuel, 1)}"  # I love stupid hard coded things
                 if inEndScreen:
                     continue
         if element.type == "button":
             if element.text == "Your score is!...":
-                #print("weeping rn")
+                # print("weeping rn")
                 pass
 
-        #element.text = str(x)
-        element.em = rem # cope future me hahahah
+        # element.text = str(x)
+        element.em = rem  # cope future me hahahah
         element.update()
 
     if inMainMenu:
         WINDOW.blit(menuLayer, (0, 0))
 
-
-    WINDOW.blit(uiLayer, (0, 0)) #draw final ui to screen
+    WINDOW.blit(uiLayer, (0, 0))  # draw final ui to screen
 
 
 def drawBackground():
     WINDOW.blit(starBackground, (0, 0))
+
 
 def drawMoonSurface():
     # check if on screen (or close probably)
     # draw moon
     camera.drawSurf(moonSurf, WINDOW, pg.Rect(0, 0, 0, 0))
 
+
 def drawLEM():
-
-
     if luna.fuel > 0:
         LEMexhaustImg.set_alpha(255 * (luna.throttle / luna.maxThrottle))
     else:
         LEMexhaustImg.set_alpha(0)
 
-    lemExhaust, exhaustRect = gl.image.rotate(LEMexhaustImg, luna.angle, (luna.x, luna.y))
-
+    lemExhaust, exhaustRect = gl.image.rotate(
+        LEMexhaustImg, luna.angle, (luna.x, luna.y)
+    )
 
     camera.drawSurf(lemExhaust, WINDOW, exhaustRect)
 
-
     lem_rotated_image, lemRect = gl.image.rotate(LEMImg, luna.angle, (luna.x, luna.y))
 
-    #lemRect.x -= lem_rotated_image.get_width() / 2
-    #lemRect.y -= lem_rotated_image.get_height() / 2
+    # lemRect.x -= lem_rotated_image.get_width() / 2
+    # lemRect.y -= lem_rotated_image.get_height() / 2
     # The lem is gonna be off center and your gonna like it
 
     camera.drawSurf(lem_rotated_image, WINDOW, lemRect)
@@ -392,32 +397,43 @@ def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
     lineWidth = 1
     circle = pg.image.load("Assets/starBlack.png")
     for x in range(0, WINDOW_WIDTH):
-        for y in range (0, WINDOW_HEIGHT):
+        for y in range(0, WINDOW_HEIGHT):
             a = random.randrange(0, starChance)
-            if a == starChance -1:
-
+            if a == starChance - 1:
                 # I should really try to create linse of code that are less long
-                #starColour = p.Color((random.randrange(minColourDelta, 255)), (random.randrange(minColourDelta, 255)),(random.randrange(minColourDelta, 255)))
-                starColour = gl.image.convert_K_to_RGB(random.triangular(4000, 10000, 5000))
+                # starColour = p.Color((random.randrange(minColourDelta, 255)), (random.randrange(minColourDelta, 255)),(random.randrange(minColourDelta, 255)))
+                starColour = gl.image.convert_K_to_RGB(
+                    random.triangular(4000, 10000, 5000)
+                )
                 circle = gl.image.tint(circle, starColour)
 
-                pg.draw.line(out, starColour, (x - starSize, y), (x + starSize, y), lineWidth)
-                pg.draw.line(out, starColour, (x, y - starSize), (x, y + starSize), lineWidth)
+                pg.draw.line(
+                    out, starColour, (x - starSize, y), (x + starSize, y), lineWidth
+                )
+                pg.draw.line(
+                    out, starColour, (x, y - starSize), (x, y + starSize), lineWidth
+                )
                 # A circle ends up with an even pixel count, meaning it cannot be centered.
-                #p.draw.circle(out, "White", (x, y), size - 3)
+                # p.draw.circle(out, "White", (x, y), size - 3)
 
-                out.blit(circle, (x-4, y-4))
-
+                out.blit(circle, (x - 4, y - 4))
 
     return out
 
+
 @lib.timing.logSpeed
-def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, craterChance: int, moonMedColour) -> pg.Surface:
-    #This method is very expensive.
-    #I could like set it up so it does this once and then like stores the image.
-    #Maybe do it on startup for a new user and store it in like appdata/equivilant
-    #then each user gets a uniqie surface.
-    #it doesnt really matter TBH
+def createMoonSurface(
+    craterSizeMin: int,
+    craterSizeMax: int,
+    size: tuple,
+    craterChance: int,
+    moonMedColour,
+) -> pg.Surface:
+    # This method is very expensive.
+    # I could like set it up so it does this once and then like stores the image.
+    # Maybe do it on startup for a new user and store it in like appdata/equivilant
+    # then each user gets a uniqie surface.
+    # it doesnt really matter TBH
 
     # cr is abreviation for crater
 
@@ -427,8 +443,7 @@ def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, crate
     minColour = 50
     maxColour = 200
 
-
-    for i in range(0, size[0]*size[1]):
+    for i in range(0, size[0] * size[1]):
         a = random.randrange(0, craterChance)
         if a == 1:
             x = random.randrange(size[0])
@@ -439,12 +454,19 @@ def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, crate
             # Main circle
             pg.draw.circle(out, crColour, (x, y), crSize)
 
-            pg.draw.circle(out, pg.Color(crColourNum - 10, crColourNum - 10, crColourNum - 10), (x, y), crSize / 1.25)
+            pg.draw.circle(
+                out,
+                pg.Color(crColourNum - 10, crColourNum - 10, crColourNum - 10),
+                (x, y),
+                crSize / 1.25,
+            )
 
             subCrMin = int(crSize / 30)
             subCrMax = int(crSize / 10)
 
-            Subcraters = random.randrange(subCrMin, subCrMax) # could be proprtional to crater size?
+            Subcraters = random.randrange(
+                subCrMin, subCrMax
+            )  # could be proprtional to crater size?
             for k in range(Subcraters):
                 subCrColourNum = random.triangular(minColour, maxColour)
                 subCrColour = pg.Color(subCrColourNum, subCrColourNum, subCrColourNum)
@@ -458,20 +480,15 @@ def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, crate
 
                 pg.draw.circle(out, subCrColour, (x + xOffset, y + yOffset), subCrSize)
 
-                #pg.draw.circle()
-
-
-
+                # pg.draw.circle()
 
     return out
 
 
-class Debug():
-
-    #def __init__():
+class Debug:
+    # def __init__():
     #    global rollingFPSAverage
     #    rollingFPSAverage = []
-
 
     def ShowFPS() -> None:
         fps = str(round(clock.get_fps(), 2))
@@ -490,29 +507,31 @@ class Debug():
                 BACKGROUND.g = random.randrange(0, 255)
                 BACKGROUND.b = random.randrange(0, 255)
 
-        button1 = gl.ui.Button({
-            "surface": uiLayer,
-            "posX": 10,
-            "posY": 10,
-            "sizeX": 90,
-            "sizeY": 50,
-            "anchorSpace": "%",
-            "scaleSpace": "%",
-            "Colour": pg.Color(100, 0, 100, 255),
-            "fontSize": rem,
-            "text": "hello",
-            "clickEventHandler": on_button1_click
-        })
+        button1 = gl.ui.Button(
+            {
+                "surface": uiLayer,
+                "posX": 10,
+                "posY": 10,
+                "sizeX": 90,
+                "sizeY": 50,
+                "anchorSpace": "%",
+                "scaleSpace": "%",
+                "Colour": pg.Color(100, 0, 100, 255),
+                "fontSize": rem,
+                "text": "hello",
+                "clickEventHandler": on_button1_click,
+            }
+        )
         uiElements.append(button1)
 
 
 def events():
     global rem
-    for event in pg.event.get() :
-        if event.type == pg.QUIT :
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
-        if event.type == pg.KEYDOWN :
+        if event.type == pg.KEYDOWN:
             if event.key == pg.K_EQUALS:
                 print("k equals")
                 rem = rem + 5
@@ -528,6 +547,7 @@ def events():
         if event.type == pg.MOUSEWHEEL:
             camera.scale += camera.scaleSpeed * event.y * camera.scale
 
+
 def StartGame():
     global inMainMenu
     inMainMenu = False
@@ -535,11 +555,10 @@ def StartGame():
 
 def mainMenu():
     global hasSetup
-    #print("in main meu")
-    #print(time.time())
+    # print("in main meu")
+    # print(time.time())
 
     if not hasSetup:
-
         global fontObj
         fontObj = pg.font.SysFont("Hack", 15, True)
         # create buttons,
@@ -547,44 +566,39 @@ def mainMenu():
         menuLayer = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pg.SRCALPHA, 32)
         menuLayer = menuLayer.convert_alpha()
 
-
-        #pg.image.save(starBackground, "star.png")
-
+        # pg.image.save(starBackground, "star.png")
 
         global StartGameButton
-        StartGameButton = gl.ui.Button({
-            "surface": menuLayer,
-            "type": "button",
-            "posX": 30,
-            "posY": 30,
-            "sizeX": 40,
-            "sizeY": 10,
-            "anchorSpace": "%",
-            "scaleSpace": "%",
-            "colour": UIColour,
-            "fontColour": fontColour,
-            "fontSize": fontSize,
-            "isBold": True,
-            "text": "Start Game",
-            "clickEventHandler": StartGame
-        })
+        StartGameButton = gl.ui.Button(
+            {
+                "surface": menuLayer,
+                "type": "button",
+                "posX": 30,
+                "posY": 30,
+                "sizeX": 40,
+                "sizeY": 10,
+                "anchorSpace": "%",
+                "scaleSpace": "%",
+                "colour": UIColour,
+                "fontColour": fontColour,
+                "fontSize": fontSize,
+                "isBold": True,
+                "text": "Start Game",
+                "clickEventHandler": StartGame,
+            }
+        )
         uiElements.append(StartGameButton)
-
 
         # TODO Controls guide
         # TODO Scaling options
         # TODO Scores
 
         # title
-        titleFont = pg.font.Font("Assets/Moonlander.otf", fontSize*5)
+        titleFont = pg.font.Font("Assets/Moonlander.otf", fontSize * 5)
         global titleImg
         titleImg = titleFont.render("MOONLANDER", True, "Grey")
 
-
-
     hasSetup = True
-
-
 
     events()
     drawBackground()
@@ -593,7 +607,6 @@ def mainMenu():
     titlepos = (((WINDOW_WIDTH - titleImg.get_width()) / 2), 50)
 
     WINDOW.blit(titleImg, titlepos)
-
 
     keys = pg.key.get_just_released()
     if keys[pg.K_ESCAPE]:
@@ -626,11 +639,10 @@ def calcScore():
 
     fuelScore = (luna.fuel / luna.maxFuel) * 100 * 1.5
 
-
-    totalScore = ((angScore + yVelScore + xVelScore ) * 5) + fuelScore
-
+    totalScore = ((angScore + yVelScore + xVelScore) * 5) + fuelScore
 
     return totalScore
+
 
 def endScreen():
     global endScreenSetup
@@ -656,65 +668,74 @@ def endScreen():
         if totalScore > 350:
             humancrytext = "I didnt even think this was possible"
 
-        global ScoreText # i am not a fan of this
-        ScoreText = gl.ui.Button({
-            "surface": uiLayer,
-            "type": "button",
-            "posX": 30,
-            "posY": 5,
-            "sizeX": 40,
-            "sizeY": 10,
-            "anchorSpace": "%",
-            "scaleSpace": "%",
-            "colour": UIColour,
-            "fontColour": fontColour,
-            "fontSize": fontSize,
-            "isBold": True,
-            "text": "Your score is!...",
-            "doesHighlighting": False
-        })
+        global ScoreText  # i am not a fan of this
+        ScoreText = gl.ui.Button(
+            {
+                "surface": uiLayer,
+                "type": "button",
+                "posX": 30,
+                "posY": 5,
+                "sizeX": 40,
+                "sizeY": 10,
+                "anchorSpace": "%",
+                "scaleSpace": "%",
+                "colour": UIColour,
+                "fontColour": fontColour,
+                "fontSize": fontSize,
+                "isBold": True,
+                "text": "Your score is!...",
+                "doesHighlighting": False,
+            }
+        )
         uiElements.append(ScoreText)
 
         # - {int(len(str(round(totalScore, 5))) / 2)}
         global ScoreDisplayText
-        ScoreDisplayText = gl.ui.Button({
-            "surface": uiLayer,
-            "type": "button",
-            "posX": 30,
-            "posY": 20,
-            "sizeX": 40,
-            "sizeY": 20,
-            "anchorSpace": "%",
-            "scaleSpace": "%",
-            "colour": UIColour,
-            "fontColour": fontColour,
-            "fontSize": int(fontSize * 0.7),
-            "isBold": True,
-            "text": f"{round(totalScore, 5):^30}" +  f"\n {humancrytext:^30}", #formatting strings is hard okay
-            "doesHighlighting": False
-        })
+        ScoreDisplayText = gl.ui.Button(
+            {
+                "surface": uiLayer,
+                "type": "button",
+                "posX": 30,
+                "posY": 20,
+                "sizeX": 40,
+                "sizeY": 20,
+                "anchorSpace": "%",
+                "scaleSpace": "%",
+                "colour": UIColour,
+                "fontColour": fontColour,
+                "fontSize": int(fontSize * 0.7),
+                "isBold": True,
+                "text": f"{round(totalScore, 5):^30}"
+                + f"\n {humancrytext:^30}",  # formatting strings is hard okay
+                "doesHighlighting": False,
+            }
+        )
         uiElements.append(ScoreDisplayText)
 
         global leaderBoardDisplay
-        leaderBoardDisplay = gl.ui.Button({
-            "surface": uiLayer,
-            "type": "button",
-            "posX": 5,
-            "posY": 45,
-            "sizeX": 90,
-            "sizeY": 50,
-            "anchorSpace": "%",
-            "scaleSpace": "%",
-            "colour": UIColour,
-            "fontColour": fontColour,
-            "fontSize": int(fontSize * 0.8),
-            "isBold": False,
-            "text":parse_leaderboard(get_leaderboard()), #formatting strings is hard okay
-            "doesHighlighting": False
-        })
+        leaderBoardDisplay = gl.ui.Button(
+            {
+                "surface": uiLayer,
+                "type": "button",
+                "posX": 5,
+                "posY": 45,
+                "sizeX": 90,
+                "sizeY": 50,
+                "anchorSpace": "%",
+                "scaleSpace": "%",
+                "colour": UIColour,
+                "fontColour": fontColour,
+                "fontSize": int(fontSize * 0.8),
+                "isBold": False,
+                "text": parse_leaderboard(
+                    get_leaderboard()
+                ),  # formatting strings is hard okay
+                "doesHighlighting": False,
+            }
+        )
         uiElements.append(leaderBoardDisplay)
         endScreenSetup = True
-    
+
     if not inEndScreen and endScreenSetup:
         print("wowah about to delete things!")
         print(f"{inEndScreen} {endScreenSetup}")
@@ -733,21 +754,24 @@ def get_leaderboard():
 
     except requests.RequestException as e:
         logging.warning(f"Error getting score kapow: {e}")
-        if hasattr(e, 'response') and e.response is not None:  # Fixing the typo here
+        if hasattr(e, "response") and e.response is not None:  # Fixing the typo here
             logging.warning(f"Server response: \n{e.response.text}")
-        
+
     except requests.exceptions.ConnectionError as e:
         print("Connection error:", e)
 
     except requests.exceptions.Timeout as e:
         print("Request timeout:", e)
-    
+
     else:
         return response.json()
 
+
 def parse_leaderboard(data) -> str:
     if data is None:
-        logging.warning("Data for parse_leaderboard was None. Check for errors from get_leaderboard")
+        logging.warning(
+            "Data for parse_leaderboard was None. Check for errors from get_leaderboard"
+        )
         return "Was unable to connect to server\n Check the console for errors"
     outStr = ""
 
@@ -759,16 +783,23 @@ def parse_leaderboard(data) -> str:
 
     return outStr
 
+
 def submit_score(name: str, score: float):
     try:
-        json_data = {"name": name, "score": str(score), "UUID": UU}  # Assuming UU is defined elsewhere
-        response = requests.post(scorePosURL, json=json_data, timeout=5)  # Set timeout to 5 seconds
+        json_data = {
+            "name": name,
+            "score": str(score),
+            "UUID": UU,
+        }  # Assuming UU is defined elsewhere
+        response = requests.post(
+            scorePosURL, json=json_data, timeout=5
+        )  # Set timeout to 5 seconds
         response.raise_for_status()  # Raise an error for bad response status codes (4xx or 5xx)
         logging.info("Score submitted successfully!")
 
     except requests.RequestException as e:
         logging.warning(f"Error submitting score kapow: {e}")
-        if hasattr(e, 'response') and e.response is not None:  # Fixing the typo here
+        if hasattr(e, "response") and e.response is not None:  # Fixing the typo here
             logging.warning(f"Server response: \n{e.response.text}")
 
     except requests.exceptions.ConnectionError as e:
@@ -776,11 +807,11 @@ def submit_score(name: str, score: float):
 
     except requests.exceptions.Timeout as e:
         print("Request timeout:", e)
- 
 
-#print(parse_leaderboard(x))
 
-#submit_score()
+# print(parse_leaderboard(x))
+
+# submit_score()
 
 
 global starBackground
@@ -794,16 +825,10 @@ global moonSurf
 moonSurf = createMoonSurface(12, 100, (4000, 500), 10000, moonMedColour)
 
 
-
-
 logging.info(f"Total startup time (s): {time.time()- startTime}")
-
 
 
 while running:
     while inMainMenu:
         mainMenu()
     main()
-
-
-
