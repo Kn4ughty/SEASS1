@@ -5,15 +5,19 @@ import random
 import configparser
 import time
 import copy # for backup vars for restart
+import logging # I wish i had known about this module earlier.. 15/03/2024
+
 # Server stuff
 import requests
 import uuid
 # My librarys
+
 import GameLib as gl
 import Lib.lib as lib
 from lem import lem
 import configGen
 
+logging.basicConfig(encoding='utf-8', level=logging.INFO)
 
 
 # TODO - Fix physics to be constant regarless of FPS
@@ -375,7 +379,7 @@ def drawLEM():
     camera.drawSurf(lem_rotated_image, WINDOW, lemRect)
 
 
-
+@lib.timing.logSpeed
 def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
     out = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
     lineWidth = 1
@@ -400,6 +404,7 @@ def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
 
     return out
 
+@lib.timing.logSpeed
 def createMoonSurface(craterSizeMin: int, craterSizeMax: int, size: tuple, craterChance: int, moonMedColour) -> pg.Surface:
     #This method is very expensive.
     #I could like set it up so it does this once and then like stores the image.
@@ -515,7 +520,6 @@ def events():
                 inEndScreen = False
                 resetGame()
         if event.type == pg.MOUSEWHEEL:
-            #print(event.x, event.y)
             camera.scale += camera.scaleSpeed * event.y * camera.scale
 
 def StartGame():
@@ -540,8 +544,6 @@ def mainMenu():
 
         #pg.image.save(starBackground, "star.png")
 
-
-        print(((WINDOW_WIDTH / 2) - (menuLayer.get_width() / 2)))
 
         global StartGameButton
         StartGameButton = gl.ui.Button({
@@ -630,10 +632,10 @@ def endScreen():
         totalScore = calcScore()
 
         humancrytext = ""
-        
+
         submit_score(name, totalScore)
 
-        print(totalScore)
+        logging.info(f"Total score calcualted is {totalScore}")
 
         if totalScore < 0:
             humancrytext = "Woah thats really bad :("
@@ -722,11 +724,11 @@ def get_leaderboard():
     try:
         response = requests.get(scoreGetURL)
         response.raise_for_status()
-    
+
     except requests.RequestException as e:
-        print(f"Error getting score kapow: {e}")
+        logging.warning(f"Error getting score kapow: {e}")
         if hasattr(e, 'response') and e.response is not None:  # Fixing the typo here
-            print(f"Server response: \n{e.response.text}")
+            logging.warning(f"Server response: \n{e.response.text}")
         
     except requests.exceptions.ConnectionError as e:
         print("Connection error:", e)
@@ -738,7 +740,8 @@ def get_leaderboard():
         return response.json()
 
 def parse_leaderboard(data) -> str:
-    if data == None:
+    if data is None:
+        logging.warning("Data for parse_leaderboard was None. Check for errors from get_leaderboard")
         return "Was unable to connect to server\n Check the console for errors"
     outStr = ""
 
@@ -755,12 +758,12 @@ def submit_score(name: str, score: float):
         json_data = {"name": name, "score": str(score), "UUID": UU}  # Assuming UU is defined elsewhere
         response = requests.post(scorePosURL, json=json_data, timeout=5)  # Set timeout to 5 seconds
         response.raise_for_status()  # Raise an error for bad response status codes (4xx or 5xx)
-        print("Score submitted successfully!")
+        logging.info("Score submitted successfully!")
 
     except requests.RequestException as e:
-        print(f"Error submitting score kapow: {e}")
+        logging.warning(f"Error submitting score kapow: {e}")
         if hasattr(e, 'response') and e.response is not None:  # Fixing the typo here
-            print(f"Server response: \n{e.response.text}")
+            logging.warning(f"Server response: \n{e.response.text}")
 
     except requests.exceptions.ConnectionError as e:
         print("Connection error:", e)
@@ -773,23 +776,21 @@ def submit_score(name: str, score: float):
 
 #submit_score()
 
-t1 = time.time()
+
 global starBackground
 starBackground = createStarBackground(8, 5000)
-if isDebug:
-    print(f"Star Bg Gen time (s): {time.time() - t1}")
+
 
 running = True
 
-t1 = time.time()
+
 global moonSurf
 moonSurf = createMoonSurface(12, 100, (4000, 500), 10000, moonMedColour)
-if isDebug:
-    print(f"MoonSurfGen time (s): {time.time() - t1}")
 
 
-if isDebug:
-    print(f"Total startup time (s): {time.time()- startTime}")
+
+
+logging.info(f"Total startup time (s): {time.time()- startTime}")
 
 
 

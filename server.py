@@ -3,8 +3,12 @@ from flask import request
 import json
 import pygame as pg
 import os
+import logging
+
 
 api = Flask(__name__)
+
+
 
 
 stupidtempdata = [{"name": "bob", "score": "312.5000", "UUID": "yadayada"},
@@ -26,6 +30,8 @@ if os.stat(databasePath).st_size == 0:
     thing = open(databasePath, "w")
     json.dump(stupidtempdata, thing)
     thing.close()
+
+logging.basicConfig(filename=f"{prefPath}server/latest.log", encoding='utf-8', level=logging.INFO)
 
 
 @api.route('/scores', methods=['GET'])
@@ -61,7 +67,9 @@ def post_scores():
 
     for i in range(len(scores)):
         if scores[i]['UUID'] == uuid:
-            if scores[i]['score'] > score:
+            logging.info(f"Found duplicate UUDI in entry {i}")
+            if float(scores[i]['score']) >= float(score): # if old score is more than new score
+                logging.info(f"Old score was higher than the new score\n Old score: {scores[i]['score']:<10} new score: {score:<10}")
                 return json.dumps({"error": "An entry with this UUID already exists in the database and it was lower than previous score."}), 409
             else:
                 # the score is better than existing one of saeme UUID

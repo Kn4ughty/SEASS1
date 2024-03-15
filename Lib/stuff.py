@@ -1,9 +1,4 @@
 from os import system, name
-from Lib import timing
-from Lib import debug
-from Lib import stuff
-
-__all__ = ["timing", "debug", "stuff"]
 
 
 def check_os():
