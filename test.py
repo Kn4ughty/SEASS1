@@ -16,6 +16,7 @@ import GameLib as gl
 import Lib.lib as lib
 from lem import lem
 import configGen
+import data
 
 logging.basicConfig(encoding='utf-8', level=logging.INFO)
 
@@ -24,6 +25,12 @@ logging.basicConfig(encoding='utf-8', level=logging.INFO)
 ## This one is a doozy
 
 # TODO - Tweak values and make game fune
+
+# TODO - Fix the moon surface being finite
+## Potentially tile it?
+## or make it reallly logn
+
+
 
 
 serverURL = "http://127.0.0.1:5000"
@@ -38,16 +45,17 @@ prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
 if not os.path.isfile(prefPath + "config.ini"):
     configGen.gen(prefPath)
 
+
+
 global name
 
+match sys.argv:
+    case "+U":
+        pass
+
+
 if not os.path.isfile(prefPath + "name"):
-    print("INFO!!!!!!!!!!\n"*5)
-    print("Name not found in config path")
-    print("Your name will be used for online leaderboard scores")
-    name = input("Please enter your name here: ")
-    nameFile = open(prefPath + "name", "w")
-    nameFile.write(name)
-    nameFile.close()
+    data.initName(prefPath)
 else:
     nameFile = open(prefPath + "name", "r")
     name = nameFile.read()
@@ -62,10 +70,7 @@ CONTROLS = config_object["CONTROLS"]
 
 if not os.path.isfile(prefPath + "UUID"): #UUID not set
     print("UUID not found, making one now")
-    UU = str(uuid.uuid1())
-    uuidFile = open(prefPath + "UUID", "w")
-    uuidFile.write(UU)
-    uuidFile.close()
+    data.createAndWriteUUID(prefPath)
 else:
     uuidFile = open(prefPath + "UUID", "r")
     UU = uuidFile.read()
@@ -248,6 +253,7 @@ LEMFuelBar = gl.ui.bar({
 
 
 def resetGame():
+    logging.info("restting game")
     global luna
     global lem_copy
     global camera_copy
@@ -257,6 +263,7 @@ def resetGame():
     luna = lem_copy
     camera = camera_copy
     inEndScreen = False
+    endScreen()
     
 
 
@@ -371,7 +378,7 @@ def drawLEM():
 
 
     lem_rotated_image, lemRect = gl.image.rotate(LEMImg, luna.angle, (luna.x, luna.y))
-    
+
     #lemRect.x -= lem_rotated_image.get_width() / 2
     #lemRect.y -= lem_rotated_image.get_height() / 2
     # The lem is gonna be off center and your gonna like it
@@ -517,7 +524,6 @@ def events():
                 sys.exit()
             if event.key == pg.K_r:
                 print("wagh!!")
-                inEndScreen = False
                 resetGame()
         if event.type == pg.MOUSEWHEEL:
             camera.scale += camera.scaleSpeed * event.y * camera.scale

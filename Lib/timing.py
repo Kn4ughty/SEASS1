@@ -2,10 +2,8 @@ import time
 import logging
 
 
-
-
 def logSpeed(func):
-     
+
     # added arguments inside the inner1,
     # if function takes any arguments,
     # can be added like this.

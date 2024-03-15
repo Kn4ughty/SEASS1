@@ -17,6 +17,8 @@ config_object["CONTROLS"] = {
     "camspeed": -250,
     "camfriction": 7,
 }
+
+
 #Write the above sections to config.ini file
 def gen(prefPath):
     with open(prefPath + "config.ini", 'w') as conf:
