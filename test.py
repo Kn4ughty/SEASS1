@@ -15,12 +15,15 @@ import uuid
 import GameLib as gl
 import Lib.lib as lib
 import leaderboard
-from lem import lem
+import lemmer
 import configGen
 import data
 
-logging.basicConfig(encoding="utf-8", level=logging.INFO, 
-format='%(asctime)s %(levelname)s - %(message)s')
+logging.basicConfig(
+    encoding="utf-8",
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s - %(message)s",
+)
 
 
 # TODO - Fix physics to be constant regarless of FPS
@@ -40,6 +43,7 @@ scorePostURL = scoreGetURL + "Post"
 startTime = time.time()
 
 prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
+logging.info(f"preferences path set at \"{prefPath}\"")
 
 # Read config.ini file
 if not os.path.isfile(prefPath + "config.ini"):
@@ -50,7 +54,7 @@ global name
 
 match sys.argv:
     case "+U":
-        pass # add new user
+        pass  # add new user
 
 userListPath = os.path.join(prefPath, "userList.json")
 
@@ -151,13 +155,13 @@ startX = -200
 startY = -3000
 
 
-global luna
-luna = lem(
+global lem
+lem = lemmer.lem(
     {
-        "vx": 10,
-        "vy": 0,
-        "x": -200,
-        "y": -3000,
+        "vx": startVX,
+        "vy": startVY,
+        "x": startX,
+        "y": startY,
         "width": 9.4,
         "height": 3.231,
         "angle": 0,
@@ -177,7 +181,7 @@ luna = lem(
     }
 )
 
-lem_copy = copy.deepcopy(luna)
+lem_copy = copy.deepcopy(lem)
 
 camera = gl.camera.camera(
     {
@@ -263,7 +267,7 @@ LEMFuelBar = gl.ui.bar(
         "fontSize": int(fontSize / 1.5),
         "isBold": False,
         "text": "Fuel:",
-        "progress": (luna.fuel / luna.maxFuel),
+        "progress": (lem.fuel / lem.maxFuel),
     }
 )
 
@@ -274,19 +278,25 @@ def resetGame():
     """
 
     logging.info("resteting game")
-    global luna, lem_copy, camera, camera_copy, inEndScreen, endScreenSetup, mainHasSetup
+    global \
+        lem, \
+        lem_copy, \
+        camera, \
+        camera_copy, \
+        inEndScreen, \
+        endScreenSetup, \
+        mainHasSetup
     global startVX, startVY, startX, startY
 
-    luna = lem_copy
+    lem = lem_copy # WHY DOESNT THIS WORK???
     camera = camera_copy
 
-    print(luna.y)
+    print(lem.y)
     print(lem_copy.y)
-    #luna.x = lem_copy.y
-    luna.vx = startVX
-    luna.vy = startVY
-    luna.x = startX
-    luna.y = startY
+    lem.vx = startVX
+    lem.vy = startVY
+    lem.x = startX
+    lem.y = startY
 
     inEndScreen = False
     endScreenSetup = False
@@ -296,17 +306,16 @@ def resetGame():
     mainHasSetup = False
 
 
-
 def main():
     global mainHasSetup
     if not mainHasSetup:
         uiElements.append(LEMFuelBar)
         mainHasSetup = True  # tee hee performace went weee downwards without this
-    
-    events()
-    #print("eventing")
 
-    if luna.y > -340 and not endScreenSetup:
+    events()
+    # print("eventing")
+
+    if lem.y > -340 and not endScreenSetup:
         global landed
         landed = True
 
@@ -315,13 +324,11 @@ def main():
         inEndScreen = True
         endScreen()
 
-
-
     if not inEndScreen:
-        luna.update(clock)
+        lem.update(clock)
 
-    camera.x = luna.x
-    camera.y = luna.y
+    camera.x = lem.x
+    camera.y = lem.y
 
     camera.x += (LEMImg.get_width() / 2) / camera.scale
     camera.y += (LEMImg.get_height() / 2) / camera.scale
@@ -361,8 +368,8 @@ def drawUI():
     for element in uiElements:
         if element.type == "bar":
             if element.title == "Fuel:":
-                element.progress = luna.fuel / luna.maxFuel
-                element.contents = f"{round(luna.fuel)} / {round(luna.maxFuel, 1)}"  # I love stupid hard coded things
+                element.progress = lem.fuel / lem.maxFuel
+                element.contents = f"{round(lem.fuel)} / {round(lem.maxFuel, 1)}"  # I love stupid hard coded things
                 if inEndScreen:
                     continue
         if element.type == "button":
@@ -391,18 +398,18 @@ def drawMoonSurface():
 
 
 def drawLEM():
-    if luna.fuel > 0:
-        LEMexhaustImg.set_alpha(255 * (luna.throttle / luna.maxThrottle))
+    if lem.fuel > 0:
+        LEMexhaustImg.set_alpha(255 * (lem.throttle / lem.maxThrottle))
     else:
         LEMexhaustImg.set_alpha(0)
 
     lemExhaust, exhaustRect = gl.image.rotate(
-        LEMexhaustImg, luna.angle, (luna.x, luna.y)
+        LEMexhaustImg, lem.angle, (lem.x, lem.y)
     )
 
     camera.drawSurf(lemExhaust, WINDOW, exhaustRect)
 
-    lem_rotated_image, lemRect = gl.image.rotate(LEMImg, luna.angle, (luna.x, luna.y))
+    lem_rotated_image, lemRect = gl.image.rotate(LEMImg, lem.angle, (lem.x, lem.y))
 
     # lemRect.x -= lem_rotated_image.get_width() / 2
     # lemRect.y -= lem_rotated_image.get_height() / 2
@@ -552,7 +559,7 @@ def events():
             pg.quit()
             sys.exit()
         if event.type == pg.KEYDOWN:
-            print("key pressed")
+            #print("key pressed")
             if event.key == pg.K_EQUALS:
                 print("k equals")
                 rem = rem + 5
@@ -579,7 +586,6 @@ def mainMenu():
     global hasSetup
     # print("in main meu")
     # print(time.time())
-
 
     if not hasSetup:
         global fontObj
@@ -612,9 +618,7 @@ def mainMenu():
         )
         uiElements.append(StartGameButton)
 
-        # TODO Controls guide
-        # TODO Scaling options
-        # TODO Scores
+        # TODO options menu maybe maybe
 
         # title
         titleFont = pg.font.Font("Assets/Moonlander.otf", fontSize * 5)
@@ -647,20 +651,20 @@ def mainMenu():
 
 
 def calcScore():
-    if luna.angle > 180:
-        angFromCenter = 360 - luna.angle
+    if lem.angle > 180:
+        angFromCenter = 360 - lem.angle
     else:
-        angFromCenter = luna.angle
+        angFromCenter = lem.angle
 
     angScore = -pow((angFromCenter * 0.2), 2) + 40
     if angScore < 0:
         angScore = 0
 
-    yVelScore = (-pow((luna.vy * 0.32), 2) + 10) * 2
+    yVelScore = (-pow((lem.vy * 0.32), 2) + 10) * 2
 
-    xVelScore = -pow((luna.vy * 0.75), 2) + 10
+    xVelScore = -pow((lem.vy * 0.75), 2) + 10
 
-    fuelScore = (luna.fuel / luna.maxFuel) * 100 * 1.5
+    fuelScore = (lem.fuel / lem.maxFuel) * 100 * 1.5
 
     totalScore = ((angScore + yVelScore + xVelScore) * 5) + fuelScore
 
@@ -750,9 +754,7 @@ def endScreen():
                 "fontColour": fontColour,
                 "fontSize": int(fontSize * 0.8),
                 "isBold": False,
-                "text": leaderboard.parse(
-                    leaderboard.get(scoreGetURL)
-                ),
+                "text": leaderboard.parse(leaderboard.get(scoreGetURL)),
                 "doesHighlighting": False,
             }
         )
@@ -789,7 +791,8 @@ moonSurf = createMoonSurface(12, 100, (4000, 500), 10000, moonMedColour)
 logging.info(f"Total startup time (s): {time.time()- startTime}")
 
 
-while running:
-    while inMainMenu:
-        mainMenu()
-    main()
+if __name__ == "__main__":
+    while running:
+        while inMainMenu:
+            mainMenu()
+        main()
