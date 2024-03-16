@@ -245,7 +245,7 @@ debugToggleButton = gl.ui.Button(
         "clickEventHandler": toggleDebug,
     }
 )
-uiElements.append(debugToggleButton)
+#uiElements.append(debugToggleButton)
 
 
 LEMFuelBar = gl.ui.bar(
@@ -414,11 +414,15 @@ def drawLEM():
 
     lem_rotated_image, lemRect = gl.image.rotate(LEMImg, lem.angle, (lem.x, lem.y))
 
+    #lem_rotated_imageington, lemRectington = gl.image.rotate(LEMImg, lem.angle, (0, 0))
+
     # lemRect.x -= lem_rotated_image.get_width() / 2
     # lemRect.y -= lem_rotated_image.get_height() / 2
     # The lem is gonna be off center and your gonna like it
+    # UPDATE i decided i didnt like it
 
     camera.drawSurf(lem_rotated_image, WINDOW, lemRect)
+    #WINDOW.blit(lem_rotated_imageington, lemRectington)
 
 
 @lib.timing.logSpeed
@@ -671,7 +675,26 @@ def calcScore():
 
     totalScore = ((angScore + yVelScore + xVelScore) * 5) + fuelScore
 
-    return totalScore
+    return totalScore # i sure hope noone cheats and returns like a billion. That would make me sad :( dont do it1!!
+
+def get_humancrytext(totalScore):
+    thresholds = {
+        0: "Woah thats really really bad :(",
+        50: "mmm strawberry jammm mmmmm 😋",
+        100: "every single bone is shattered",
+        200: "Not every single bone is shattered!",
+        300: "Woah you might make it home",
+        350: "The landing legs were not crushed!",
+        400: "Actually decent!",
+        425: "You did a great job!",
+        440: "Very well done comrade",
+        448: "Pretty much perfect landing!!!!",
+        450: "I didnt even think this was possible"
+    }
+
+    for threshold, message in sorted(thresholds.items(), reverse=True):
+        if totalScore > threshold:
+            return message
 
 
 def endScreen():
@@ -685,29 +708,9 @@ def endScreen():
 
         logging.info(f"Total score calcualted is {totalScore}")
 
-        # There has got to be a better way
-        if totalScore < 0:
-            humancrytext = "Woah thats really really bad :("
-        if totalScore > 50:
-            humancrytext = "mmm strawberry jammm mmmmm 😋"
-        if totalScore > 100:
-            humancrytext = "every single bone is shattered"
-        if totalScore > 200:
-            humancrytext = "Not every single bone is shattered!"
-        if totalScore > 300:
-            humancrytext = "Woah you might make it home"
-        if totalScore > 350:
-            humancrytext = "The landing legs were not crushed!"
-        if totalScore > 400:
-            humancrytext = "Actually decent!"
-        if totalScore > 425:
-            humancrytext = "You did a great job!"
-        if totalScore > 440:
-           humancrytext = "Very well done commrad"
-        if totalScore > 448:
-           humancrytext = "Perfect landing!!!!"
-        if totalScore > 450:
-            humancrytext = "I didnt even think this was possible"
+        # There has got to be a better way (12898b4d639c55acea50cc9f0fdb513781c09404)
+        # Update i found a better way
+        humancrytext = get_humancrytext()
 
         global ScoreText  # i am not a fan of this
         ScoreText = gl.ui.Button(
