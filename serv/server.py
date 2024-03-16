@@ -17,7 +17,8 @@ stupidtempdata = [{"name": "bob", "score": "312.5000", "UUID": "yadayada"},
 
 
 prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
-databasePath = prefPath + "server/database.json"
+databasePath = os.path.join(prefPath + "server/database.json")
+print(databasePath)
 
 logging.basicConfig(filename=f"{prefPath}server/latest.log", encoding='utf-8', level=logging.INFO)
 
@@ -50,7 +51,7 @@ def serveCSS():
     #return website.makeList()
     with open("serv/templates/mycss.css", "r") as cssFile:
         css = cssFile.read()
-    return Response(css, mimetype='text/css')
+    return Response(css, mimetype='text/css') # Why do i have to specify mimetype
 
 
 def get_db():
@@ -66,6 +67,12 @@ def get_scores():
     scores = get_db()
 
     sorted_scores = sorted(scores, key=lambda x: float(x['score']), reverse=True)
+
+    out = []
+
+    for element in sorted_scores:
+        element.pop("UUID") # lets see if this breaks things 
+        out.append(element)
 
     return json.dumps(sorted_scores)
 

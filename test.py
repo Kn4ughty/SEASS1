@@ -298,6 +298,9 @@ def resetGame():
     lem.x = startX
     lem.y = startY
 
+    lem.fuel = lem.maxFuel
+    lem.throttle = 0
+
     inEndScreen = False
     endScreenSetup = False
 
