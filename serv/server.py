@@ -1,9 +1,10 @@
-from flask import Flask
-from flask import request
+from flask import Flask, request, render_template
 import json
 import pygame as pg
 import os
 import logging
+
+import website
 
 
 api = Flask(__name__)
@@ -18,28 +19,44 @@ stupidtempdata = [{"name": "bob", "score": "312.5000", "UUID": "yadayada"},
 prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
 databasePath = prefPath + "server/database.json"
 
+logging.basicConfig(filename=f"{prefPath}server/latest.log", encoding='utf-8', level=logging.INFO)
+
+
+
 if not os.path.exists(prefPath + "server/database.json"):
     #os.makedirs(prefPath + "server")
     print("grraaa")
     os.mkdir(prefPath + "server/")
     thing = open(databasePath, "x")
     thing.close()
-
 if os.stat(databasePath).st_size == 0:
     print("writing stupid data")
     thing = open(databasePath, "w")
     json.dump(stupidtempdata, thing)
     thing.close()
 
-logging.basicConfig(filename=f"{prefPath}server/latest.log", encoding='utf-8', level=logging.INFO)
 
 
-@api.route('/scores', methods=['GET'])
-def get_scores():
-    print("gettingscores")
+
+
+
+@api.route('/', methods=['GET'])
+def serveMain():
+    #return website.makeList()
+    return render_template("index.html", list=website.makeList(get_scores()))
+
+
+def get_db():
+    logging.info("getting the database")
     with open(databasePath, "r") as database_file:
         scores = json.load(database_file)
 
+    return scores
+
+@api.route('/scores', methods=['GET'])
+def get_scores():
+
+    scores = get_db()
 
     sorted_scores = sorted(scores, key=lambda x: float(x['score']), reverse=True)
 
@@ -91,4 +108,5 @@ def post_scores():
         return json.dumps({"error": "Score is not higher than the lowest score in the database."}), 400
 
 if __name__ == '__main__':
+
     api.run()
