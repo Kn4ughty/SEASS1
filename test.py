@@ -8,17 +8,19 @@ import copy  # for backup vars for restart
 import logging  # I wish i had known about this module earlier.. 15/03/2024
 
 # Server stuff
-import requests
+
 import uuid
 # My librarys
 
 import GameLib as gl
 import Lib.lib as lib
+import leaderboard
 from lem import lem
 import configGen
 import data
 
-logging.basicConfig(encoding="utf-8", level=logging.INFO)
+logging.basicConfig(encoding="utf-8", level=logging.INFO, 
+format='%(asctime)s %(levelname)s - %(message)s')
 
 
 # TODO - Fix physics to be constant regarless of FPS
@@ -33,7 +35,7 @@ logging.basicConfig(encoding="utf-8", level=logging.INFO)
 
 serverURL = "http://127.0.0.1:5000"
 scoreGetURL = serverURL + "/scores"
-scorePosURL = scoreGetURL + "Post"
+scorePostURL = scoreGetURL + "Post"
 
 startTime = time.time()
 
@@ -48,14 +50,14 @@ global name
 
 match sys.argv:
     case "+U":
-        pass
+        pass # add new user
 
+userListPath = os.path.join(prefPath, "userList.json")
 
-if not os.path.isfile(prefPath + "name"):
-    data.initName(prefPath)
-else:
-    nameFile = open(prefPath + "name", "r")
-    name = nameFile.read()
+data.initName(userListPath)
+
+name = data.getUser(userListPath)
+logging.info(f"Name = {name}")
 
 config_object = configparser.ConfigParser()
 config_object.read(prefPath + "config.ini")
@@ -143,7 +145,11 @@ uiPadding = 5
 gravity = -5
 
 
-landHeight = 500
+startVX = 10
+startVY = 0
+startX = -200
+startY = -3000
+
 
 global luna
 luna = lem(
@@ -171,7 +177,7 @@ luna = lem(
     }
 )
 
-lem_copy = copy.copy(luna)
+lem_copy = copy.deepcopy(luna)
 
 camera = gl.camera.camera(
     {
@@ -260,24 +266,35 @@ LEMFuelBar = gl.ui.bar(
         "progress": (luna.fuel / luna.maxFuel),
     }
 )
-# I have learned pointerss in python dont really exist so ill have to
-# update bars in a hard coded way for each bar.
-
-# uiElements.append(LEMFuelBar)
 
 
 def resetGame():
-    logging.info("restting game")
-    global luna
-    global lem_copy
-    global camera_copy
-    global camera
-    global inEndScreen
+    """
+    I hate this function so freaking much
+    """
+
+    logging.info("resteting game")
+    global luna, lem_copy, camera, camera_copy, inEndScreen, endScreenSetup, mainHasSetup
+    global startVX, startVY, startX, startY
 
     luna = lem_copy
     camera = camera_copy
+
+    print(luna.y)
+    print(lem_copy.y)
+    #luna.x = lem_copy.y
+    luna.vx = startVX
+    luna.vy = startVY
+    luna.x = startX
+    luna.y = startY
+
     inEndScreen = False
-    endScreen()
+    endScreenSetup = False
+
+    uiElements.clear()
+
+    mainHasSetup = False
+
 
 
 def main():
@@ -285,17 +302,20 @@ def main():
     if not mainHasSetup:
         uiElements.append(LEMFuelBar)
         mainHasSetup = True  # tee hee performace went weee downwards without this
+    
     events()
+    #print("eventing")
 
-    if luna.y > -340:
+    if luna.y > -340 and not endScreenSetup:
         global landed
         landed = True
 
         # calcScore()
         global inEndScreen
         inEndScreen = True
+        endScreen()
 
-    endScreen()
+
 
     if not inEndScreen:
         luna.update(clock)
@@ -532,6 +552,7 @@ def events():
             pg.quit()
             sys.exit()
         if event.type == pg.KEYDOWN:
+            print("key pressed")
             if event.key == pg.K_EQUALS:
                 print("k equals")
                 rem = rem + 5
@@ -542,6 +563,7 @@ def events():
                 pg.quit()
                 sys.exit()
             if event.key == pg.K_r:
+                print(uiElements)
                 print("wagh!!")
                 resetGame()
         if event.type == pg.MOUSEWHEEL:
@@ -557,6 +579,7 @@ def mainMenu():
     global hasSetup
     # print("in main meu")
     # print(time.time())
+
 
     if not hasSetup:
         global fontObj
@@ -651,7 +674,7 @@ def endScreen():
 
         humancrytext = ""
 
-        submit_score(name, totalScore)
+        leaderboard.submit_score(scorePostURL, name, totalScore, UU)
 
         logging.info(f"Total score calcualted is {totalScore}")
 
@@ -727,9 +750,9 @@ def endScreen():
                 "fontColour": fontColour,
                 "fontSize": int(fontSize * 0.8),
                 "isBold": False,
-                "text": parse_leaderboard(
-                    get_leaderboard()
-                ),  # formatting strings is hard okay
+                "text": leaderboard.parse(
+                    leaderboard.get(scoreGetURL)
+                ),
                 "doesHighlighting": False,
             }
         )
@@ -745,68 +768,6 @@ def endScreen():
         uiElements.remove(leaderBoardDisplay)
 
         endScreenSetup = False
-
-
-def get_leaderboard():
-    try:
-        response = requests.get(scoreGetURL)
-        response.raise_for_status()
-
-    except requests.RequestException as e:
-        logging.warning(f"Error getting score kapow: {e}")
-        if hasattr(e, "response") and e.response is not None:  # Fixing the typo here
-            logging.warning(f"Server response: \n{e.response.text}")
-
-    except requests.exceptions.ConnectionError as e:
-        print("Connection error:", e)
-
-    except requests.exceptions.Timeout as e:
-        print("Request timeout:", e)
-
-    else:
-        return response.json()
-
-
-def parse_leaderboard(data) -> str:
-    if data is None:
-        logging.warning(
-            "Data for parse_leaderboard was None. Check for errors from get_leaderboard"
-        )
-        return "Was unable to connect to server\n Check the console for errors"
-    outStr = ""
-
-    for i in range(0, min(len(data), 10)):
-        name = data[i].get("name")
-        score = data[i].get("score")
-        row = f"{(i+1)}. {name:<10} {score:>20}"
-        outStr += row + "\n"
-
-    return outStr
-
-
-def submit_score(name: str, score: float):
-    try:
-        json_data = {
-            "name": name,
-            "score": str(score),
-            "UUID": UU,
-        }  # Assuming UU is defined elsewhere
-        response = requests.post(
-            scorePosURL, json=json_data, timeout=5
-        )  # Set timeout to 5 seconds
-        response.raise_for_status()  # Raise an error for bad response status codes (4xx or 5xx)
-        logging.info("Score submitted successfully!")
-
-    except requests.RequestException as e:
-        logging.warning(f"Error submitting score kapow: {e}")
-        if hasattr(e, "response") and e.response is not None:  # Fixing the typo here
-            logging.warning(f"Server response: \n{e.response.text}")
-
-    except requests.exceptions.ConnectionError as e:
-        print("Connection error:", e)
-
-    except requests.exceptions.Timeout as e:
-        print("Request timeout:", e)
 
 
 # print(parse_leaderboard(x))

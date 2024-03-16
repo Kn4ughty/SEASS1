@@ -2,7 +2,6 @@ from os import system, name
 
 
 def check_os():
-    # TODO make into switch statement
     match name:
         case "nt":
             return "nt"
