@@ -2,12 +2,16 @@
 This is a small game I made for my software engineering course. 
 
 # Setup
-you should probably create a virtual enviroment but you dont have to.
+Download the repo [here](https://github.com/Kn4ughty/SEASS1/archive/refs/heads/main.zip)
+unzip it somewhere
+
+you should probably create a python virtual enviroment but you dont have to.
 
 **Note**
 This setup guide is for unix. I dont know if windows is different not my problem.
 If it doesnt work look [here](https://docs.python.org/3/library/venv.html).
 
+First cd into the place you downloaded it then run these commands (assuming you have python installed)
 Setup commands
 ```bash
 python -m venv .venv
