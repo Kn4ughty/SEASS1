@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Response
 import json
 import pygame as pg
 import os
@@ -43,7 +43,14 @@ if os.stat(databasePath).st_size == 0:
 @api.route('/', methods=['GET'])
 def serveMain():
     #return website.makeList()
-    return render_template("index.html", list=website.makeList(get_scores()))
+    return render_template("index.html", list=website.makeList(get_db()))
+
+@api.route('/mycss.css', methods=['GET'])
+def serveCSS():
+    #return website.makeList()
+    with open("serv/templates/mycss.css", "r") as cssFile:
+        css = cssFile.read()
+    return Response(css, mimetype='text/css')
 
 
 def get_db():
