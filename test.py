@@ -60,7 +60,7 @@ userListPath = os.path.join(prefPath, "userList.json")
 
 data.initName(userListPath)
 
-data.selectUser(userListPath)
+#data.selectUser(userListPath)
 
 name = data.getUser(userListPath)
 logging.info(f"Name = {name}")
