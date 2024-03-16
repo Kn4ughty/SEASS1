@@ -685,17 +685,28 @@ def endScreen():
 
         logging.info(f"Total score calcualted is {totalScore}")
 
+        # There has got to be a better way
         if totalScore < 0:
-            humancrytext = "Woah thats really bad :("
+            humancrytext = "Woah thats really really bad :("
         if totalScore > 50:
-            humancrytext = "No strawberry jam on the walls this time!"
+            humancrytext = "mmm strawberry jammm mmmmm 😋"
         if totalScore > 100:
-            humancrytext = "Only a few broken bones"
+            humancrytext = "every single bone is shattered"
         if totalScore > 200:
-            humancrytext = "You might actually make it home!"
+            humancrytext = "Not every single bone is shattered!"
         if totalScore > 300:
-            humancrytext = "Very good job!"
+            humancrytext = "Woah you might make it home"
         if totalScore > 350:
+            humancrytext = "The landing legs were not crushed!"
+        if totalScore > 400:
+            humancrytext = "Actually decent!"
+        if totalScore > 425:
+            humancrytext = "You did a great job!"
+        if totalScore > 440:
+           humancrytext = "Very well done commrad"
+        if totalScore > 448:
+           humancrytext = "Perfect landing!!!!"
+        if totalScore > 450:
             humancrytext = "I didnt even think this was possible"
 
         global ScoreText  # i am not a fan of this
@@ -735,8 +746,7 @@ def endScreen():
                 "fontColour": fontColour,
                 "fontSize": int(fontSize * 0.7),
                 "isBold": True,
-                "text": f"{round(totalScore, 5):^30}"
-                + f"\n {humancrytext:^30}",  # formatting strings is hard okay
+                "text": f"{round(totalScore, 5):^30}" + f"\n {humancrytext:^30}",  # formatting strings is hard okay
                 "doesHighlighting": False,
             }
         )
