@@ -42,9 +42,9 @@ def parse(data) -> str:
 def submit_score(scorePosURL: str, name: str, score: float, uuid: str):
     try:
         json_data = {
-            "name": name,
+            "name": str(name),
             "score": str(score),
-            "UUID": uuid,
+            "UUID": str(uuid),
         }
         response = requests.post(
             scorePosURL, json=json_data, timeout=5

@@ -88,9 +88,9 @@ def post_scores():
     #if len(scores) >= 1000:
     #    return json.dumps({"error": "Database full. Cannot add more entries."}), 400
 
-    name = request_data['name'][:75]  # Truncate name if it's longer than 75 characters
+    name = str(request_data['name'][:75])  # Truncate name if it's longer than 75 characters
     score = str(round(float(request_data['score']), 4))[:75]  # Convert score to string and truncate if longer than 75 characters
-    uuid = request_data['UUID']
+    uuid = str(request_data['UUID'])
 
     formatedNew = {"name": name, "score": score, "UUID": uuid}
 

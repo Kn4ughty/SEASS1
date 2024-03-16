@@ -8,14 +8,23 @@ unzip it somewhere
 you should probably create a python virtual enviroment but you dont have to.
 
 **Note**
-This setup guide is for unix. I dont know if windows is different not my problem.
-If it doesnt work look [here](https://docs.python.org/3/library/venv.html).
 
+## Unix (Macos)
 First cd into the place you downloaded it then run these commands (assuming you have python installed)
 Setup commands
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Windows (In powershell)
+```powershell
+python -m venv .venv
+Set-ExecutionPolicy Unrestricted
+A
+.venv\Scripts\Activate.ps1
+Set-ExecutionPolicy Restricted
 pip install -r requirements.txt
 ```
 
