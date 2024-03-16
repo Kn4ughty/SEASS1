@@ -171,9 +171,9 @@ lem = lemmer.lem(
         "angularFriction": 10,
         "throttleSens": 200,
         "maxThrottle": 100,
-        "massFlowRate": 14.768,
-        "fuel": 8200,
-        "maxFuel": 8200,
+        "massFlowRate": 12,
+        "fuel": 3000,
+        "maxFuel": 3000,
         "ISP": 311,
         "mass": 2144,
         "gravity": gravity,
@@ -397,7 +397,8 @@ def drawBackground():
 def drawMoonSurface():
     # check if on screen (or close probably)
     # draw moon
-    camera.drawSurf(moonSurf, WINDOW, pg.Rect(0, 0, 0, 0))
+    camera.drawSurf(moonSurf, WINDOW, pg.Rect(- moonSurf.get_width() / 2 + 500, 0, 0, 0))
+    
 
 
 def drawLEM():
@@ -692,6 +693,9 @@ def get_humancrytext(totalScore):
         450: "I didnt even think this was possible"
     }
 
+    if totalScore < 0:
+        return thresholds[0]
+
     for threshold, message in sorted(thresholds.items(), reverse=True):
         if totalScore > threshold:
             return message
@@ -710,7 +714,7 @@ def endScreen():
 
         # There has got to be a better way (12898b4d639c55acea50cc9f0fdb513781c09404)
         # Update i found a better way
-        humancrytext = get_humancrytext()
+        humancrytext = get_humancrytext(totalScore)
 
         global ScoreText  # i am not a fan of this
         ScoreText = gl.ui.Button(
@@ -801,7 +805,8 @@ running = True
 
 
 global moonSurf
-moonSurf = createMoonSurface(12, 100, (4000, 500), 10000, moonMedColour)
+moonSurf = createMoonSurface(12, 100, (6000, 1000), 10000, moonMedColour)
+moonSurf = pg.transform.smoothscale(moonSurf, (moonSurf.get_width() * 2, moonSurf.get_height() * 2))
 
 
 logging.info(f"Total startup time (s): {time.time()- startTime}")
