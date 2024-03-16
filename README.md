@@ -17,10 +17,16 @@ pip install -r requirements.txt
 
 then to run you can just type `python test.py`
 
-To run the server run 
+To run the server in debug mode (doesnt allow other computers to connect, reloads the server as thigns change)
 ```bash
-python -m flask --app server.py run
+python -m flask --app serv/server.py run
 ```
+
+To run the server publically, so everyone on a network can ascces it
+```bash
+python -m flask --app serv/server.py run --host=0.0.0.0
+```
+
 
 # User guide
 On first start, you will be prompted for your name. This will be what is sent to the leaderboard and displayed to other players.
