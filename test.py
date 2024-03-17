@@ -273,6 +273,48 @@ LEMFuelBar = gl.ui.bar(
     }
 )
 
+hudVelX = gl.ui.Button(
+    {
+        "surface": uiLayer,
+        "type": "button",
+        "tag": "hudVX",
+        "posX": 2,
+        "posY": 85,
+        "sizeX": 20,
+        "sizeY": 10,
+        "anchorSpace": "%",
+        "scaleSpace": "%",
+        "colour": UIColour,
+        "fontColour": fontColour,
+        "fontSize": int(fontSize / 1.25),
+        "isBold": True,
+        "textJusify": "left",
+        "text": "VX: ",
+        "doesHighlighting": False,
+    }
+)
+
+
+hudVelY = gl.ui.Button(
+    {
+        "surface": uiLayer,
+        "type": "button",
+        "tag": "hudVY",
+        "posX": 2,
+        "posY": 70,
+        "sizeX": 20,
+        "sizeY": 10,
+        "anchorSpace": "%",
+        "scaleSpace": "%",
+        "colour": UIColour,
+        "fontColour": fontColour,
+        "fontSize": int(fontSize / 1.25),
+        "isBold": True,
+        "textJusify": "left",
+        "text": "VY: ",
+        "doesHighlighting": False,
+    }
+)
 
 def resetGame():
     """
@@ -315,6 +357,8 @@ def main():
     global mainHasSetup
     if not mainHasSetup:
         uiElements.append(LEMFuelBar)
+        uiElements.append(hudVelX)
+        uiElements.append(hudVelY)
         mainHasSetup = True  # tee hee performace went weee downwards without this
 
     events()
@@ -378,9 +422,10 @@ def drawUI():
                 if inEndScreen:
                     continue
         if element.type == "button":
-            if element.text == "Your score is!...":
-                # print("weeping rn")
-                pass
+            if element.tag == "hudVX":
+                element.text = f"VX: {lem.vx:.2f}"
+            if element.tag == "hudVY":
+                element.text = f"VY: {lem.vy:.2f}"
 
         # element.text = str(x)
         element.em = rem  # cope future me hahahah
@@ -397,7 +442,6 @@ def drawBackground():
 
 
 def drawMoonSurface():
-    # check if on screen (or close probably)
     # draw moon
     camera.drawSurf(moonSurf, WINDOW, pg.Rect(- moonSurf.get_width() / 2 + 500, 0, 0, 0))
     
@@ -523,10 +567,6 @@ def createMoonSurface(
 
 
 class Debug:
-    # def __init__():
-    #    global rollingFPSAverage
-    #    rollingFPSAverage = []
-
     def ShowFPS() -> None:
         fps = str(round(clock.get_fps(), 2))
         fontObj = pg.font.SysFont("Hack", 15, True)
@@ -792,11 +832,6 @@ def endScreen():
         uiElements.remove(leaderBoardDisplay)
 
         endScreenSetup = False
-
-
-# print(parse_leaderboard(x))
-
-# submit_score()
 
 
 global starBackground
