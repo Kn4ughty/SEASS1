@@ -7,9 +7,6 @@ import time
 import copy  # for backup vars for restart
 import logging  # I wish i had known about this module earlier.. 15/03/2024
 
-# Server stuff
-
-import uuid
 # My librarys
 
 import GameLib as gl
