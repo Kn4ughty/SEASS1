@@ -393,19 +393,7 @@ def drawUI():
 
 
 def drawBackground():
-    tilesX = int((WINDOW_WIDTH * camera.scale) / starBackground.get_width())
-    tilesY = int((WINDOW_HEIGHT* camera.scale) / starBackground.get_height())
-
-
-
-    outSurf = pg.Surface((tilesX * starBackground.get_width(), tilesY * starBackground.get_width()))
-
-    for x in range(tilesX):
-        for y in range(tilesY):
-            outSurf.blit(starBackground, (starBackground.get_width() * x, starBackground.get_height() * y))
-
-
-    camera.drawSurf(outSurf, WINDOW, pg.Rect(-200, -3000, 0, 0))
+    WINDOW.blit(starBackground, (0, 0))
 
 
 def drawMoonSurface():
@@ -441,15 +429,12 @@ def drawLEM():
 
 
 @lib.timing.logSpeed
-def createStarBackground(starSize: int, starChance: int, sizeMult) -> pg.Surface:
-    width = WINDOW_WIDTH * sizeMult
-    height = WINDOW_HEIGHT * sizeMult
-    
-    out = pg.Surface((width, height))
+def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
+    out = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
     lineWidth = 1
     circle = pg.image.load("Assets/starBlack.png")
-    for x in range(0, width):
-        for y in range(0, height):
+    for x in range(0, WINDOW_WIDTH):
+        for y in range(0, WINDOW_HEIGHT):
             a = random.randrange(0, starChance)
             if a == starChance - 1:
                 # I should really try to create linse of code that are less long
@@ -815,8 +800,7 @@ def endScreen():
 
 
 global starBackground
-starBackground = createStarBackground(8, 5000, 1)
-starBackground = pg.transform.scale(starBackground, (starBackground.get_width() * 2, starBackground.get_height() * 2))
+starBackground = createStarBackground(8, 5000)
 
 
 running = True
