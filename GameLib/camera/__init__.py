@@ -65,12 +65,13 @@ class camera(object):
         #print(self.y)
 
 
-    def drawSurf(self, surface: pg.Surface, destSurf: pg.Surface, worldRect: pg.Rect) -> None:
+    def drawSurf(self, surface: pg.Surface, destSurf: pg.Surface, worldRect: pg.Rect, scale: bool = True) -> None:
         # Fun fact size of the rect does not matter it just draws the surface sooo
         # No camera scaling
 
         #Unless we do pg.transform.scale
-        surface = pg.transform.smoothscale(surface, (surface.get_width() / self.scale, surface.get_height() / self.scale))
+        if scale:
+            surface = pg.transform.smoothscale(surface, (surface.get_width() / self.scale, surface.get_height() / self.scale))
 
         #print(worldRect)
 
