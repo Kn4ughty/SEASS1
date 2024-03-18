@@ -53,20 +53,20 @@ def selectUser(userListPath) -> int:
             print("Not a valid user please try again.")
         for i in range(len(users)):
             user = users[i]
-            print(f"{i}. {user['name']}")
+            print(f"{i+1}. {user['name']}")
         
         tries += 1
         x = input("#: ")
     
-    return int(x)
+    return int(x) - 1
 
-    
+
 
 def isValid(x, users) -> bool:
     if x == "tehe":
         return False
     try:
-        x = int(x)
+        x = int(x) - 1
     except ValueError:
         print("invalid input. (could not change to int)")
         return False

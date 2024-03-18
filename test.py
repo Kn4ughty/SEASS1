@@ -33,7 +33,7 @@ logging.basicConfig(
 ## or make it reallly logn
 
 
-serverURL = "http://192.168.42.70:5000"
+serverURL = "http://localhost:5000"
 scoreGetURL = serverURL + "/scores"
 scorePostURL = scoreGetURL + "Post"
 
@@ -148,10 +148,10 @@ uiPadding = 5
 gravity = -4
 
 
-startVX = 10
+startVX = 30
 startVY = 0
-startX = -200
-startY = -3000
+startX = -1000
+startY = -2500
 
 lemRotStrength = 12
 
@@ -167,7 +167,7 @@ lem = lemmer.lem(
         "y": startY,
         "width": 9.4,
         "height": 3.231,
-        "angle": 0,
+        "angle": 270,
         "omega": 0,
         "maxOmega": 100,
         "rotStrength": lemRotStrength,
@@ -186,17 +186,22 @@ lem = lemmer.lem(
 
 lem_copy = copy.deepcopy(lem)
 
+camStartX = 1000
+camStartY = -1000
+
+camStartScale = 4
+
 camera = gl.camera.camera(
     {
-        "x": 1000,
-        "y": -1000,
+        "x": camStartX,
+        "y": camStartY,
         "vx": 0,
         "vy": 0,
         "WinHeight": WINDOW_HEIGHT,
         "WinWidth": WINDOW_WIDTH,
         "friction": camFriction,
         "moveStrength": camSpeed,
-        "scale": 4,
+        "scale":camStartScale,
         "scaleSpeed": camScaleSpeed,
         "FPS": FPS,
     }
@@ -362,7 +367,9 @@ def resetGame():
 
     lem = lem_copy # WHY DOESNT THIS WORK???
     camera = camera_copy
-    #camera.scale = camera
+    camera.x = camStartX
+    camera.y = camStartY
+    camera.scale = camStartScale
 
     print(lem.y)
     print(lem_copy.y)
@@ -374,7 +381,7 @@ def resetGame():
     lem.fuel = lem.maxFuel
     lem.throttle = 0
 
-    lem.angle = 0
+    lem.angle = 270
 
     inEndScreen = False
     endScreenSetup = False
