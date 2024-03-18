@@ -56,8 +56,6 @@ def selectUser(userListPath) -> int:
             print(f"{i}. {user['name']}")
         
         tries += 1
-
-        print(len(users))
         x = input("#: ")
     
     return int(x)
@@ -75,7 +73,7 @@ def isValid(x, users) -> bool:
 
     x = int(x)
 
-    if x <= len(users):
+    if x <= len(users) - 1:
         if x >= 0:
             return True
         else:
@@ -102,9 +100,9 @@ def getUser(userListPath, userNum=0):
 
 
 def newUser(userListPath):
-    print("So you want a new user huhu?")
-    print("okay")
-    name = input("Enter the new user: ")
+    print("So you want a new user huh?")
+    print("okie!")
+    name = input("Enter the new username!: ")
 
     UU = str(uuid.uuid1())
 

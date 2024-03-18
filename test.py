@@ -103,9 +103,9 @@ pg.init()
 # Colours
 opacityPercent = 0.7
 ## UI stuff
-UIColour = pg.Color(77, 84, 123, 255 * opacityPercent)
+UIColour = pg.Color(77, 84, 123, int(255 * opacityPercent))
 fontColour = pg.Color(255, 255, 255)
-HudColour = pg.Color(44, 48, 71, 255 * 0.8)
+HudColour = pg.Color(44, 48, 71, int(255 * 0.8))
 
 barColour = pg.Color(50, 255, 186)
 barOutlineColour = pg.Color(255, 185, 252)
@@ -363,6 +363,8 @@ def resetGame():
 
     lem.fuel = lem.maxFuel
     lem.throttle = 0
+
+    lem.angle = 0
 
     inEndScreen = False
     endScreenSetup = False
