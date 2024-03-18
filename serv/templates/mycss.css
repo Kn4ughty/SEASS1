@@ -1,6 +1,8 @@
 /*@import url('https://unpkg.com/@catppuccin/palette/css/catppuccin.css');
 */
-@media (prefers-color-scheme: dark) {
+
+/* Hello whoever is reading this. */
+
 :root {
   /*
   color:        var(--ctp-mocha-text);
@@ -18,4 +20,42 @@
 th {
   background-color: var(--overlay0);
 }
+
+tr:nth-child(2) {
+  background-color: var(--accent);
+  color: var(--code);
+  box-shadow: 0 0 2rem var(--accent);
+  font-weight: bold;
+  animation: rainbowGlow 2s infinite linear;
 }
+
+th:first-child,
+td:first-child {
+    width: 5px;
+}
+
+
+@keyframes rainbowGlow {
+  0% {
+    text-shadow: 0 0 10px red;
+  }
+  16.666% {
+    text-shadow: 0 0 10px orange;
+  }
+  33.333% {
+    text-shadow: 0 0 10px yellow;
+  }
+  50% {
+    text-shadow: 0 0 10px green;
+  }
+  66.666% {
+    text-shadow: 0 0 10px blue;
+  }
+  83.333% {
+    text-shadow: 0 0 10px indigo;
+  }
+  100% {
+    text-shadow: 0 0 10px violet;
+  }
+}
+

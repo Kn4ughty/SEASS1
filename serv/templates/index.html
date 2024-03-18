@@ -18,11 +18,13 @@
 
     <table>
         <tr>
+            <th>#.</th>
             <th>Name</th>
             <th>Score</th>
         </tr>
         {% for item in list %}
         <tr>
+            <td>{{ loop.index }}</td>
             {% for entry in item %}
             <td>{{ entry }}</td>
             {% endfor %}
