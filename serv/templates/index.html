@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Leaderboards</title>
     <script>
-        // DISABLE ME FOR PRODUCTION!!
-        setTimeout(function(){
-            window.location.reload(1);
-        }, 3000000);
+      // DISABLE ME FOR PRODUCTION!!
+      setTimeout(function () {
+        window.location.reload(1);
+      }, 3000000);
     </script>
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="mycss.css">
-</head>
-<body>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="mycss.css" />
+  </head>
+  <body>
     <h1>Leaderboard</h1>
 
     <table>
-        <tr>
-            <th>#.</th>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-        {% for item in list %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            {% for entry in item %}
-            <td>{{ entry }}</td>
-            {% endfor %}
-        </tr>
+      <tr>
+        <th>#.</th>
+        <th>Name</th>
+        <th>Score</th>
+      </tr>
+      {% for item in list %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        {% for entry in item %}
+        <td>{{ entry }}</td>
         {% endfor %}
+      </tr>
+      {% endfor %}
     </table>
 
-
-
-    <a class="fa fa-github" style="font-size:36px" href="https:\/\/github.com/Kn4ughty/SEASS1"></a>
-</body>
+    <a
+      class="fa fa-github"
+      style="font-size: 36px"
+      href="https:\/\/github.com/Kn4ughty/SEASS1"
+    ></a>
+  </body>
 </html>

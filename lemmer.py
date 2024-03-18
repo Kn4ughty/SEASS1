@@ -13,7 +13,7 @@ class lem(object):
         self.height = config.get("height")
 
         self.angle = config.get("angle")
-        self.omega = config.get("omega")
+        self.omega = config.get("omega", 0)
         self.maxOmega = config.get("maxOmega")
         self.rotStrength = config.get("rotStrength")
         self.angularFriction = config.get("angularFriction")

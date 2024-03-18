@@ -165,9 +165,9 @@ lem = lemmer.lem(
         "height": 3.231,
         "angle": 0,
         "omega": 0,
-        "maxOmega": 10,
-        "rotStrength": 15,
-        "angularFriction": 10,
+        "maxOmega": 100,
+        "rotStrength": 12,
+        "angularFriction": 8,
         "throttleSens": 200,
         "maxThrottle": 100,
         "massFlowRate": 14,
@@ -184,20 +184,20 @@ lem_copy = copy.deepcopy(lem)
 
 camera = gl.camera.camera(
     {
-        "x": 0,
-        "y": -3000,
+        "x": 1000,
+        "y": -1000,
         "vx": 0,
         "vy": 0,
         "WinHeight": WINDOW_HEIGHT,
         "WinWidth": WINDOW_WIDTH,
         "friction": camFriction,
         "moveStrength": camSpeed,
-        "scale": 2.5,
+        "scale": 4,
         "scaleSpeed": 0.01,
         "FPS": FPS,
     }
 )
-camera_copy = copy.copy(camera)
+camera_copy = copy.deepcopy(camera)
 
 uiElements = []
 
@@ -353,6 +353,7 @@ def resetGame():
 
     lem = lem_copy # WHY DOESNT THIS WORK???
     camera = camera_copy
+    #camera.scale = camera
 
     print(lem.y)
     print(lem_copy.y)
@@ -398,11 +399,15 @@ def main():
     if not inEndScreen:
         lem.update(clock)
 
-    camera.x = lem.x
-    camera.y = lem.y
+    print(lem.y)
+    if lem.y > -1000:
+        print("hm")
+        camera.scale = 2
+        camera.x = lem.x
+        camera.y = lem.y + 100
 
-    camera.x += (LEMImg.get_width() / 2) / camera.scale
-    camera.y += (LEMImg.get_height() / 2) / camera.scale
+    #camera.x += (LEMImg.get_width() / 2) / camera.scale
+    #camera.y += (LEMImg.get_height() / 2) / camera.scale
 
     camera.update(clock)
 
@@ -730,15 +735,16 @@ def calcScore():
     else:
         angFromCenter = lem.angle
 
-    angScore = -pow((angFromCenter * 0.2), 2) + 40
+    angScore = -(angFromCenter * 0.2)  ** 2 + 40
     if angScore < 0:
         angScore = 0
 
-    yVelScore = (-pow((lem.vy * 0.32), 2) + 10) * 2
+    yVelScore = -((lem.vy * 0.32) ** 2 + 10) * 2
 
-    xVelScore = -pow((lem.vy * 0.75), 2) + 10
+    xVelScore = -((lem.vy * 0.75)** 2) + 10
 
-    fuelScore = (lem.fuel / lem.maxFuel) * 100 * 1.5
+    #fuelScore = (lem.fuel / lem.maxFuel) * 100 * 1.5
+    fuelScore = 0
 
     totalScore = ((angScore + yVelScore + xVelScore) * 5) + fuelScore
 
