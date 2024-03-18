@@ -12,8 +12,8 @@ api = Flask(__name__)
 
 
 
-stupidtempdata = [{"name": "bob", "score": "312.5000", "UUID": "yadayada"},
-          {"name": "jane", "score": "250.1235", "UUID": "woea"}]
+stupidtempdata = [{"name": "bob", "score": "31200", "UUID": "yadayada"},
+          {"name": "jane", "score": "-200000", "UUID": "woea"}]
 
 
 prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
@@ -35,9 +35,6 @@ if os.stat(databasePath).st_size == 0:
     thing = open(databasePath, "w")
     json.dump(stupidtempdata, thing)
     thing.close()
-
-
-
 
 
 
@@ -89,7 +86,10 @@ def post_scores():
     #    return json.dumps({"error": "Database full. Cannot add more entries."}), 400
 
     name = str(request_data['name'][:75])  # Truncate name if it's longer than 75 characters
-    score = str(round(float(request_data['score']), 4))[:75]  # Convert score to string and truncate if longer than 75 characters
+    try:
+        score = str(int(request_data['score']))[:75]  # Convert score to string and truncate if longer than 75 characters (nobody will ever get a score that is longer than 75 characters but its okay)
+    except ValueError:
+        return "bad data", 400
     uuid = str(request_data['UUID'])
 
     formatedNew = {"name": name, "score": score, "UUID": uuid}

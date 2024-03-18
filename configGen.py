@@ -16,6 +16,7 @@ config_object["UI"] = {
 config_object["CONTROLS"] = {
     "camspeed": -250,
     "camfriction": 7,
+    "camScaleSpeed": 0.01,
 }
 
 

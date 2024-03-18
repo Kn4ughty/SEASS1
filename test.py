@@ -75,14 +75,13 @@ STARTUP = config_object["STARTUP"]
 CONTROLS = config_object["CONTROLS"]
 
 
-
-
 ## Startup Variables
 inMainMenu = lib.stringToBool(STARTUP["startinmainmenu"])
 
 ## Controls
-camSpeed = int(CONTROLS["camspeed"])
-camFriction = int(CONTROLS["camfriction"])
+camSpeed = float(CONTROLS["camspeed"])
+camFriction = float(CONTROLS["camfriction"])
+camScaleSpeed = float(CONTROLS["camScaleSpeed"])
 
 hasSetup = False
 mainHasSetup = False
@@ -168,7 +167,7 @@ lem = lemmer.lem(
         "maxOmega": 100,
         "rotStrength": 12,
         "angularFriction": 8,
-        "throttleSens": 200,
+        "throttleSens": 100,
         "maxThrottle": 100,
         "massFlowRate": 14,
         "fuel": 5000,
@@ -193,7 +192,7 @@ camera = gl.camera.camera(
         "friction": camFriction,
         "moveStrength": camSpeed,
         "scale": 4,
-        "scaleSpeed": 0.01,
+        "scaleSpeed": camScaleSpeed,
         "FPS": FPS,
     }
 )
@@ -399,9 +398,9 @@ def main():
     if not inEndScreen:
         lem.update(clock)
 
-    print(lem.y)
+    #print(lem.y)
     if lem.y > -1000:
-        print("hm")
+        #print("hm")
         camera.scale = 2
         camera.x = lem.x
         camera.y = lem.y + 100
@@ -747,6 +746,7 @@ def calcScore():
     fuelScore = 0
 
     totalScore = ((angScore + yVelScore + xVelScore) * 5) + fuelScore
+    totalScore = int(totalScore * 10000 * 2)
 
     return totalScore # i sure hope noone cheats and returns like a billion. That would make me sad :( dont do it1!!
 
@@ -825,7 +825,7 @@ def endScreen():
                 "fontColour": fontColour,
                 "fontSize": int(fontSize * 0.7),
                 "isBold": True,
-                "text": f"{round(totalScore, 5):^30}" + f"\n {humancrytext:^30}",  # formatting strings is hard okay
+                "text": f"{totalScore:^30}" + f"\n {humancrytext:^30}",  # formatting strings is hard okay
                 "doesHighlighting": False,
             }
         )
