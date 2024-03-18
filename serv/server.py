@@ -49,7 +49,7 @@ def serveMain():
 @api.route('/mycss.css', methods=['GET'])
 def serveCSS():
     #return website.makeList()
-    with open("serv/templates/mycss.css", "r") as cssFile:
+    with open("templates/mycss.css", "r") as cssFile:
         css = cssFile.read()
     return Response(css, mimetype='text/css') # Why do i have to specify mimetype
 
