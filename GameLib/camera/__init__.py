@@ -71,7 +71,7 @@ class camera(object):
         # TODO - check if a surface on screen (or close probably)
 
         if scale:
-            surface = pg.transform.smoothscale(
+            surface = pg.transform.scale(
                 surface,
                 (surface.get_width() / self.scale, surface.get_height() / self.scale),
             )

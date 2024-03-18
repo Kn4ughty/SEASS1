@@ -102,10 +102,11 @@ if bad:
 pg.init()
 
 # Colours
-
+opacityPercent = 0.7
 ## UI stuff
-UIColour = pg.Color(77, 84, 123, 255 * 0.7)
+UIColour = pg.Color(77, 84, 123, 255 * opacityPercent)
 fontColour = pg.Color(255, 255, 255)
+HudColour = pg.Color(44, 48, 71, 255 * 0.8)
 
 barColour = pg.Color(50, 255, 186)
 barOutlineColour = pg.Color(255, 185, 252)
@@ -145,7 +146,7 @@ rem = fontSize
 
 uiPadding = 5
 
-gravity = -5
+gravity = -4
 
 
 startVX = 10
@@ -192,7 +193,7 @@ camera = gl.camera.camera(
         "WinWidth": WINDOW_WIDTH,
         "friction": camFriction,
         "moveStrength": camSpeed,
-        "scale": 3.5,
+        "scale": 2.5,
         "scaleSpeed": 0.01,
         "FPS": FPS,
     }
@@ -206,7 +207,7 @@ uiLayer = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pg.SRCALPHA, 32)
 uiLayer = uiLayer.convert_alpha()
 
 
-scaleFactor = 4
+scaleFactor = 0.75
 LEMImg = pg.image.load("Assets/LEM.png")
 LEMImg = pg.transform.smoothscale(
     LEMImg, (LEMImg.get_width() / scaleFactor, LEMImg.get_height() / scaleFactor)
@@ -281,7 +282,7 @@ hudVelX = gl.ui.Button(
         "sizeY": 10,
         "anchorSpace": "%",
         "scaleSpace": "%",
-        "colour": UIColour,
+        "colour": HudColour,
         "fontColour": fontColour,
         "fontSize": int(fontSize / 1.25),
         "isBold": True,
@@ -298,17 +299,39 @@ hudVelY = gl.ui.Button(
         "type": "button",
         "tag": "hudVY",
         "posX": 2,
-        "posY": 70,
+        "posY": 73,
         "sizeX": 20,
         "sizeY": 10,
         "anchorSpace": "%",
         "scaleSpace": "%",
-        "colour": UIColour,
+        "colour": HudColour,
         "fontColour": fontColour,
         "fontSize": int(fontSize / 1.25),
         "isBold": True,
         "textJusify": "left",
         "text": "VY: ",
+        "doesHighlighting": False,
+    }
+)
+
+
+hudHeight = gl.ui.Button(
+    {
+        "surface": uiLayer,
+        "type": "button",
+        "tag": "hudHeight",
+        "posX": 2,
+        "posY": 61,
+        "sizeX": 20,
+        "sizeY": 10,
+        "anchorSpace": "%",
+        "scaleSpace": "%",
+        "colour": HudColour,
+        "fontColour": fontColour,
+        "fontSize": int(fontSize / 1.25),
+        "isBold": True,
+        "textJusify": "left",
+        "text": "H: ",
         "doesHighlighting": False,
     }
 )
@@ -356,12 +379,13 @@ def main():
         uiElements.append(LEMFuelBar)
         uiElements.append(hudVelX)
         uiElements.append(hudVelY)
+        uiElements.append(hudHeight)
         mainHasSetup = True  # tee hee performace went weee downwards without this
 
     events()
     # print("eventing")
 
-    if lem.y > -340 and not endScreenSetup:
+    if lem.y > -260 and not endScreenSetup:
         global landed
         landed = True
 
@@ -423,6 +447,8 @@ def drawUI():
                 element.text = f"VX: {lem.vx:.2f}"
             if element.tag == "hudVY":
                 element.text = f"VY: {lem.vy:.2f}"
+            if element.tag == "hudHeight":
+                element.text = f"H : {lem.y*-1-260:.0f}"
 
         # element.text = str(x)
         element.em = rem  # cope future me hahahah
