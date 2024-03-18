@@ -33,7 +33,7 @@ logging.basicConfig(
 ## or make it reallly logn
 
 
-serverURL = "http://127.0.0.1:5000"
+serverURL = "http://192.168.42.70:5000"
 scoreGetURL = serverURL + "/scores"
 scorePostURL = scoreGetURL + "Post"
 
