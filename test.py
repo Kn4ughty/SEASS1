@@ -153,6 +153,10 @@ startVY = 0
 startX = -200
 startY = -3000
 
+lemRotStrength = 12
+
+if sillyMode:
+    lemRotStrength *= -1
 
 global lem
 lem = lemmer.lem(
@@ -166,7 +170,7 @@ lem = lemmer.lem(
         "angle": 0,
         "omega": 0,
         "maxOmega": 100,
-        "rotStrength": 12,
+        "rotStrength": lemRotStrength,
         "angularFriction": 8,
         "throttleSens": 100,
         "maxThrottle": 100,
