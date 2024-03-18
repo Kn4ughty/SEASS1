@@ -77,6 +77,7 @@ CONTROLS = config_object["CONTROLS"]
 
 ## Startup Variables
 inMainMenu = lib.stringToBool(STARTUP["startinmainmenu"])
+sillyMode = lib.stringToBool(STARTUP["sillymode"])
 
 ## Controls
 camSpeed = float(CONTROLS["camspeed"])
@@ -334,6 +335,11 @@ hudHeight = gl.ui.Button(
     }
 )
 
+def openPrefPath():
+    lib.openPath(os.path.join(prefPath, "config.ini"))
+
+#openPrefPath()
+
 def resetGame():
     """
     I hate this function so freaking much
@@ -505,6 +511,7 @@ def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
     out = pg.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
     lineWidth = 1
     circle = pg.image.load("Assets/starBlack.png")
+    cat = pg.image.load("Assets/cat.png")
     for x in range(0, WINDOW_WIDTH):
         for y in range(0, WINDOW_HEIGHT):
             a = random.randrange(0, starChance)
@@ -514,7 +521,11 @@ def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
                 starColour = gl.image.convert_K_to_RGB(
                     random.triangular(4000, 10000, 5000)
                 )
-                circle = gl.image.tint(circle, starColour)
+
+                if not sillyMode: # cant have unoptomised silly mode
+                    circle = gl.image.tint(circle, starColour)
+
+                    
 
                 pg.draw.line(
                     out, starColour, (x - starSize, y), (x + starSize, y), lineWidth
@@ -525,7 +536,10 @@ def createStarBackground(starSize: int, starChance: int) -> pg.Surface:
                 # A circle ends up with an even pixel count, meaning it cannot be centered.
                 # p.draw.circle(out, "White", (x, y), size - 3)
 
-                out.blit(circle, (x - 4, y - 4))
+                if sillyMode:
+                    out.blit(cat, (x - 4, y - 4))
+                else:
+                    out.blit(circle, (x - 4, y - 4))
 
     return out
 
@@ -696,6 +710,27 @@ def mainMenu():
         )
         uiElements.append(StartGameButton)
 
+        global openPrefPathButton
+        openPrefPathButton = gl.ui.Button(
+            {
+                "surface": menuLayer,
+                "type": "button",
+                "posX": 30,
+                "posY": 45,
+                "sizeX": 40,
+                "sizeY": 10,
+                "anchorSpace": "%",
+                "scaleSpace": "%",
+                "colour": UIColour,
+                "fontColour": fontColour,
+                "fontSize": fontSize,
+                "isBold": True,
+                "text": "Open Preferences",
+                "clickEventHandler": openPrefPath,
+            }
+        )
+        uiElements.append(openPrefPathButton)
+
         # TODO options menu maybe maybe
 
         # title
@@ -723,6 +758,7 @@ def mainMenu():
     # Clean up
     if not inMainMenu:
         uiElements.remove(StartGameButton)
+        uiElements.remove(openPrefPathButton)
         StartGameButton = None
 
     clock.tick(FPS)

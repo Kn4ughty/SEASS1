@@ -1,13 +1,14 @@
-from os import system, name
+import os
 from Lib import timing
 from Lib import debug
-from Lib import stuff
+import subprocess
+import platform
 
-__all__ = ["timing", "debug", "stuff"]
+__all__ = ["timing", "debug"]
 
 
 def check_os():
-    match name:
+    match os.name:
         case "nt":
             return "nt"
         case "posix":
@@ -19,9 +20,9 @@ def check_os():
 def clear_terminal():
     OS = check_os()
     if OS == "nt":
-        system("cls")
+        os.system("cls")
     elif OS == "posix":
-        system("printf '\\033c'")
+        os.system("printf '\\033c'")
     else:
         raise NotImplementedError("ClearTerminal unknown OS")
 
@@ -40,3 +41,14 @@ def stringToBool(string: str) -> bool:
         "yuppers",
         "truth",
     ]
+
+def openPath(path):
+    os = platform.system()
+    # im terribly sorry any BSD users out there.
+    match os:
+        case "Windows":
+            os.startfile(path)
+        case "Darwin":
+            subprocess.Popen(["open", path])
+        case _:
+            subprocess.Popen(["xdg-open", path])
