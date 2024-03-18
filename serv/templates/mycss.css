@@ -26,7 +26,7 @@ tr:nth-child(2) {
   color: var(--code);
   box-shadow: 0 0 2rem var(--accent);
   font-weight: bold;
-  animation: rainbowGlow 2s infinite linear;
+  animation: RainbowGlow 4s infinite linear;
 }
 
 th:first-child,
@@ -34,28 +34,29 @@ td:first-child {
     width: 5px;
 }
 
-
-@keyframes rainbowGlow {
+@keyframes RainbowGlow {
   0% {
-    text-shadow: 0 0 10px red;
+    box-shadow: 0 0 1.99rem red;
   }
-  16.666% {
-    text-shadow: 0 0 10px orange;
+  14.28% {
+    box-shadow: 0 0 1.99rem orange;
   }
-  33.333% {
-    text-shadow: 0 0 10px yellow;
+  28.56% {
+    box-shadow: 0 0 1.99rem yellow;
   }
-  50% {
-    text-shadow: 0 0 10px green;
+  42.84% {
+    box-shadow: 0 0 1.99rem green;
   }
-  66.666% {
-    text-shadow: 0 0 10px blue;
+  57.12% {
+    box-shadow: 0 0 1.99rem blue;
   }
-  83.333% {
-    text-shadow: 0 0 10px indigo;
+  71.4% {
+    box-shadow: 0 0 1.99rem indigo;
+  }
+  85.68% {
+    box-shadow: 0 0 1.99rem violet;
   }
   100% {
-    text-shadow: 0 0 10px violet;
+    box-shadow: 0 0 1.99rem red; /* Back to the beginning color */
   }
 }
-
