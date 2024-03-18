@@ -49,17 +49,23 @@ if not os.path.isfile(prefPath + "config.ini"):
 
 global name
 
-match sys.argv:
-    case "+U":
-        pass  # add new user
-
 userListPath = os.path.join(prefPath, "userList.json")
+
+
+
 
 data.initName(userListPath)
 
+print(sys.argv)
+if len(sys.argv) > 1:
+    match sys.argv[1]:
+        case "+U":
+            print("WAHHh!!")
+            data.newUser(userListPath)
+
 #data.selectUser(userListPath)
 
-name = data.getUser(userListPath)
+name, UU = data.getUser(userListPath)
 logging.info(f"Name = {name}")
 
 config_object = configparser.ConfigParser()
@@ -69,13 +75,6 @@ STARTUP = config_object["STARTUP"]
 CONTROLS = config_object["CONTROLS"]
 
 
-if not os.path.isfile(prefPath + "UUID"):  # UUID not set
-    print("UUID not found, making one now")
-    data.createAndWriteUUID(prefPath)
-else:
-    uuidFile = open(prefPath + "UUID", "r")
-    UU = uuidFile.read()
-    uuidFile.close
 
 
 ## Startup Variables
