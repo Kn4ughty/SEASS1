@@ -82,7 +82,7 @@ sillyMode = lib.stringToBool(STARTUP["sillymode"])
 ## Controls
 camSpeed = float(CONTROLS["camspeed"])
 camFriction = float(CONTROLS["camfriction"])
-camScaleSpeed = float(CONTROLS["camScaleSpeed"])
+camScaleSpeed = float(CONTROLS["cameraScaleMouseWheelSenstivity"])
 
 hasSetup = False
 mainHasSetup = False
@@ -414,6 +414,7 @@ def main():
 
     if not inEndScreen:
         lem.update(clock)
+    #print(lem.vy)
 
     #print(lem.y)
     if lem.y > -1000:
@@ -872,7 +873,7 @@ def endScreen():
                 "fontColour": fontColour,
                 "fontSize": int(fontSize * 0.7),
                 "isBold": True,
-                "text": f"{totalScore:^30}" + f"\n {humancrytext:^30}",  # formatting strings is hard okay
+                "text": f"{totalScore:^30,}" + f"\n {humancrytext:^30}",  # formatting strings is hard okay
                 "doesHighlighting": False,
             }
         )
