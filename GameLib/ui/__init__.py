@@ -159,9 +159,6 @@ class Button(Rectangle):
             self.fontObj = pg.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
             self.fontObj.align = self.textJustify
 
-
-
-
         # probably helps idk
         # explain: only render new font if the text is different.
         # Might cause problems if you want colour changing text but its okay for now
@@ -171,8 +168,12 @@ class Button(Rectangle):
         self.prevText = self.text
 
 
-        self.SURFACE.blit(self.fontImg, ((self.posX + self.em),(self.posY + ((self.sizeY - self.fontImg.get_height()) / 2))))
-        # self.fontImg = img
+        match self.textJustify:
+            case pg.FONT_LEFT:
+                self.SURFACE.blit(self.fontImg, ((self.posX + self.em),(self.posY + ((self.sizeY - self.fontImg.get_height()) / 2))))
+            case pg.FONT_CENTER:
+                self.SURFACE.blit(self.fontImg, ((self.posX + ((self.sizeX - self.fontImg.get_width()) / 2)),(self.posY + ((self.sizeY - self.fontImg.get_height()) / 2))))
+
 
         # this is a very long line of code :/
         # its for centering text btw

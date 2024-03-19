@@ -8,6 +8,25 @@
       setTimeout(function () {
         window.location.reload(1);
       }, 30000000); // pretty much disabled
+
+
+      // thakn you chat gpt!!
+      // Function to add thousand separators
+      function addThousandSeparators(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      // Wait for the document to be fully loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get all elements in the score column
+        var scoreCells = document.querySelectorAll("td.score");
+
+        // Loop through each score cell and add thousand separators
+        scoreCells.forEach(function (cell) {
+          var scoreValue = parseInt(cell.textContent);
+          cell.textContent = addThousandSeparators(scoreValue);
+        });
+      });
     </script>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
     <link
@@ -29,7 +48,7 @@
       <tr>
         <td>{{ loop.index }}</td>
         {% for entry in item %}
-        <td>{{ entry }}</td>
+        <td class="score">{{ entry }}</td> <!-- Add class "score" to score cells -->
         {% endfor %}
       </tr>
       {% endfor %}
