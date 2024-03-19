@@ -1,5 +1,6 @@
 
 from flask import Flask, request, render_template, Response
+#from app import app as application
 import json
 import pygame as pg
 import os
@@ -8,7 +9,7 @@ import logging
 import website
 
 
-api = Flask(__name__)
+application = Flask(__name__)
 
 
 
@@ -38,15 +39,15 @@ if os.stat(databasePath).st_size == 0:
     thing.close()
 
 
-@api.route('/', methods=['GET'])
+@application.route('/', methods=['GET'])
 def serveMain():
     #return website.makeList()
     return render_template("index.html", list=website.makeList(get_db()))
 
-@api.route('/mycss.css', methods=['GET'])
+@application.route('/mycss.css', methods=['GET'])
 def serveCSS():
     #return website.makeList()
-    with open("serv/templates/mycss.css", "r") as cssFile:
+    with open("templates/mycss.css", "r") as cssFile:
         css = cssFile.read()
     return Response(css, mimetype='text/css') # Why do i have to specify mimetype
 
@@ -58,7 +59,7 @@ def get_db():
 
     return scores
 
-@api.route('/scores', methods=['GET'])
+@application.route('/scores', methods=['GET'])
 def get_scores():
 
     scores = get_db()
@@ -74,7 +75,7 @@ def get_scores():
     return json.dumps(sorted_scores)
 
 
-@api.route('/scoresPost', methods=['POST'])
+@application.route('/scoresPost', methods=['POST'])
 def post_scores():
 
     with open(databasePath, "r") as database_file:
@@ -123,4 +124,4 @@ def post_scores():
 
 if __name__ == '__main__':
 
-    api.run()
+    application.run()
