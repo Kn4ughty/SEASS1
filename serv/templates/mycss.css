@@ -20,8 +20,6 @@
 th {
   background-color: var(--overlay0);
 }
-}
-
 
 tr:nth-child(2) {
   background-color: var(--accent);
@@ -30,6 +28,44 @@ tr:nth-child(2) {
   font-weight: bold;
   animation: RainbowGlow 4s infinite linear;
 }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    /*
+    color:        var(--ctp-mocha-text);
+    background:   rgba(var(--ctp-macchiato-base-rgb) 0.9);
+    border-color: hsla(var(--ctp-frappe-red-hsl) 0.75);
+    */
+    --bg: #dce0e8;
+    --accent: #ea76cb;
+    --accent-bg: #ccd0da;
+    --overlay0: #9ca0b0;
+    /*
+    --accent-bg: #313244;
+    --surface2: #585b70;
+    --overlay2: #9399b2;
+    --overlay0: #6c7086;
+    --accent: #b4befe;
+
+    */
+  }
+  
+  th {
+    background-color: var(--overlay0);
+  }
+
+  tr:nth-child(2) {
+    background-color: var(--accent);
+    color: #4c4f69;
+    box-shadow: 0 0 2rem var(--accent);
+    font-weight: bold;
+    animation: RainbowGlow 4s infinite linear;
+  }
+
+}
+
+
 
 th:first-child,
 td:first-child {
