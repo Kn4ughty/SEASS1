@@ -489,7 +489,7 @@ def drawBackground():
 
 def drawMoonSurface():
     # draw moon
-    camera.drawSurf(moonSurf, WINDOW, pg.Rect(- moonSurf.get_width() / 2 + 500, 0, 0, 0))
+    camera.drawSurf(moonSurf, WINDOW, pg.Rect(- moonSurf.get_width() / 2 + 3000, 0, 0, 0))
     
 
 
@@ -774,6 +774,7 @@ def mainMenu():
         StartGameButton = None
 
     clock.tick(FPS)
+
 
 
 def calcScore():

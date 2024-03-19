@@ -70,6 +70,7 @@ class camera(object):
 
         # TODO - check if a surface on screen (or close probably)
 
+
         if scale:
             surface = pg.transform.scale(
                 surface,

@@ -1,3 +1,4 @@
+
 from flask import Flask, request, render_template, Response
 import json
 import pygame as pg
@@ -35,7 +36,6 @@ if os.stat(databasePath).st_size == 0:
     thing = open(databasePath, "w")
     json.dump(stupidtempdata, thing)
     thing.close()
-
 
 
 @api.route('/', methods=['GET'])
