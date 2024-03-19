@@ -417,6 +417,7 @@ def main():
     #print(lem.vy)
 
     #print(lem.y)
+    camera.x = lem.x
     if lem.y > -1000:
         #print("hm")
         camera.scale = 2
