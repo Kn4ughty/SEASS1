@@ -26,6 +26,8 @@ class camera(object):
 
         self.FPS = config.get("FPS")
 
+        self.zoomMin = 0.75
+
         self.centerX = self.WinWidth / 2
         self.centerY = self.WinHeight / 2
 
@@ -34,6 +36,11 @@ class camera(object):
         # print(dt)
 
         keys = pg.key.get_pressed()
+
+
+        if self.scale < self.zoomMin:
+            self.scale = self.zoomMin
+
 
         self.moveStrength = self.moveStrengthConf * self.scale
 

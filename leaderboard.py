@@ -33,7 +33,7 @@ def parse(data) -> str:
     for i in range(0, min(len(data), 10)):
         name = data[i].get("name")
         score = data[i].get("score")
-        row = f"{(i+1):<2}. {name:<29} {float(score):>29,}"
+        row = f"{(i+1):<2}. {name:<29} {float(score):>29,.0f}"
         outStr += row + "\n"
 
     return outStr

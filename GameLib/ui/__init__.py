@@ -107,12 +107,13 @@ class Button(Rectangle):
         self.fontSize = config.get("fontSize", 50)
         self.em = self.fontSize
         self.text = config.get("text", "")
+        self.prevText = "I hope nobody every has this specfic text as the thing or this will break kasjdklsdjfjksdfhjksdhfjksdhfjksdhfjkh"
         self.style = config.get("style", "default")
         self.font = config.get("font", "Hack")
         self.fontColour = config.get("fontColour", "White")
         self.isBold = config.get("isBold", True)
         self.isItalic = config.get("isItalic", False)
-        self.textJusify = config.get("textJusify", "centre")
+        self.textJustify = config.get("textJustify", pg.FONT_LEFT)
 
         # Redone here bc i want a different default
         self.borderRadius = config.get("borderRadius", int(self.em / 2))
@@ -156,33 +157,46 @@ class Button(Rectangle):
 		# optomiseatio  here to only font if text has changed
         if self.fontObj is None:
             self.fontObj = pg.font.SysFont(self.font, self.fontSize, self.isBold, self.isItalic)
+            self.fontObj.align = self.textJustify
 
-        img = self.fontObj.render(self.text, True, self.fontColour)
+
+
+
+        # probably helps idk
+        # explain: only render new font if the text is different.
+        # Might cause problems if you want colour changing text but its okay for now
+        if self.prevText != self.text:
+            self.fontImg = self.fontObj.render(self.text, True, self.fontColour)
+
+        self.prevText = self.text
+
+
+        self.SURFACE.blit(self.fontImg, ((self.posX + self.em),(self.posY + ((self.sizeY - self.fontImg.get_height()) / 2))))
         # self.fontImg = img
 
         # this is a very long line of code :/
         # its for centering text btw
-        match self.textJusify:
-            case "centre":
-                self.SURFACE.blit(
-                    img,
-                    (
-                        (self.posX + ((self.sizeX - img.get_width()) / 2)),
-                        (self.posY + ((self.sizeY - img.get_height()) / 2)),
-                    ),
-                )
-            case "left":
-                self.SURFACE.blit(
-                    img,
-                    (
-                        (self.posX + self.em),
-                        (self.posY + ((self.sizeY - img.get_height()) / 2)),
-                    ),
-                )
-            case _:
-                raise Exception(f"Invalid text.Justify in {self}")
+        #match self.textJusify:
+        #    case "centre":
+        #        self.SURFACE.blit(
+        #            img,
+        #            (
+        #                (self.posX + ((self.sizeX - img.get_width()) / 2)),
+        #                (self.posY + ((self.sizeY - img.get_height()) / 2)),
+        #            ),
+        #        )
+        #    case "left":
+        #        self.SURFACE.blit(
+        #            img,
+        #            (
+        #                (self.posX + self.em),
+        #                (self.posY + ((self.sizeY - img.get_height()) / 2)),
+        #            ),
+        #        )
+        #    case _:
+        #        raise Exception(f"Invalid text.Justify in {self}")
         # print(img)
-        return img
+        return self.fontImg
 
     def update(self) -> None:
         self.draw()

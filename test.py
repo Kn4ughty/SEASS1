@@ -33,7 +33,7 @@ logging.basicConfig(
 ## or make it reallly logn
 
 
-serverURL = "http://localhost:5000"
+serverURL = "http://192.168.42.70:5000"
 scoreGetURL = serverURL + "/scores"
 scorePostURL = scoreGetURL + "Post"
 
@@ -294,7 +294,7 @@ hudVelX = gl.ui.Button(
         "fontColour": fontColour,
         "fontSize": int(fontSize / 1.25),
         "isBold": True,
-        "textJusify": "left",
+        "textJusify": pg.FONT_LEFT,
         "text": "VX: ",
         "doesHighlighting": False,
     }
@@ -316,8 +316,29 @@ hudVelY = gl.ui.Button(
         "fontColour": fontColour,
         "fontSize": int(fontSize / 1.25),
         "isBold": True,
-        "textJusify": "left",
+        "textJustify": pg.FONT_LEFT,
         "text": "VY: ",
+        "doesHighlighting": False,
+    }
+)
+
+hudAngle = gl.ui.Button(
+    {
+        "surface": uiLayer,
+        "type": "button",
+        "tag": "hudAngle",
+        "posX": 2,
+        "posY": 61,
+        "sizeX": 20,
+        "sizeY": 10,
+        "anchorSpace": "%",
+        "scaleSpace": "%",
+        "colour": HudColour,
+        "fontColour": fontColour,
+        "fontSize": int(fontSize / 1.25),
+        "isBold": True,
+        "textJustify": pg.FONT_LEFT,
+        "text": "A˚: ",
         "doesHighlighting": False,
     }
 )
@@ -329,7 +350,7 @@ hudHeight = gl.ui.Button(
         "type": "button",
         "tag": "hudHeight",
         "posX": 2,
-        "posY": 61,
+        "posY": 49,
         "sizeX": 20,
         "sizeY": 10,
         "anchorSpace": "%",
@@ -338,11 +359,13 @@ hudHeight = gl.ui.Button(
         "fontColour": fontColour,
         "fontSize": int(fontSize / 1.25),
         "isBold": True,
-        "textJusify": "left",
+        "textJustify": pg.FONT_LEFT,
         "text": "H: ",
         "doesHighlighting": False,
     }
 )
+
+
 
 def openPrefPath():
     lib.openPath(os.path.join(prefPath, "config.ini"))
@@ -397,6 +420,7 @@ def main():
         uiElements.append(LEMFuelBar)
         uiElements.append(hudVelX)
         uiElements.append(hudVelY)
+        uiElements.append(hudAngle)
         uiElements.append(hudHeight)
         mainHasSetup = True  # tee hee performace went weee downwards without this
 
@@ -467,12 +491,16 @@ def drawUI():
                 if inEndScreen:
                     continue
         if element.type == "button":
-            if element.tag == "hudVX":
-                element.text = f"VX: {lem.vx:.2f}"
-            if element.tag == "hudVY":
-                element.text = f"VY: {lem.vy:.2f}"
-            if element.tag == "hudHeight":
-                element.text = f"H : {lem.y*-1-260:.0f}"
+            match element.tag:
+                case "hudVX":
+                    element.text = f"VX: {lem.vx:.2f}"
+                case "hudVY":
+                    element.text = f"VY: {lem.vy:.2f}"
+                case "hudHeight":
+                    element.text = f"H : {lem.y*-1-260:.0f}"
+                case "hudAngle":
+                    element.text = f"A˚: {getAngleFromCenter(lem.angle):.1f}"
+
 
         # element.text = str(x)
         element.em = rem  # cope future me hahahah
@@ -718,6 +746,7 @@ def mainMenu():
                 "fontSize": fontSize,
                 "isBold": True,
                 "text": "Start Game",
+                "textJustify": pg.FONT_CENTER,
                 "clickEventHandler": StartGame,
             }
         )
@@ -738,6 +767,7 @@ def mainMenu():
                 "fontColour": fontColour,
                 "fontSize": fontSize,
                 "isBold": True,
+                "textJustify": pg.FONT_CENTER,
                 "text": "Open Preferences",
                 "clickEventHandler": openPrefPath,
             }
@@ -776,13 +806,14 @@ def mainMenu():
 
     clock.tick(FPS)
 
-
+def getAngleFromCenter(angle: float) -> float:
+    if angle > 180:
+        return 360 - angle
+    else:
+        return angle
 
 def calcScore():
-    if lem.angle > 180:
-        angFromCenter = 360 - lem.angle
-    else:
-        angFromCenter = lem.angle
+    angFromCenter = getAngleFromCenter(lem.angle)
 
     angScore = -(angFromCenter * 0.2)  ** 2 + 40
     if angScore < 0:
@@ -853,7 +884,7 @@ def endScreen():
                 "fontColour": fontColour,
                 "fontSize": fontSize,
                 "isBold": True,
-                "text": "Your score is!...",
+                "text": "Your score is...",
                 "doesHighlighting": False,
             }
         )
@@ -874,8 +905,9 @@ def endScreen():
                 "colour": UIColour,
                 "fontColour": fontColour,
                 "fontSize": int(fontSize * 0.7),
+                "textJustify": pg.FONT_CENTER,
                 "isBold": True,
-                "text": f"{totalScore:^30,}" + f"\n {humancrytext:^30}",  # formatting strings is hard okay
+                "text": f"{totalScore}\n {humancrytext}",  # formatting strings is hard okay
                 "doesHighlighting": False,
             }
         )
@@ -901,6 +933,27 @@ def endScreen():
             }
         )
         uiElements.append(leaderBoardDisplay)
+
+        global resetHint
+        resetHint = gl.ui.Button(
+            {
+                "surface": uiLayer,
+                "type": "button",
+                "posX": 2,
+                "posY": 2,
+                "sizeX": 20,
+                "sizeY": 10,
+                "anchorSpace": "%",
+                "scaleSpace": "%",
+                "colour": UIColour,
+                "fontColour": fontColour,
+                "fontSize": int(fontSize * 0.5),
+                "isBold": False,
+                "text": "Press R to restart",
+                "doesHighlighting": False,
+            }
+        )
+        uiElements.append(resetHint)
         endScreenSetup = True
 
     if not inEndScreen and endScreenSetup:
@@ -910,6 +963,7 @@ def endScreen():
         uiElements.remove(ScoreText)
         uiElements.remove(ScoreDisplayText)
         uiElements.remove(leaderBoardDisplay)
+        uiElements.remove(resetHint)
 
         endScreenSetup = False
 
