@@ -10,7 +10,8 @@ you should probably create a python virtual enviroment but you dont have to.
 **Note**
 
 ## Unix (Macos)
-First cd into the place you downloaded it then run these commands (assuming you have python installed)
+First cd into the place you downloaded it then run these commands (assuming you have python installed).
+The python command might be different depending on your setup, so like try python3 if needed or something.
 Setup commands
 ```bash
 python -m venv .venv
