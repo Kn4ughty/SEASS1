@@ -1,5 +1,7 @@
 # About
-This is a small game I made for my software engineering course. 
+This is a small game I made for my software engineering course. It has an online score system and leaderboard viewer, multiple users support so you can pass the game to your friends, and some okay gameplay.
+
+In the game you are tasked with landing the lunar excersion module from the Apollo missions on the moon. You have limited fuel and your goal is to land with minimal x and y velocity, with the LEM level. Good luck!
 
 # Setup
 Download the repo [here](https://github.com/Kn4ughty/SEASS1/archive/refs/heads/main.zip)
@@ -56,5 +58,5 @@ Then in the main menu you can press start game, to as you can guess... start the
 | decrease throttle | s, down arrow, l_ctrl |
 | shut down engine | x |
 | max throttle engine | z |
-| reset (**only in show score screen**) | r |
-| quit game | escape |
+| reset | r |
+| quit game (anywhere) | escape |
