@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Leaderboards</title>
+    <!-- Thank you very much https://www.w3.org/WAI/ARIA/apg/patterns/table/examples/sortable-table/ -->
     <script>
       // DISABLE ME FOR PRODUCTION!!
       setTimeout(function () {
@@ -42,7 +43,8 @@
       <tr>
         <th>#.</th>
         <th>Name</th>
-        <th>Score</th>
+        <th>Best Score</th>
+        <th>Worst Score</th>
       </tr>
       {% for item in list %}
       <tr>

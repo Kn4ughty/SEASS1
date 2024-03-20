@@ -18,6 +18,7 @@ def makeList(scores):
         a = []
         a.append(element["name"])
         a.append(element["score"])
+        a.append(element["worstScore"])
         out.append(a)
 
     return out

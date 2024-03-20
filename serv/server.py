@@ -14,8 +14,8 @@ application = Flask(__name__)
 
 
 
-stupidtempdata = [{"name": "bob", "score": "31200", "UUID": "yadayada"},
-          {"name": "jane", "score": "-200000", "UUID": "woea"}]
+stupidtempdata = [{"name": "bob", "score": "31200", "worstScore": "-123", "UUID": "yadayada"},
+          {"name": "jane", "score": "10", "worstScore": "-20000", "UUID": "woea"}]
 
 
 prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
