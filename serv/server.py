@@ -5,9 +5,11 @@ import json
 import pygame as pg
 import os
 import logging
+import sys
 
 import website
 
+import time
 
 application = Flask(__name__)
 
@@ -72,7 +74,9 @@ def get_scores():
         element.pop("UUID")
         out.append(element)
 
-    return json.dumps(sorted_scores)
+    outJson = json.dumps(out)
+
+    return Response(outJson, mimetype='application/json')
 
 
 @application.route('/scoresPost', methods=['POST'])
@@ -81,13 +85,15 @@ def post_scores():
     scores = get_db()
 
     request_data = request.get_json()
+    if sys.getsizeof(request_data) > 1000:
+        return "nuh uh no no", 403
 
     #if len(scores) >= 1000:
     #    return json.dumps({"error": "Database full. Cannot add more entries."}), 400
 
     name = str(request_data['name'][:75])  # Truncate name if it's longer than 75 characters
     try:
-        score = str(int(request_data['score']))[:75]  # Convert score to string and truncate if longer than 75 characters (nobody will ever get a score that is longer than 75 characters but its okay)
+        score = str(int(request_data['score']))[:15]  # Convert score to string and truncate if longer than 75 characters (nobody will ever get a score that is longer than 75 characters but its okay)
     except ValueError:
         return "bad data", 400
     uuid = str(request_data['UUID'])
