@@ -9,7 +9,6 @@ import sys
 
 import website
 
-import time
 
 application = Flask(__name__)
 

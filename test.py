@@ -708,6 +708,12 @@ def events():
                 resetGame()
         if event.type == pg.MOUSEWHEEL:
             camera.scale += camera.scaleSpeed * event.y * camera.scale
+        if event.type == pg.VIDEORESIZE:
+            global WINDOW_HEIGHT
+            global WINDOW_WIDTH
+            WINDOW_HEIGHT = event.h
+            WINDOW_WIDTH = event.w
+
 
 
 def StartGame():
@@ -977,6 +983,7 @@ running = True
 
 global moonSurf
 moonSurf = createMoonSurface(12, 100, (6000, 1000), 10000, moonMedColour)
+moonSurf = createMoonSurface(12, 100, (6000, 398), 10000, moonMedColour)
 moonSurf = pg.transform.smoothscale(moonSurf, (moonSurf.get_width() * 2, moonSurf.get_height() * 2))
 
 
