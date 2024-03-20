@@ -33,7 +33,7 @@ logging.basicConfig(
 ## or make it reallly logn
 
 
-serverURL = "http://192.168.42.70:5000"
+serverURL = "http://localhost:5000"
 scoreGetURL = serverURL + "/scores"
 scorePostURL = scoreGetURL + "Post"
 
@@ -907,7 +907,7 @@ def endScreen():
                 "fontSize": int(fontSize * 0.7),
                 "textJustify": pg.FONT_CENTER,
                 "isBold": True,
-                "text": f"{totalScore}\n {humancrytext}",  # formatting strings is hard okay
+                "text": f"{totalScore:,}\n {humancrytext}",  # formatting strings is hard okay
                 "doesHighlighting": False,
             }
         )

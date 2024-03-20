@@ -22,7 +22,7 @@ prefPath = pg.system.get_pref_path("naught", "MOONLANDER")
 databasePath = os.path.join(prefPath + "server/database.json")
 print(databasePath)
 
-logging.basicConfig(filename=f"{prefPath}server/latest.log", encoding='utf-8', level=logging.INFO)
+logging.basicConfig(filename=f"{prefPath}server/latest.log", encoding='utf-8', level=logging.INFO, format="%(asctime)s %(levelname)s - %(message)s",)
 
 
 
@@ -52,7 +52,7 @@ def serveCSS():
     return Response(css, mimetype='text/css') # Why do i have to specify mimetype
 
 
-def get_db():
+def get_db() -> json:
     logging.info("getting the database")
     with open(databasePath, "r") as database_file:
         scores = json.load(database_file)
@@ -69,7 +69,7 @@ def get_scores():
     out = []
 
     for element in sorted_scores:
-        element.pop("UUID") # lets see if this breaks things 
+        element.pop("UUID")
         out.append(element)
 
     return json.dumps(sorted_scores)
@@ -78,8 +78,7 @@ def get_scores():
 @application.route('/scoresPost', methods=['POST'])
 def post_scores():
 
-    with open(databasePath, "r") as database_file:
-        scores = json.load(database_file)
+    scores = get_db()
 
     request_data = request.get_json()
 
@@ -93,23 +92,49 @@ def post_scores():
         return "bad data", 400
     uuid = str(request_data['UUID'])
 
-    formatedNew = {"name": name, "score": score, "UUID": uuid}
+    #formatedNew = {"name": name, "score": score, "UUID": uuid}
 
     dupli = False
 
+
     for i in range(len(scores)):
-        if scores[i]['UUID'] == uuid:
+
+        if scores[i]['UUID'] == uuid: # does entry for uuid already exist
             logging.info(f"Found duplicate UUDI in entry {i}")
-            if float(scores[i]['score']) >= float(score): # if old score is more than new score
-                logging.info(f"Old score was higher than the new score\n Old score: {scores[i]['score']:<10} new score: {score:<10}")
-                return json.dumps({"error": "An entry with this UUID already exists in the database and it was lower than previous score."}), 409
-            else:
-                # the score is better than existing one of saeme UUID
-                scores[i] = formatedNew
-                dupli = True
+
+            try:
+                 worstScore = scores[i]['worstScore']
+            except KeyError:
+                logging.info("no worst score set yet")
+                worstScore = score
+                scores[i]['worstScore'] = worstScore
+
+
+
+            if int(scores[i]['score']) >= int(score): # if old score is more than new score
+                if int(worstScore) > int(score):
+                    scores[i]['worstScore'] = score
+                    logging.info("Set worst score")
+                else:
+                    logging.info(f"Old score was higher than the new score\n Old score: {scores[i]['score']:<10} new score: {score:<10}")
+                    return json.dumps({"error": "An entry with this UUID already exists in the database and it was lower than previous score."}), 409
+            else: # new score is higher
+                scores[i]['score'] = score
+
+
+            # the score is better than existing one of saeme UUID
+            scores[i]['name'] = name
+
+            print("whha!!!")
+            print(scores[i])
+            dupli = True
+
+
+
 
     if len(scores) < 1000 or float(score) > float(scores[-1]['score']):
         if not dupli:
+            formatedNew = {"name": name, "score": score, "worstScore": score, "UUID": uuid}
             scores.append(formatedNew)
         # Sort the scores
         sortedDB = sorted(scores, key=lambda x: float(x['score']), reverse=True)

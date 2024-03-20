@@ -9,9 +9,7 @@
         window.location.reload(1);
       }, 30000000); // pretty much disabled
 
-
-      // thakn you chat gpt!!
-      // Function to add thousand separators
+      // Function to add thousand separators to numbers
       function addThousandSeparators(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
@@ -24,7 +22,9 @@
         // Loop through each score cell and add thousand separators
         scoreCells.forEach(function (cell) {
           var scoreValue = parseInt(cell.textContent);
-          cell.textContent = addThousandSeparators(scoreValue);
+          if (!isNaN(scoreValue)) { // Check if the value is a number
+            cell.textContent = addThousandSeparators(scoreValue);
+          }
         });
       });
     </script>

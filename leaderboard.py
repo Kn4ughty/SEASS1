@@ -46,6 +46,7 @@ def submit_score(scorePosURL: str, name: str, score: float, uuid: str):
             "score": str(score),
             "UUID": str(uuid),
         }
+        print(json_data)
         response = requests.post(
             scorePosURL, json=json_data, timeout=5
         )  # Set timeout to 5 seconds
