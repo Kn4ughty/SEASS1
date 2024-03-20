@@ -982,7 +982,6 @@ running = True
 
 
 global moonSurf
-moonSurf = createMoonSurface(12, 100, (6000, 1000), 10000, moonMedColour)
 moonSurf = createMoonSurface(12, 100, (6000, 398), 10000, moonMedColour)
 moonSurf = pg.transform.smoothscale(moonSurf, (moonSurf.get_width() * 2, moonSurf.get_height() * 2))
 
