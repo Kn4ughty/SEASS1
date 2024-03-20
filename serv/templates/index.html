@@ -1,51 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Leaderboards</title>
-    <!-- Thank you very much https://www.w3.org/WAI/ARIA/apg/patterns/table/examples/sortable-table/ -->
-    <script>
-      // DISABLE ME FOR PRODUCTION!!
-      setTimeout(function () {
-        window.location.reload(1);
-      }, 30000000); // pretty much disabled
+<head>
+  <meta charset="UTF-8" />
+  <title>Leaderboards</title>
+  <!-- Thank you very much https://www.w3.org/WAI/ARIA/apg/patterns/table/examples/sortable-table/ -->
+  <script>
+    // DISABLE ME FOR PRODUCTION!!
+    setTimeout(function () {
+      window.location.reload(1);
+    }, 30000000); // pretty much disabled
 
-      // Function to add thousand separators to numbers
-      function addThousandSeparators(number) {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // Function to add thousand separators to numbers
+    function addThousandSeparators(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // Wait for the document to be fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get all elements in the score column
+      var scoreCells = document.querySelectorAll("td.score");
+
+      // Loop through each score cell and add thousand separators
+      scoreCells.forEach(function (cell) {
+        var scoreValue = parseInt(cell.textContent);
+        if (!isNaN(scoreValue)) { // Check if the value is a number
+          cell.textContent = addThousandSeparators(scoreValue);
+        }
+      });
+
+      // Get the table element
+      var table = document.querySelector('.sortable');
+      // Get the header row
+      var header = table.querySelector('thead');
+      // Get all the header cells
+      var headerCells = header.querySelectorAll('th');
+
+      // Function to sort table based on column index
+      function sortTable(columnIndex, descending) {
+        var rows = table.querySelectorAll('tbody tr');
+        var sortFunction;
+
+        // Determine sorting function based on columnIndex
+        switch (columnIndex) {
+          case 2: // Best Score
+          case 3: // Worst Score
+            sortFunction = function (row) {
+              return parseInt(row.children[columnIndex].textContent.replace(/,/g, ''));
+            };
+            break;
+          default:
+            return; // Do nothing if it's not sortable
+        }
+
+        // Convert NodeList to Array for easier manipulation
+        rows = Array.prototype.slice.call(rows);
+
+        // Perform sorting
+        rows.sort(function (a, b) {
+          var aValue = sortFunction(a);
+          var bValue = sortFunction(b);
+          return descending ? bValue - aValue : aValue - bValue;
+        });
+
+        // Re-append rows to tbody in the sorted order
+        var tbody = table.querySelector('tbody');
+        rows.forEach(function (row) {
+          tbody.appendChild(row);
+        });
       }
 
-      // Wait for the document to be fully loaded
-      document.addEventListener("DOMContentLoaded", function () {
-        // Get all elements in the score column
-        var scoreCells = document.querySelectorAll("td.score");
-
-        // Loop through each score cell and add thousand separators
-        scoreCells.forEach(function (cell) {
-          var scoreValue = parseInt(cell.textContent);
-          if (!isNaN(scoreValue)) { // Check if the value is a number
-            cell.textContent = addThousandSeparators(scoreValue);
+      // Add click event listener to each header cell for sorting
+      headerCells.forEach(function (cell, index) {
+        cell.addEventListener('click', function () {
+          var isDescending = cell.classList.contains('sorted') && cell.classList.contains('desc');
+          headerCells.forEach(function (headerCell) {
+            headerCell.classList.remove('sorted', 'asc', 'desc');
+          });
+          if (isDescending) {
+            cell.classList.remove('desc');
+            cell.classList.add('asc', 'sorted');
+          } else {
+            cell.classList.remove('asc');
+            cell.classList.add('desc', 'sorted');
           }
+          sortTable(index, isDescending);
         });
       });
-    </script>
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link rel="stylesheet" href="mycss.css" />
-  </head>
-  <body>
-    <h1>MoonLander Leaderboard</h1>
+    });
 
-    <table>
+
+  </script>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="mycss.css" />
+</head>
+<body >
+  <h1>MoonLander Leaderboard</h1>
+
+  <table class="sortable gradient-container">
+    <thead>
       <tr>
-        <th>#.</th>
+        <th class="no-sort">#.</th>
         <th>Name</th>
-        <th>Best Score</th>
-        <th>Worst Score</th>
+        <th class="sortable"><button>Best Score</button></th>
+        <th class="sortable"><button>Worst Score</button></th>
       </tr>
+    </thead>
+    <tbody>
       {% for item in list %}
       <tr>
         <td>{{ loop.index }}</td>
@@ -54,12 +115,9 @@
         {% endfor %}
       </tr>
       {% endfor %}
-    </table>
+    </tbody>
+  </table>
 
-    <a
-      class="fa fa-github"
-      style="font-size: 36px"
-      href="https:\/\/github.com/Kn4ughty/SEASS1"
-    ></a>
-  </body>
+  <a class="fa fa-github" style="font-size: 36px" href="https:\/\/github.com/Kn4ughty/SEASS1"></a>
+</body>
 </html>

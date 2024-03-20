@@ -15,18 +15,31 @@
   --overlay2: #9399b2;
   --overlay0: #6c7086;
   --accent: #b4befe;
+  --text-colour: var(--bg);
 }
 
 th {
   background-color: var(--overlay0);
 }
 
-tr:nth-child(2) {
+table.sortable tbody tr:nth-child(1) {
+
   background-color: var(--accent);
-  color: var(--code);
+  color: var(--text-colour);
   box-shadow: 0 0 2rem var(--accent);
+
   font-weight: bold;
-  animation: RainbowGlow 4s infinite linear;
+  transition: all 0.3s ease;
+  transform: scale(1.1);
+}
+
+
+table.sortable tbody tr:nth-child(1):hover {
+  transform: scale(1.2);
+}
+
+table.sortable tbody tr:nth-child(2n) {
+  background-color: rgba(34, 34, 34, 0.5);
 }
 }
 
@@ -41,6 +54,7 @@ tr:nth-child(2) {
     --accent: #ea76cb;
     --accent-bg: #ccd0da;
     --overlay0: #9ca0b0;
+    --text-colour: #4c4f69;
     /*
     --accent-bg: #313244;
     --surface2: #585b70;
@@ -55,17 +69,64 @@ tr:nth-child(2) {
     background-color: var(--overlay0);
   }
 
-  tr:nth-child(2) {
-    background-color: var(--accent);
-    color: #4c4f69;
+  tr:nth-child(1) {
+    background-color: rgba(var(--accent));
+    color: var(--text-colour);
     box-shadow: 0 0 2rem var(--accent);
     font-weight: bold;
-    animation: RainbowGlow 4s infinite linear;
+
   }
 
 }
 
+table.sortable tbody tr:nth-child(1) {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+}
 
+.gradient-container {
+  background: linear-gradient(to right, #ff0000, #0000ff);
+  position: relative;
+  z-index: 0; /* Ensure the gradient is behind other content */
+}
+
+
+table.sortable th {
+  border-bottom: thin solid #888;
+  position: relative;
+}
+
+table.sortable th.no-sort {
+  padding-top: 0.35em;
+}
+
+table.sortable th:nth-child(5) {
+  width: 10em;
+}
+
+table.sortable th button {
+  color: var(--code);
+  padding: 4px;
+  margin: 1px;
+  font-size: 100%;
+  font-weight: bold;
+  background: transparent;
+  border: none;
+  display: inline;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  cursor: pointer;
+}
+
+table.sortable th button span {
+  position: absolute;
+  right: 4px;
+}
 
 th:first-child,
 td:first-child {
@@ -74,28 +135,28 @@ td:first-child {
 
 @keyframes RainbowGlow {
   0% {
-    box-shadow: 0 0 1.99rem red;
+    box-shadow: 0 0 2rem red;
   }
   14.28% {
-    box-shadow: 0 0 1.99rem orange;
+    box-shadow: 0 0 2rem orange;
   }
   28.56% {
-    box-shadow: 0 0 1.99rem yellow;
+    box-shadow: 0 0 2rem yellow;
   }
   42.84% {
-    box-shadow: 0 0 1.99rem green;
+    box-shadow: 0 0 2rem green;
   }
   57.12% {
-    box-shadow: 0 0 1.99rem blue;
+    box-shadow: 0 0 2rem blue;
   }
   71.4% {
-    box-shadow: 0 0 1.99rem indigo;
+    box-shadow: 0 0 2rem indigo;
   }
   85.68% {
-    box-shadow: 0 0 1.99rem violet;
+    box-shadow: 0 0 2rem violet;
   }
   100% {
-    box-shadow: 0 0 1.99rem red; /* Back to the beginning color */
+    box-shadow: 0 0 2rem red; /* Back to the beginning color */
   }
 }
 
