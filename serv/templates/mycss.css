@@ -43,6 +43,8 @@ table.sortable tbody tr:nth-child(2n) {
 }
 }
 
+
+
 @media (prefers-color-scheme: light) {
   :root {
     /*
@@ -162,4 +164,26 @@ td:first-child {
 
 a {
   text-decoration: none;
+}
+
+table.sortable th[aria-sort="desc"] span::after {
+  content: "▼";
+  color: currentcolor;
+  font-size: 100%;
+  top: 0;
+}
+
+table.sortable th[aria-sort="asc"] span::after {
+  content: "▲";
+  color: currentcolor;
+  font-size: 100%;
+  top: 0;
+}
+
+table.sortable th:not([aria-sort]) button:focus span::after,
+table.sortable th:not([aria-sort]) button:hover span::after {
+  content: "▼";
+  color: currentcolor;
+  font-size: 100%;
+  top: 0;
 }
