@@ -24,24 +24,38 @@ pip install -r requirements.txt
 ## Windows (In powershell)
 ```powershell
 python -m venv .venv
+```
+Then you need to open powershell as administrator and run:
+```powershell
 Set-ExecutionPolicy Unrestricted
 A
+```
+Then go back to the window from before and run:
+```powershell
 .venv\Scripts\Activate.ps1
+```
+Then go back to your administrator window and run:
+```powershell
 Set-ExecutionPolicy Restricted
 pip install -r requirements.txt
 ```
 
-then to run you can just type `python test.py`
+**Then**
 
-To run the server in debug mode (doesnt allow other computers to connect, reloads the server as thigns change)
+Regarless of operating system you can run: `python test.py` (or `python3 test.py`)
+
+
+To run the server for local host only run:
 ```bash
 python -m flask --app serv/server.py run
 ```
 
-To run the server publically, so everyone on a network can ascces it
+To run it so anyone can accsess it. Make sure to install gunicorn.
 ```bash
-python -m flask --app serv/server.py run --host=0.0.0.0
+gunicorn -w 2 server -b 0.0.0.0:5000
 ```
+
+
 
 
 # User guide
