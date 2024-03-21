@@ -52,6 +52,13 @@ def serveCSS():
         css = cssFile.read()
     return Response(css, mimetype='text/css') # Why do i have to specify mimetype
 
+@application.route('/confetti.min.js', methods=['GET'])
+def serveConfetti():
+    #return website.makeList()
+    with open("templates/confetti.min.js", "r") as confettiFile:
+        js = confettiFile.read()
+    return Response(js, mimetype='text/javascript')
+
 
 def get_db() -> json:
     logging.info("getting the database")
@@ -122,7 +129,7 @@ def post_scores():
                     logging.info("Set worst score")
                 else:
                     logging.info(f"Old score was higher than the new score\n Old score: {scores[i]['score']:<10} new score: {score:<10}")
-                    return json.dumps({"error": "An entry with this UUID already exists in the database and it was lower than previous score."}), 409
+                    return json.dumps({"error": "An entry with this UUID already exists in the database and it was lower than previous score, and not lower than the lowest score the user has gotten."}), 409
             else: # new score is higher
                 scores[i]['score'] = score
 
@@ -136,7 +143,10 @@ def post_scores():
 
 
 
-
+    # user not in the top 1000 scores i think.
+    # Look im not really sure i wrote this like really late
+    # The DB should be sorted so this should work i think.
+    # I wouldnt be suprised if it didnt.
     if len(scores) < 1000 or float(score) > float(scores[-1]['score']):
         if not dupli:
             formatedNew = {"name": name, "score": score, "worstScore": score, "UUID": uuid}

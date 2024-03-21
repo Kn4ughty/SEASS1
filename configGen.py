@@ -6,6 +6,7 @@ config_object = ConfigParser()
 config_object["STARTUP"] = {
     "startinmainmenu": True,
     "sillymode": False,
+    "serverURL": "http://localhost:5000"
 }
 
 config_object["UI"] = {

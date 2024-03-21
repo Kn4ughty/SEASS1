@@ -93,6 +93,25 @@
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="mycss.css" />
+
+  <script src="confetti.min.js">
+        document.addEventListener("DOMContentLoaded", function() {
+    // Select the first row of the table body
+    var firstRow = document.querySelector("table.sortable tbody tr:first-child");
+
+    // Add the desired class to the first row
+    firstRow.classList.add("first-row-class");
+    firstRow.id = "first-row-id";
+  });
+
+  let confetti = new Confetti('sortable asc sorted');
+  confetti.setCount(75);
+  confetti.setSize(1);
+  confetti.setPower(25);
+  confetti.setFade(false);
+  confetti.destroyTarget(false);
+  </script>
+
 </head>
 <body >
   <h1>MoonLander Leaderboard</h1>
@@ -102,8 +121,8 @@
       <tr>
         <th class="no-sort">#.</th>
         <th>Name</th>
-        <th class="sortable"><button>Best Score<span aria-hidden="true"></span></button></th>
-        <th class="sortable"><button>Worst Score<span aria-hidden="true"></span></button></th>
+        <th class="sortable"><button>Highest Score<span aria-hidden="true"></span></button></th>
+        <th class="sortable"><button>Lowest Score<span aria-hidden="true"></span></button></th>
       </tr>
     </thead>
     <tbody>

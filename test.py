@@ -33,9 +33,6 @@ logging.basicConfig(
 ## or make it reallly logn
 
 
-serverURL = "http://localhost:5000"
-scoreGetURL = serverURL + "/scores"
-scorePostURL = scoreGetURL + "Post"
 
 startTime = time.time()
 
@@ -78,6 +75,11 @@ CONTROLS = config_object["CONTROLS"]
 ## Startup Variables
 inMainMenu = lib.stringToBool(STARTUP["startinmainmenu"])
 sillyMode = lib.stringToBool(STARTUP["sillymode"])
+
+serverURL = STARTUP["serverURL"]
+
+scoreGetURL = serverURL + "/scores"
+scorePostURL = scoreGetURL + "Post"
 
 ## Controls
 camSpeed = float(CONTROLS["camspeed"])
