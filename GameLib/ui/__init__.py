@@ -10,7 +10,7 @@ class Element:
 
     def __init__(self, config):
         self.SURFACE = config["surface"]
-        self.type = config["type"]
+        self.type = config["type", "Element"]
         self.tag = config.get("tag", None)
 
 
@@ -104,6 +104,7 @@ class Button(Rectangle):
 
     def __init__(self, config):
         Rectangle.__init__(self, config)
+        self.type = config.get("type", "button")
         self.fontSize = config.get("fontSize", 50)
         self.em = self.fontSize
         self.text = config.get("text", "")
@@ -232,6 +233,7 @@ class bar(Rectangle):
 
     def __init__(self, config):
         Rectangle.__init__(self, config)
+        self.type = config.get("type", "bar")
 
         self.fontSize = config.get("fontSize", 50)
         self.em = self.fontSize

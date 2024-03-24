@@ -16,6 +16,9 @@ class User:
 
 
 def initName(userListPath):
+    """create new user if one doesnt exist
+
+    """
     if not os.path.isfile(userListPath):
         
         print("INFO!!!!!!!!!!\n"*5)

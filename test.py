@@ -65,6 +65,7 @@ if len(sys.argv) > 1:
 name, UU = data.getUser(userListPath)
 logging.info(f"Name = {name}")
 
+
 config_object = configparser.ConfigParser()
 config_object.read(prefPath + "config.ini")
 
@@ -72,7 +73,7 @@ STARTUP = config_object["STARTUP"]
 CONTROLS = config_object["CONTROLS"]
 
 
-## Startup Variables
+## Startup Varia
 inMainMenu = lib.stringToBool(STARTUP["startinmainmenu"])
 sillyMode = lib.stringToBool(STARTUP["sillymode"])
 
@@ -103,23 +104,24 @@ if bad:
 pg.init()
 
 # Colours
-opacityPercent = 0.7
+
 ## UI stuff
-UIColour = pg.Color(77, 84, 123, int(255 * opacityPercent))
+UIColour = pg.Color(77, 84, 123, int(255 * 0.7))
 fontColour = pg.Color(255, 255, 255)
-HudColour = pg.Color(44, 48, 71, int(255 * 0.8))
+#HudColour = pg.Color(44, 48, 71, int(255 * 0.8))
+HudColour = UIColour
 
 barColour = pg.Color(50, 255, 186)
 barOutlineColour = pg.Color(255, 185, 252)
 contentFontColour = pg.Color(255, 90, 248)
 
 # World stuff
-BACKGROUND = pg.Color(0, 0, 0)
+
 moonMedColour = pg.Color(127, 127, 127)
 
 # !!!!! FLags
 isDebug = True
-RAINBOW = False
+
 
 # Game settings
 clock = pg.time.Clock()
@@ -463,14 +465,13 @@ def main():
 def draw():
     if isDebug:
         WINDOW.fill((255, 0, 255))  # Obvoius colour to show un rendered area
-    else:
-        WINDOW.fill(BACKGROUND)
+
 
     uiLayer.fill((0, 0, 0, 0))
 
-    drawBackground()
+    WINDOW.blit(starBackground, (0, 0))
 
-    drawMoonSurface()
+    camera.drawSurf(moonSurf, WINDOW, pg.Rect(- moonSurf.get_width() / 2 + 3000, 0, 0, 0))
 
     drawLEM()
 
@@ -513,15 +514,6 @@ def drawUI():
 
     WINDOW.blit(uiLayer, (0, 0))  # draw final ui to screen
 
-
-def drawBackground():
-    WINDOW.blit(starBackground, (0, 0))
-
-
-def drawMoonSurface():
-    # draw moon
-    camera.drawSurf(moonSurf, WINDOW, pg.Rect(- moonSurf.get_width() / 2 + 3000, 0, 0, 0))
-    
 
 
 def drawLEM():
@@ -661,30 +653,30 @@ class Debug:
     def debugEnviroment(self):
         self.x = 0
 
-        def on_button1_click():
-            self.x = self.x + 1
-            print("whoa event!!")
-            if RAINBOW:
-                BACKGROUND.r = random.randrange(0, 255)
-                BACKGROUND.g = random.randrange(0, 255)
-                BACKGROUND.b = random.randrange(0, 255)
+        #def on_button1_click():
+        #    self.x = self.x + 1
+        #    print("whoa event!!")
+        #    if RAINBOW:
+        #        BACKGROUND.r = random.randrange(0, 255)
+        #        BACKGROUND.g = random.randrange(0, 255)
+        #        BACKGROUND.b = random.randrange(0, 255)
 
-        button1 = gl.ui.Button(
-            {
-                "surface": uiLayer,
-                "posX": 10,
-                "posY": 10,
-                "sizeX": 90,
-                "sizeY": 50,
-                "anchorSpace": "%",
-                "scaleSpace": "%",
-                "Colour": pg.Color(100, 0, 100, 255),
-                "fontSize": rem,
-                "text": "hello",
-                "clickEventHandler": on_button1_click,
-            }
-        )
-        uiElements.append(button1)
+        #button1 = gl.ui.Button(
+        #    {
+        #        "surface": uiLayer,
+        #        "posX": 10,
+        #        "posY": 10,
+        #        "sizeX": 90,
+        #        "sizeY": 50,
+        #        "anchorSpace": "%",
+        #        "scaleSpace": "%",
+        #        "Colour": pg.Color(100, 0, 100, 255),
+        #        "fontSize": rem,
+        #        "text": "hello",
+        #        "clickEventHandler": on_button1_click,
+        #    }
+        #)
+        #uiElements.append(button1)
 
 
 def events():
@@ -792,7 +784,7 @@ def mainMenu():
     hasSetup = True
 
     events()
-    drawBackground()
+    WINDOW.blit(starBackground, (0, 0))
     drawUI()
 
     titlepos = (((WINDOW_WIDTH - titleImg.get_width()) / 2), 50)
@@ -820,7 +812,7 @@ def getAngleFromCenter(angle: float) -> float:
     else:
         return angle
 
-def calcScore():
+def calcScore() -> int:
     angFromCenter = getAngleFromCenter(lem.angle)
 
     angScore = -(angFromCenter * 0.2)  ** 2 + 40
@@ -839,19 +831,19 @@ def calcScore():
 
     return totalScore # i sure hope noone cheats and returns like a billion. That would make me sad :( dont do it1!!
 
-def get_humancrytext(totalScore):
+def get_humancrytext(totalScore) -> str:
     thresholds = {
         0: "Woah thats really really bad :(",
         50: "mmm strawberry jammm mmmmm 😋",
-        100: "every single bone is shattered",
-        200: "Not every single bone is shattered!",
-        300: "Woah you might make it home",
-        350: "The landing legs were not crushed!",
-        400: "Actually decent!",
-        425: "You did a great job!",
-        440: "Very well done comrade",
-        448: "Pretty much perfect landing!!!!",
-        450: "I didnt even think this was possible"
+        -5000: "every single bone is shattered",
+        0: "Not every single bone is shattered!",
+        150000: "Woah you might make it home",
+        200000: "The landing legs were not crushed!",
+        250000: "Actually decent!",
+        270000: "You did a great job!",
+        280000: "Very well done comrade",
+        289000: "Perfect landing!!!!",
+        295000: "I didnt even think this was possible"
     }
 
     if totalScore < 0:
