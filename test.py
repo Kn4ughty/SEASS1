@@ -836,7 +836,7 @@ def get_humancrytext(totalScore) -> str:
         -367397771: "You are offically worse than my dad",
         -300000000: "Impressively bad",
         -200000000: "Woah thats really really bad :(",
-        -100000000: "mmm strawberry jammm mmmmm 😋",
+        -100000000: "mmm strawberry jammm mmmmm",
         -50000: "every single bone is shattered",
         0: "Not every single bone is shattered!",
         1500000: "Woah you might make it home",
@@ -848,9 +848,15 @@ def get_humancrytext(totalScore) -> str:
         2950000: "I didnt even think this was possible"
     }
 
-    for threshold, message in sorted(thresholds.items(), reverse=True):
-        if totalScore > threshold:
-            return message
+    if totalScore > 0:
+        for threshold, message in sorted(thresholds.items(), reverse=True):
+            if totalScore > threshold:
+                return message
+    else:
+        for threshold, message in sorted(thresholds.items(), reverse=False):
+            if totalScore < threshold:
+                return message
+
 
     return "im confused"
 
@@ -885,6 +891,7 @@ def endScreen():
                 "fontColour": fontColour,
                 "fontSize": fontSize,
                 "isBold": True,
+                "textJustify": pg.FONT_CENTER,
                 "text": "Your score is...",
                 "doesHighlighting": False,
             }
@@ -897,9 +904,9 @@ def endScreen():
             {
                 "surface": uiLayer,
                 "type": "button",
-                "posX": 30,
+                "posX": 20,
                 "posY": 20,
-                "sizeX": 40,
+                "sizeX": 60,
                 "sizeY": 20,
                 "anchorSpace": "%",
                 "scaleSpace": "%",
@@ -908,7 +915,7 @@ def endScreen():
                 "fontSize": int(fontSize * 0.7),
                 "textJustify": pg.FONT_CENTER,
                 "isBold": True,
-                "text": f"{totalScore:,}\n {humancrytext}",  # formatting strings is hard okay
+                "text": f"{totalScore:,}\n\n {humancrytext}",
                 "doesHighlighting": False,
             }
         )

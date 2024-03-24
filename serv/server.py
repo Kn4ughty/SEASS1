@@ -98,6 +98,7 @@ def post_scores():
     #    return json.dumps({"error": "Database full. Cannot add more entries."}), 400
 
     name = str(request_data['name'][:75])  # Truncate name if it's longer than 75 characters
+
     try:
         score = str(int(request_data['score']))[:15]  # Convert score to string and truncate if longer than 75 characters (nobody will ever get a score that is longer than 75 characters but its okay)
     except ValueError:

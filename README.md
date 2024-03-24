@@ -74,3 +74,5 @@ Then in the main menu you can press start game, to as you can guess... start the
 | max throttle engine | z |
 | reset | r |
 | quit game (anywhere) | escape |
+
+You can scroll the camera in and out with the mouse wheel, but there is no real reason to since the camera manages itself for the most part.
