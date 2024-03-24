@@ -838,22 +838,21 @@ def get_humancrytext(totalScore) -> str:
         -200000000: "Woah thats really really bad :(",
         -100000000: "mmm strawberry jammm mmmmm 😋",
         -50000: "every single bone is shattered",
-        1: "Not every single bone is shattered!",
-        150000: "Woah you might make it home",
-        200000: "The landing legs were not crushed!",
-        250000: "Actually decent!",
-        270000: "You did a great job!",
-        280000: "Very well done comrade",
-        289000: "Perfect landing!!!!",
-        295000: "I didnt even think this was possible"
+        0: "Not every single bone is shattered!",
+        1500000: "Woah you might make it home",
+        2000000: "The landing legs were not crushed!",
+        2500000: "Actually decent!",
+        2700000: "You did a great job!",
+        2800000: "Very well done comrade",
+        2890000: "Perfect landing!!!!",
+        2950000: "I didnt even think this was possible"
     }
-
-    if totalScore < 0:
-        return thresholds[0]
 
     for threshold, message in sorted(thresholds.items(), reverse=True):
         if totalScore > threshold:
             return message
+
+    return "im confused"
 
 
 def endScreen():
