@@ -10,7 +10,7 @@ class Element:
 
     def __init__(self, config):
         self.SURFACE = config["surface"]
-        self.type = config["type", "Element"]
+        self.type = config.get("type", "element")
         self.tag = config.get("tag", None)
 
 

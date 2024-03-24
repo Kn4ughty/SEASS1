@@ -833,10 +833,12 @@ def calcScore() -> int:
 
 def get_humancrytext(totalScore) -> str:
     thresholds = {
-        0: "Woah thats really really bad :(",
-        50: "mmm strawberry jammm mmmmm 😋",
-        -5000: "every single bone is shattered",
-        0: "Not every single bone is shattered!",
+        -367397771: "You are offically worse than my dad",
+        -300000000: "Impressively bad",
+        -200000000: "Woah thats really really bad :(",
+        -100000000: "mmm strawberry jammm mmmmm 😋",
+        -50000: "every single bone is shattered",
+        1: "Not every single bone is shattered!",
         150000: "Woah you might make it home",
         200000: "The landing legs were not crushed!",
         250000: "Actually decent!",
