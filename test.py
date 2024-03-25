@@ -836,7 +836,7 @@ def get_humancrytext(totalScore) -> str:
         -367397771: "You are offically worse than my dad",
         -300000000: "Impressively bad",
         -200000000: "Woah thats really really bad :(",
-        -100000000: "mmm strawberry jammm mmmmm",
+        -100000000: "mmm strawberry jammm nummies",
         -50000: "every single bone is shattered",
         0: "Not every single bone is shattered!",
         1500000: "Woah you might make it home",
