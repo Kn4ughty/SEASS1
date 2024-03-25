@@ -696,7 +696,7 @@ def events():
             if event.key == pg.K_ESCAPE:
                 pg.quit()
                 sys.exit()
-            if event.key == pg.K_r:
+            if event.key == pg.K_r and inEndScreen:
                 print(uiElements)
                 print("wagh!!")
                 resetGame()
@@ -871,6 +871,7 @@ def endScreen():
         leaderboard.submit_score(scorePostURL, name, totalScore, UU)
 
         logging.info(f"Total score calcualted is {totalScore}")
+        print(f"Score data\n {totalScore = } \n vx = {lem.vx}. vy = {lem.vy}\n angle = {lem.angle}")
 
         # There has got to be a better way (12898b4d639c55acea50cc9f0fdb513781c09404)
         # Update i found a better way
