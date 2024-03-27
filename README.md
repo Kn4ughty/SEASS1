@@ -50,17 +50,23 @@ To run the server for local host only run:
 python -m flask --app serv/server.py run
 ```
 
-To run it so anyone can accsess it. Make sure to install gunicorn.
+To run it so anyone can accsess it. Only use this method if you are going to host to the public internet.
 ```bash
 gunicorn -w 2 server -b 0.0.0.0:5000
 ```
 
 
-
-
 # User guide
 On first start, you will be prompted for your name. This will be what is sent to the leaderboard and displayed to other players.
 Then in the main menu you can press start game, to as you can guess... start the game.
+
+
+Then if you want to look at the webUI server just go to http://localhost:5000.
+
+The WebUI shows the best and worst score of the players, which the in game UI does not.
+
+The server includes some scores to beat, which I reccomend challenging yourself with. Additionally, the text that judges you under your score acts as some additional challenges for the player. 
+
 
 ## Controls
 

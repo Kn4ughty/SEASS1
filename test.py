@@ -588,6 +588,7 @@ def createMoonSurface(
     moonMedColour,
 ) -> pg.Surface:
     # This method is very expensive.
+        # (the surf being generated every startup.)
     # I could like set it up so it does this once and then like stores the image.
     # Maybe do it on startup for a new user and store it in like appdata/equivilant
     # then each user gets a uniqie surface.
@@ -831,6 +832,7 @@ def calcScore() -> int:
 
     return totalScore # i sure hope noone cheats and returns like a billion. That would make me sad :( dont do it1!!
 
+
 def get_humancrytext(totalScore) -> str:
     thresholds = {
         -367397771: "You are offically worse than my dad",
@@ -845,7 +847,8 @@ def get_humancrytext(totalScore) -> str:
         2700000: "You did a great job!",
         2800000: "Very well done comrade",
         2890000: "Perfect landing!!!!",
-        2950000: "I didnt even think this was possible"
+        2950000: "I didnt even think this was possible",
+        2992621: "I think I can say you have won the game."
     }
 
     if totalScore > 0:
