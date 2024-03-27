@@ -4,6 +4,8 @@ This is a small game I made for my software engineering course. It has an online
 In the game you are tasked with landing the lunar excersion module from the Apollo missions on the moon. You have limited fuel and your goal is to land with minimal x and y velocity, with the LEM level. Good luck!
 
 # Setup
+You need to install the hack font. Available [here](https://sourcefoundry.org/hack/). 
+
 Download the repo [here](https://github.com/Kn4ughty/SEASS1/archive/refs/heads/main.zip)
 unzip it somewhere
 
