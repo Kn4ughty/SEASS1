@@ -39,13 +39,21 @@ Then go back to the window from before and run:
 Then go back to your administrator window and run:
 ```powershell
 Set-ExecutionPolicy Restricted
+A
+```
+
+Then in your normal window run.
+```python
 pip install -r requirements.txt
 ```
 
 **Then**
 
-Regarless of operating system you can run: `python test.py` (or `python3 test.py`)
-
+Regarless of operating system you can run: 
+```
+python test.py
+```
+(or python3 test.py)
 
 To run the server for local host only run:
 ```bash
