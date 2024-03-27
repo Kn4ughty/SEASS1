@@ -471,7 +471,7 @@ def draw():
 
     WINDOW.blit(starBackground, (0, 0))
 
-    camera.drawSurf(moonSurf, WINDOW, pg.Rect(- moonSurf.get_width() / 2 + 3000, 0, 0, 0))
+    camera.drawSurf(moonSurf, WINDOW, pg.Rect(- moonSurf.get_width() / 2 + 2000, 0, 0, 0))
 
     drawLEM()
 
@@ -696,7 +696,7 @@ def events():
             if event.key == pg.K_ESCAPE:
                 pg.quit()
                 sys.exit()
-            if event.key == pg.K_r and inEndScreen:
+            if event.key == pg.K_r and mainHasSetup:
                 print(uiElements)
                 print("wagh!!")
                 resetGame()
@@ -985,7 +985,7 @@ running = True
 
 
 global moonSurf
-moonSurf = createMoonSurface(12, 100, (6000, 398), 10000, moonMedColour)
+moonSurf = createMoonSurface(12, 100, (7000, 398), 10000, moonMedColour)
 moonSurf = pg.transform.smoothscale(moonSurf, (moonSurf.get_width() * 2, moonSurf.get_height() * 2))
 
 
