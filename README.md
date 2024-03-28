@@ -1,3 +1,8 @@
+<p align="center">
+<img src='aaa.png' height='300'>
+</p>
+
+
 # About
 This is a small game I made for my software engineering course. It has an online score system and leaderboard viewer, multiple users support so you can pass the game to your friends, and some okay gameplay.
 
