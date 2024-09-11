@@ -80,7 +80,7 @@ class lem(object):
 
 
         if self.fuel > 0:
-            self.thrust = self.throttle * self.massFlowRate * dt
+            self.thrust = self.throttle * self.massFlowRate
             self.fuel -= self.throttle * dt * self.massFlowRate
         else:
             self.fuel = 0
