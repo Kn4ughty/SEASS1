@@ -134,10 +134,13 @@ WINDOW = pg.display.set_mode(
 )
 pg.display.set_caption("Moonlander 🚀")
 
-
+## 2024/3/11
 # I cannot work out why the physics speed is wrong so
 # For now you need to run at 60fps
 # Sorry people with slow computers
+## 2024/9/11
+# Coming back to this months later, i thought i had worked out the problem,
+# but i realised i hadn't so too bad. Im not working on this more.
 # FPS = max(pg.display.get_desktop_refresh_rates())
 FPS = 60
 
@@ -178,10 +181,10 @@ lem = lemmer.lem(
         "angularFriction": 8,
         "throttleSens": 100,
         "maxThrottle": 100,
-        "massFlowRate": 14,
+        "massFlowRate": 0.4,
         "fuel": 5000,
         "maxFuel": 5000,
-        "ISP": 311,
+        "ISP": 0.1,
         "mass": 2144,
         "gravity": gravity,
         "FPS": FPS,
